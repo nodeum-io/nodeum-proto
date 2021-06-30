@@ -1,5 +1,7 @@
 package storage
 
+import "fmt"
+
 // CloudProvider enumeration for Cloud connector
 type CloudProvider uint16
 
@@ -54,4 +56,8 @@ func (b Bucket) ParentName() string {
 }
 func (b Bucket) PrimaryName() string {
 	return b.MPrimaryName
+}
+
+func (b Bucket) String() string {
+	return fmt.Sprintf("%v[%v;#%v]", CloudBucketType, b.MName, b.MID)
 }

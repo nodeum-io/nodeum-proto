@@ -1,5 +1,7 @@
 package storage
 
+import "fmt"
+
 type Container struct {
 	MID   uint64
 	MName string
@@ -19,4 +21,8 @@ func (b Container) ParentName() string {
 }
 func (b Container) PrimaryName() string {
 	return b.MName
+}
+
+func (b Container) String() string {
+	return fmt.Sprintf("%v[%v;#%v]", ContainerType, b.MName, b.MID)
 }

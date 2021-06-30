@@ -1,5 +1,7 @@
 package storage
 
+import "fmt"
+
 // NASProtocol enumeration for NAS Share
 type NASProtocol uint16
 
@@ -69,4 +71,8 @@ func (b NASShare) ParentName() string {
 }
 func (b NASShare) PrimaryName() string {
 	return b.MPrimaryName
+}
+
+func (b NASShare) String() string {
+	return fmt.Sprintf("%v[%v;#%v]", NASShareType, b.MName, b.MID)
 }
