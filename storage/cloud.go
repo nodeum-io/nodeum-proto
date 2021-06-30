@@ -1,4 +1,4 @@
-package nodeumplugins
+package storage
 
 // CloudProvider enumeration for Cloud connector
 type CloudProvider uint16
@@ -33,7 +33,7 @@ type Bucket struct {
 func (b Bucket) ID() interface{} {
 	return b.MID
 }
-func (b Bucket) Type() StorageType {
+func (b Bucket) Type() Type {
 	return CloudBucketType
 }
 func (b Bucket) Name() string {

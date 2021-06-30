@@ -1,4 +1,4 @@
-package nodeumplugins
+package storage
 
 // NASProtocol enumeration for NAS Share
 type NASProtocol uint16
@@ -29,7 +29,7 @@ type NASShare struct {
 func (b NASShare) ID() interface{} {
 	return b.MID
 }
-func (b NASShare) Type() StorageType {
+func (b NASShare) Type() Type {
 	return NASShareType
 }
 func (b NASShare) Name() string {

@@ -1,4 +1,4 @@
-package nodeumplugins
+package storage
 
 import "io"
 
@@ -6,7 +6,7 @@ type HandlerOptions map[string]interface{}
 
 type ReaddirFunc func(info NodeInfo)
 
-type StorageHandler interface {
+type Handler interface {
 	// Prepare is called when the Handler is needed for the first time
 	Prepare() error
 	// Dispose is called when the Handler is not needed anymore
@@ -35,6 +35,6 @@ type StorageHandler interface {
 	Finalize()
 }
 
-type StorageHandlerProvider interface {
-	NewStorageHandler(Storage, HandlerOptions) StorageHandler
+type HandlerProvider interface {
+	NewStorageHandler(Storage, HandlerOptions) Handler
 }

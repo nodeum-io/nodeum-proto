@@ -1,4 +1,4 @@
-package nodeumplugins
+package storage
 
 import (
 	"os"
