@@ -16,6 +16,16 @@ const (
 	QuantumActivescale
 )
 
+// IsS3FSCompatible checks if the provider is s3fs compatible
+func (p CloudProvider) IsS3FSCompatible() bool {
+	return true
+}
+
+// IsS3ProxyCompatible checks if the provider needs S3Proxy
+func (p CloudProvider) IsS3ProxyCompatible() bool {
+	return p == Azure || p == OpenstackSwift
+}
+
 type Bucket struct {
 	MID            uint64
 	MName          string
