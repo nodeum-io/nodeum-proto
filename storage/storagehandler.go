@@ -32,7 +32,7 @@ type Handler interface {
 	Writer(path string, exclusive bool) (io.Writer, error)
 
 	// Finalize is called after each operation
-	Finalize()
+	Finalize() error
 }
 
 type HandlerProvider interface {
