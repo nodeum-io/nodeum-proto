@@ -15,9 +15,6 @@ type Handler interface {
 	// Storage returns the storage sets with `Init`
 	Storage() Storage
 
-	// Mkdir creates a directory at `path`. Also create parents if missing.
-	// Returns infos about all folders created, with the last item being `path`.
-	Mkdir(path string) ([]NodeInfo, error)
 	// Remove removes a node
 	Remove(path string) error
 	// Readdir iterates on every node inside the folder
@@ -33,6 +30,13 @@ type Handler interface {
 
 	// Finalize is called after each operation
 	Finalize() error
+}
+
+// DirCreator is an optional interface allowing folder creation
+type DirCreator interface {
+	// Mkdir creates a directory at `path`. Also create parents if missing.
+	// Returns infos about all folders created, with the last item being `path`.
+	Mkdir(path string) ([]NodeInfo, error)
 }
 
 type HandlerProvider interface {
