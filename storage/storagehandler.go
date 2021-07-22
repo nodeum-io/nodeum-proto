@@ -12,8 +12,10 @@ type Handler interface {
 	// Dispose is called when the Handler is not needed anymore
 	Dispose() error
 
-	// Storage returns the storage sets with `Init`
+	// Storage returns the storage sets with `NewStorageHandler`
 	Storage() Storage
+	// Options returns the storage sets with `NewStorageHandler`
+	Options() HandlerOptions
 
 	// Remove removes a node
 	Remove(path string) error
