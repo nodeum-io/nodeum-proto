@@ -8,6 +8,7 @@ func TestCloudProvider_IsS3FSCompatible(t *testing.T) {
 		p    CloudProvider
 		want bool
 	}{
+		{"UndefinedCloudProvider", UndefinedCloudProvider, false},
 		{"GenericS3", GenericS3, true},
 		{"AmazonAwsS3", AmazonAwsS3, true},
 		{"CloudianHyperstore", CloudianHyperstore, true},
@@ -34,6 +35,7 @@ func TestCloudProvider_IsS3ProxyCompatible(t *testing.T) {
 		p    CloudProvider
 		want bool
 	}{
+		{"UndefinedCloudProvider", UndefinedCloudProvider, false},
 		{"GenericS3", GenericS3, false},
 		{"AmazonAwsS3", AmazonAwsS3, false},
 		{"CloudianHyperstore", CloudianHyperstore, false},

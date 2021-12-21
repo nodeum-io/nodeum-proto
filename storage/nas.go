@@ -6,7 +6,8 @@ import "fmt"
 type NASProtocol uint16
 
 const (
-	SMBv1 NASProtocol = iota
+	UndefinedNASProtocol NASProtocol = iota
+	SMBv1
 	NFSv3
 	StoreNextV5
 	NFSv4
@@ -49,7 +50,7 @@ type NASShare struct {
 	MNASName     string
 	MPrimaryName string
 
-	Protocol NASProtocol
+	Protocol *NASProtocol
 	Host     string
 	Path     string
 	Username string

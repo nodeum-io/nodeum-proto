@@ -8,6 +8,7 @@ func TestNASProtocol_IsNFS(t *testing.T) {
 		n    NASProtocol
 		want bool
 	}{
+		{"UndefinedNASProtocol", UndefinedNASProtocol, false},
 		{"SMBv1", SMBv1, false},
 		{"NFSv3", NFSv3, true},
 		{"StoreNextV5", StoreNextV5, false},
@@ -29,6 +30,7 @@ func TestNASProtocol_IsCIFS(t *testing.T) {
 		n    NASProtocol
 		want bool
 	}{
+		{"UndefinedNASProtocol", UndefinedNASProtocol, false},
 		{"SMBv1", SMBv1, true},
 		{"NFSv3", NFSv3, false},
 		{"StoreNextV5", StoreNextV5, false},

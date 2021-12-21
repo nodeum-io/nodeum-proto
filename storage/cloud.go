@@ -6,7 +6,8 @@ import "fmt"
 type CloudProvider uint16
 
 const (
-	GenericS3 CloudProvider = iota
+	UndefinedCloudProvider CloudProvider = iota
+	GenericS3
 	AmazonAwsS3
 	CloudianHyperstore
 	ScalityRing
@@ -20,7 +21,7 @@ const (
 
 // IsS3FSCompatible checks if the provider is s3fs compatible
 func (p CloudProvider) IsS3FSCompatible() bool {
-	return true
+	return p != UndefinedCloudProvider
 }
 
 // IsS3ProxyCompatible checks if the provider needs S3Proxy
@@ -35,7 +36,7 @@ type Bucket struct {
 	MPrimaryName   string
 
 	URL       string
-	Provider  CloudProvider
+	Provider  *CloudProvider
 	Region    string
 	AccessKey string
 	SecretKey string
