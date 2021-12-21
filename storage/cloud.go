@@ -36,7 +36,7 @@ type Bucket struct {
 	MPrimaryName   string
 
 	URL       string
-	Provider  *CloudProvider
+	Provider  CloudProvider
 	Region    string
 	AccessKey string
 	SecretKey string

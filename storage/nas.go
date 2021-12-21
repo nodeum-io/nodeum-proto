@@ -50,7 +50,7 @@ type NASShare struct {
 	MNASName     string
 	MPrimaryName string
 
-	Protocol *NASProtocol
+	Protocol NASProtocol
 	Host     string
 	Path     string
 	Username string
