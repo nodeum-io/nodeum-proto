@@ -2,7 +2,7 @@ package storage
 
 import "io"
 
-type HandlerOptions map[string]string
+type HandlerOptions map[string]interface{}
 
 type ReaddirFunc func(info NodeInfo)
 
