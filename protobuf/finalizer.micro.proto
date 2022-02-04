@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package nodeum.protobuf.finalizer;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/protobuf/micro/finalizerpb";
+
+import "github.com/nodeum-io/nodeum-plugins/protobuf/storages.type.proto";
+import "github.com/nodeum-io/nodeum-plugins/protobuf/task.type.proto";
+
+service Finalizer {
+  rpc Start(StartRequest) returns (StartResponse);
+}
+
+message StartRequest {
+  string general_queue = 1;
+  string requests_queue = 2;
+  string results_queue = 3;
+
+  Execution execution = 4;
+  Storage source = 5;
+  Storage destination = 6;
+}
+
+message StartResponse {
+
+}

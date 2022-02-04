@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package nodeum.protobuf;
+
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/protobuf/types/taskpb";
+
+message Source {
+	enum Type {
+		CONTAINER = 0;
+		PRIMARY_NAS = 1;
+		SECONDARY_NAS = 2;
+		PRIMARY_CLOUD = 3;
+		SECONDARY_CLOUD = 4;
+		PRIMARY_TAPE = 5;
+		SECONDARY_TAPE = 6;
+	}
+
+	Type type = 1;
+	repeated string node_paths = 2;
+	repeated string node_ids = 3;
+	uint64 pool_id = 4;
+	uint64 storage_id = 5;
+
+	uint64 parent_storage_id = 16;
+	string storage_name = 17;
+}
+
+message Task {
+	enum Type {
+		ACTIVE_ARCHIVE = 0;
+		OFFLINE_ARCHIVE = 1;
+		DATA_EXCHANGE = 2;
+		DATA_MIGRATION = 5;
+	}
+	enum Action {
+		COPY = 0;
+		MOVE = 1;
+	}
+
+	string id = 1;
+	string name = 2;
+	Type type = 3;
+	Action action = 4;
+	repeated Source sources = 5;
+	repeated Source destinations = 6;
+	google.protobuf.Struct options = 7;
+	google.protobuf.Struct metadata = 8;
+}
+
+message Execution {
+	string id = 1;
+	Task task = 2;
+	google.protobuf.Struct metadata = 3;
+}

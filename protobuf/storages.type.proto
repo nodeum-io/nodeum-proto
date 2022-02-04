@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package nodeum.protobuf;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/protobuf/types/storagespb";
+
+message Bucket {
+  uint64 id = 1;
+  string name = 2;
+  string connector_name = 3;
+  string primary_name = 4;
+
+  enum Provider {
+    UNDEFINED = 0;
+    GENERIC_S3 = 1;
+    AMAZON_AWS_S3 = 2;
+    CLOUDIAN_HYPERSTORE = 3;
+    SCALITY_RING = 4;
+    DELL_EMC_ECS = 5;
+    AZURE = 6;
+    GOOGLE_CLOUD_STORAGE = 7;
+    OPENSTACK_SWIFT = 8;
+    WASABI = 9;
+    QUANTUM_ACTIVE_SCALE = 10;
+  }
+
+	string url = 16;
+	Provider provider = 17;
+	string region = 18;
+	string access_key = 19;
+	string secret_key = 20;
+	string options = 21;
+}
+
+message NASShare {
+  uint64 id = 1;
+  string name = 2;
+  string nas_name = 3;
+  string primary_name = 4;
+
+  enum Protocol {
+    UNDEFINED = 0;
+    SMB_V1 = 1;
+    NFS_V3 = 2;
+    STORE_NEXT_V5 = 3;
+    NFS_V4 = 4;
+    SMB_V2_1 = 5;
+    SMB_V3 = 6;
+  }
+
+	Protocol protocol = 16;
+	string host = 17;
+	string path = 18;
+	string username = 19;
+	string password = 20;
+	string options = 21;
+}
+
+message Container {
+  uint64 id = 1;
+  string name = 2;
+}
+
+message Storage {
+  oneof storage {
+    Bucket bucket = 1;
+    NASShare nas_share = 2;
+    Container container = 3;
+  }
+}

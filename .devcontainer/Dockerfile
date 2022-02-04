@@ -13,8 +13,16 @@ RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/l
 # RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 #     && apt-get -y install --no-install-recommends <your-package-list-here>
 
+RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.19.2/protoc-3.19.2-linux-x86_64.zip \
+    && unzip -d /usr/local/ -o protoc-3.19.2-linux-x86_64.zip -x readme.txt
+
+RUN mkdir -p $GOPATH/src/github.com/googleapis/googleapis \
+    && git clone https://github.com/googleapis/googleapis.git --depth 1 $GOPATH/src/github.com/googleapis/googleapis
+
 # [Optional] Uncomment the next line to use go get to install anything else you need
-# RUN go get -x <your-dependency-or-tool>
+RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+RUN go install go-micro.dev/v4/cmd/protoc-gen-micro@v4
 
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package nodeum.protobuf;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/protobuf/plugins/dispatcherpb";
+
+import "google/protobuf/struct.proto";
+import "github.com/nodeum-io/nodeum-plugins/protobuf/task.type.proto";
+
+service DispatcherPlugin {
+  rpc BeforeStart(BeforeStartRequestResponse) returns (BeforeStartRequestResponse);
+}
+
+message BeforeStartRequestResponse {
+  Task task = 1;
+  google.protobuf.Struct metadata = 3;
+}
