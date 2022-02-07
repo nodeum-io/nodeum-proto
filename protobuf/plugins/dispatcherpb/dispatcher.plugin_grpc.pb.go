@@ -22,7 +22,10 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DispatcherPluginClient interface {
-	BeforeStart(ctx context.Context, in *BeforeStartRequestResponse, opts ...grpc.CallOption) (*BeforeStartRequestResponse, error)
+	// Before the task is started, you can change the task and/or the trigger metadata
+	OnStartNewTask(ctx context.Context, in *OnStartNewTaskRequestResponse, opts ...grpc.CallOption) (*OnStartNewTaskRequestResponse, error)
+	// Before a request is dispatched, you can change it or discard it
+	OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...grpc.CallOption) (*OnNewRequestRequest, error)
 }
 
 type dispatcherPluginClient struct {
@@ -33,9 +36,18 @@ func NewDispatcherPluginClient(cc grpc.ClientConnInterface) DispatcherPluginClie
 	return &dispatcherPluginClient{cc}
 }
 
-func (c *dispatcherPluginClient) BeforeStart(ctx context.Context, in *BeforeStartRequestResponse, opts ...grpc.CallOption) (*BeforeStartRequestResponse, error) {
-	out := new(BeforeStartRequestResponse)
-	err := c.cc.Invoke(ctx, "/nodeum.protobuf.DispatcherPlugin/BeforeStart", in, out, opts...)
+func (c *dispatcherPluginClient) OnStartNewTask(ctx context.Context, in *OnStartNewTaskRequestResponse, opts ...grpc.CallOption) (*OnStartNewTaskRequestResponse, error) {
+	out := new(OnStartNewTaskRequestResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.protobuf.DispatcherPlugin/OnStartNewTask", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dispatcherPluginClient) OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...grpc.CallOption) (*OnNewRequestRequest, error) {
+	out := new(OnNewRequestRequest)
+	err := c.cc.Invoke(ctx, "/nodeum.protobuf.DispatcherPlugin/OnNewRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +58,10 @@ func (c *dispatcherPluginClient) BeforeStart(ctx context.Context, in *BeforeStar
 // All implementations must embed UnimplementedDispatcherPluginServer
 // for forward compatibility
 type DispatcherPluginServer interface {
-	BeforeStart(context.Context, *BeforeStartRequestResponse) (*BeforeStartRequestResponse, error)
+	// Before the task is started, you can change the task and/or the trigger metadata
+	OnStartNewTask(context.Context, *OnStartNewTaskRequestResponse) (*OnStartNewTaskRequestResponse, error)
+	// Before a request is dispatched, you can change it or discard it
+	OnNewRequest(context.Context, *OnNewRequestRequest) (*OnNewRequestRequest, error)
 	mustEmbedUnimplementedDispatcherPluginServer()
 }
 
@@ -54,8 +69,11 @@ type DispatcherPluginServer interface {
 type UnimplementedDispatcherPluginServer struct {
 }
 
-func (UnimplementedDispatcherPluginServer) BeforeStart(context.Context, *BeforeStartRequestResponse) (*BeforeStartRequestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method BeforeStart not implemented")
+func (UnimplementedDispatcherPluginServer) OnStartNewTask(context.Context, *OnStartNewTaskRequestResponse) (*OnStartNewTaskRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OnStartNewTask not implemented")
+}
+func (UnimplementedDispatcherPluginServer) OnNewRequest(context.Context, *OnNewRequestRequest) (*OnNewRequestRequest, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method OnNewRequest not implemented")
 }
 func (UnimplementedDispatcherPluginServer) mustEmbedUnimplementedDispatcherPluginServer() {}
 
@@ -70,20 +88,38 @@ func RegisterDispatcherPluginServer(s grpc.ServiceRegistrar, srv DispatcherPlugi
 	s.RegisterService(&DispatcherPlugin_ServiceDesc, srv)
 }
 
-func _DispatcherPlugin_BeforeStart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BeforeStartRequestResponse)
+func _DispatcherPlugin_OnStartNewTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OnStartNewTaskRequestResponse)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DispatcherPluginServer).BeforeStart(ctx, in)
+		return srv.(DispatcherPluginServer).OnStartNewTask(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nodeum.protobuf.DispatcherPlugin/BeforeStart",
+		FullMethod: "/nodeum.protobuf.DispatcherPlugin/OnStartNewTask",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DispatcherPluginServer).BeforeStart(ctx, req.(*BeforeStartRequestResponse))
+		return srv.(DispatcherPluginServer).OnStartNewTask(ctx, req.(*OnStartNewTaskRequestResponse))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DispatcherPlugin_OnNewRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(OnNewRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DispatcherPluginServer).OnNewRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.protobuf.DispatcherPlugin/OnNewRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DispatcherPluginServer).OnNewRequest(ctx, req.(*OnNewRequestRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -96,8 +132,12 @@ var DispatcherPlugin_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*DispatcherPluginServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "BeforeStart",
-			Handler:    _DispatcherPlugin_BeforeStart_Handler,
+			MethodName: "OnStartNewTask",
+			Handler:    _DispatcherPlugin_OnStartNewTask_Handler,
+		},
+		{
+			MethodName: "OnNewRequest",
+			Handler:    _DispatcherPlugin_OnNewRequest_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

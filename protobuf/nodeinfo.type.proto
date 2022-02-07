@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package nodeum.protobuf;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/protobuf/types/nodeinfopb";
+
+message NodeInfo {
+  string path = 1;
+  uint32 mode = 2;
+  uint32 uid = 3;
+  uint32 gid = 4;
+  int64 size = 5;
+  google.protobuf.Timestamp atime = 6;
+  google.protobuf.Timestamp mtime = 7;
+  google.protobuf.Timestamp ctime = 8;
+}

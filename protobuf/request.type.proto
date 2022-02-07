@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package nodeum.protobuf;
+
+import "google/protobuf/struct.proto";
+import "github.com/nodeum-io/nodeum-plugins/protobuf/nodeinfo.type.proto";
+import "github.com/nodeum-io/nodeum-plugins/protobuf/storages.type.proto";
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/protobuf/types/requestpb";
+
+message Request {
+  string id = 1;
+
+  oneof request {
+    CopyRequest copy = 2;
+    RemoveRequest remove = 3;
+    ScanRequest scan = 4;
+  }
+
+  google.protobuf.Struct options = 8;
+}
+
+message CopyRequest {
+  enum Type {
+    COPY = 0;
+    MOVE = 1;
+  }
+  Type type = 2;
+  
+  Storage source = 3;
+  string source_path = 4;
+  Storage destination = 5;
+  string destination_path = 6;
+
+  NodeInfo info = 7;
+}
+
+message RemoveRequest {
+  Storage storage = 3;
+  string path = 4;
+
+  NodeInfo info = 7;
+}
+
+message ScanRequest {
+  enum Type {
+    SCAN = 0;
+    READDIR = 1;
+  }
+  Type type = 2;
+
+  Storage storage = 3;
+  string path = 4;
+}
