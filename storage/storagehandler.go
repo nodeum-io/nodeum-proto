@@ -1,15 +1,10 @@
 package storage
 
-import (
-	"io"
-
-	"github.com/nodeum-io/nodeum-plugins/protobuf/types/nodeinfopb"
-	"github.com/nodeum-io/nodeum-plugins/protobuf/types/storagespb"
-)
+import "io"
 
 type HandlerOptions map[string]interface{}
 
-type ReaddirFunc func(info *nodeinfopb.NodeInfo)
+type ReaddirFunc func(info NodeInfo)
 
 type Handler interface {
 	// Prepare is called when the Handler is needed for the first time
@@ -18,7 +13,7 @@ type Handler interface {
 	Dispose() error
 
 	// Storage returns the storage sets with `NewStorageHandler`
-	Storage() *storagespb.Storage
+	Storage() Storage
 	// Options returns the storage sets with `NewStorageHandler`
 	Options() HandlerOptions
 
@@ -28,9 +23,9 @@ type Handler interface {
 	Readdir(path string, readdirFn ReaddirFunc) error
 
 	// NodeInfo returns information for the node located at `path`
-	NodeInfo(path string) (*nodeinfopb.NodeInfo, error)
+	NodeInfo(path string) (NodeInfo, error)
 	// SetNodeInfo sets info like FileMode, UID, GID and times. Returns info effectively set.
-	SetNodeInfo(path string, info *nodeinfopb.NodeInfo) (*nodeinfopb.NodeInfo, error)
+	SetNodeInfo(path string, info NodeInfo) (NodeInfo, error)
 
 	Reader(path string) (io.Reader, error)
 	Writer(path string, exclusive bool) (io.Writer, error)
@@ -43,9 +38,9 @@ type Handler interface {
 type DirCreator interface {
 	// Mkdir creates a directory at `path`. Also create parents if missing.
 	// Returns infos about all folders created, with the last item being `path`.
-	Mkdir(path string) ([]*nodeinfopb.NodeInfo, error)
+	Mkdir(path string) ([]NodeInfo, error)
 }
 
 type HandlerProvider interface {
-	NewStorageHandler(*storagespb.Storage, HandlerOptions) Handler
+	NewStorageHandler(Storage, HandlerOptions) Handler
 }
