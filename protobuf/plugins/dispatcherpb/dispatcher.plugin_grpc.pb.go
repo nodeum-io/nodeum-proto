@@ -25,7 +25,7 @@ type DispatcherPluginClient interface {
 	// Before the task is started, you can change the task and/or the trigger metadata
 	OnStartNewTask(ctx context.Context, in *OnStartNewTaskRequestResponse, opts ...grpc.CallOption) (*OnStartNewTaskRequestResponse, error)
 	// Before a request is dispatched, you can change it or discard it
-	OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...grpc.CallOption) (*OnNewRequestRequest, error)
+	OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...grpc.CallOption) (*OnNewRequestResponse, error)
 }
 
 type dispatcherPluginClient struct {
@@ -45,8 +45,8 @@ func (c *dispatcherPluginClient) OnStartNewTask(ctx context.Context, in *OnStart
 	return out, nil
 }
 
-func (c *dispatcherPluginClient) OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...grpc.CallOption) (*OnNewRequestRequest, error) {
-	out := new(OnNewRequestRequest)
+func (c *dispatcherPluginClient) OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...grpc.CallOption) (*OnNewRequestResponse, error) {
+	out := new(OnNewRequestResponse)
 	err := c.cc.Invoke(ctx, "/nodeum.protobuf.DispatcherPlugin/OnNewRequest", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -61,7 +61,7 @@ type DispatcherPluginServer interface {
 	// Before the task is started, you can change the task and/or the trigger metadata
 	OnStartNewTask(context.Context, *OnStartNewTaskRequestResponse) (*OnStartNewTaskRequestResponse, error)
 	// Before a request is dispatched, you can change it or discard it
-	OnNewRequest(context.Context, *OnNewRequestRequest) (*OnNewRequestRequest, error)
+	OnNewRequest(context.Context, *OnNewRequestRequest) (*OnNewRequestResponse, error)
 	mustEmbedUnimplementedDispatcherPluginServer()
 }
 
@@ -72,7 +72,7 @@ type UnimplementedDispatcherPluginServer struct {
 func (UnimplementedDispatcherPluginServer) OnStartNewTask(context.Context, *OnStartNewTaskRequestResponse) (*OnStartNewTaskRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OnStartNewTask not implemented")
 }
-func (UnimplementedDispatcherPluginServer) OnNewRequest(context.Context, *OnNewRequestRequest) (*OnNewRequestRequest, error) {
+func (UnimplementedDispatcherPluginServer) OnNewRequest(context.Context, *OnNewRequestRequest) (*OnNewRequestResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method OnNewRequest not implemented")
 }
 func (UnimplementedDispatcherPluginServer) mustEmbedUnimplementedDispatcherPluginServer() {}

@@ -12,7 +12,7 @@ service DispatcherPlugin {
   // Before the task is started, you can change the task and/or the trigger metadata
   rpc OnStartNewTask(OnStartNewTaskRequestResponse) returns (OnStartNewTaskRequestResponse);
   // Before a request is dispatched, you can change it or discard it
-  rpc OnNewRequest(OnNewRequestRequest) returns (OnNewRequestRequest);
+  rpc OnNewRequest(OnNewRequestRequest) returns (OnNewRequestResponse);
 }
 
 message OnStartNewTaskRequestResponse {
