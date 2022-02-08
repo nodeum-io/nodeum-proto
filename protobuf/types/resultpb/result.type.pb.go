@@ -23,6 +23,70 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type FailedResult_ErrorType int32
+
+const (
+	FailedResult_UNDEFINED  FailedResult_ErrorType = 0
+	FailedResult_UNKNOWN    FailedResult_ErrorType = 1
+	FailedResult_NOT_EXIST  FailedResult_ErrorType = 2
+	FailedResult_NOT_DIR    FailedResult_ErrorType = 3
+	FailedResult_PERMISSION FailedResult_ErrorType = 4
+	FailedResult_EXIST      FailedResult_ErrorType = 5
+	FailedResult_NOT_EMPTY  FailedResult_ErrorType = 6
+	FailedResult_TIMEOUT    FailedResult_ErrorType = 7
+)
+
+// Enum value maps for FailedResult_ErrorType.
+var (
+	FailedResult_ErrorType_name = map[int32]string{
+		0: "UNDEFINED",
+		1: "UNKNOWN",
+		2: "NOT_EXIST",
+		3: "NOT_DIR",
+		4: "PERMISSION",
+		5: "EXIST",
+		6: "NOT_EMPTY",
+		7: "TIMEOUT",
+	}
+	FailedResult_ErrorType_value = map[string]int32{
+		"UNDEFINED":  0,
+		"UNKNOWN":    1,
+		"NOT_EXIST":  2,
+		"NOT_DIR":    3,
+		"PERMISSION": 4,
+		"EXIST":      5,
+		"NOT_EMPTY":  6,
+		"TIMEOUT":    7,
+	}
+)
+
+func (x FailedResult_ErrorType) Enum() *FailedResult_ErrorType {
+	p := new(FailedResult_ErrorType)
+	*p = x
+	return p
+}
+
+func (x FailedResult_ErrorType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (FailedResult_ErrorType) Descriptor() protoreflect.EnumDescriptor {
+	return file_protobuf_result_type_proto_enumTypes[0].Descriptor()
+}
+
+func (FailedResult_ErrorType) Type() protoreflect.EnumType {
+	return &file_protobuf_result_type_proto_enumTypes[0]
+}
+
+func (x FailedResult_ErrorType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use FailedResult_ErrorType.Descriptor instead.
+func (FailedResult_ErrorType) EnumDescriptor() ([]byte, []int) {
+	return file_protobuf_result_type_proto_rawDescGZIP(), []int{6, 0}
+}
+
 type Result struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -438,10 +502,10 @@ type FailedResult struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Storage  *storagespb.Storage `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
-	Path     string              `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
-	Error    string              `protobuf:"bytes,4,opt,name=error,proto3" json:"error,omitempty"`
-	ErrorStr string              `protobuf:"bytes,5,opt,name=error_str,json=errorStr,proto3" json:"error_str,omitempty"`
+	Storage  *storagespb.Storage    `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
+	Path     string                 `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
+	Error    FailedResult_ErrorType `protobuf:"varint,4,opt,name=error,proto3,enum=nodeum.protobuf.FailedResult_ErrorType" json:"error,omitempty"`
+	ErrorStr string                 `protobuf:"bytes,5,opt,name=error_str,json=errorStr,proto3" json:"error_str,omitempty"`
 }
 
 func (x *FailedResult) Reset() {
@@ -490,11 +554,11 @@ func (x *FailedResult) GetPath() string {
 	return ""
 }
 
-func (x *FailedResult) GetError() string {
+func (x *FailedResult) GetError() FailedResult_ErrorType {
 	if x != nil {
 		return x.Error
 	}
-	return ""
+	return FailedResult_UNDEFINED
 }
 
 func (x *FailedResult) GetErrorStr() string {
@@ -575,20 +639,31 @@ var file_protobuf_result_type_proto_rawDesc = []byte{
 	0x04, 0x69, 0x6e, 0x66, 0x6f, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x6e, 0x6f,
 	0x64, 0x65, 0x75, 0x6d, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x4e, 0x6f,
 	0x64, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x52, 0x04, 0x69, 0x6e, 0x66, 0x6f, 0x22, 0x0c, 0x0a, 0x0a,
-	0x4f, 0x76, 0x65, 0x72, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0x89, 0x01, 0x0a, 0x0c, 0x46,
+	0x4f, 0x76, 0x65, 0x72, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x22, 0xae, 0x02, 0x0a, 0x0c, 0x46,
 	0x61, 0x69, 0x6c, 0x65, 0x64, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x32, 0x0a, 0x07, 0x73,
 	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x6e,
 	0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x53,
 	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52, 0x07, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x12,
 	0x12, 0x0a, 0x04, 0x70, 0x61, 0x74, 0x68, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x70,
-	0x61, 0x74, 0x68, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x04, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x12, 0x1b, 0x0a, 0x09, 0x65, 0x72, 0x72,
-	0x6f, 0x72, 0x5f, 0x73, 0x74, 0x72, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x65, 0x72,
-	0x72, 0x6f, 0x72, 0x53, 0x74, 0x72, 0x42, 0x3d, 0x5a, 0x3b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62,
-	0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2d, 0x69, 0x6f, 0x2f, 0x6e,
-	0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2d, 0x70, 0x6c, 0x75, 0x67, 0x69, 0x6e, 0x73, 0x2f, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x79, 0x70, 0x65, 0x73, 0x2f, 0x72, 0x65, 0x73,
-	0x75, 0x6c, 0x74, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x61, 0x74, 0x68, 0x12, 0x3d, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x04, 0x20, 0x01,
+	0x28, 0x0e, 0x32, 0x27, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2e, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x62, 0x75, 0x66, 0x2e, 0x46, 0x61, 0x69, 0x6c, 0x65, 0x64, 0x52, 0x65, 0x73, 0x75, 0x6c,
+	0x74, 0x2e, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x54, 0x79, 0x70, 0x65, 0x52, 0x05, 0x65, 0x72, 0x72,
+	0x6f, 0x72, 0x12, 0x1b, 0x0a, 0x09, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x5f, 0x73, 0x74, 0x72, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x53, 0x74, 0x72, 0x22,
+	0x7a, 0x0a, 0x09, 0x45, 0x72, 0x72, 0x6f, 0x72, 0x54, 0x79, 0x70, 0x65, 0x12, 0x0d, 0x0a, 0x09,
+	0x55, 0x4e, 0x44, 0x45, 0x46, 0x49, 0x4e, 0x45, 0x44, 0x10, 0x00, 0x12, 0x0b, 0x0a, 0x07, 0x55,
+	0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x01, 0x12, 0x0d, 0x0a, 0x09, 0x4e, 0x4f, 0x54, 0x5f,
+	0x45, 0x58, 0x49, 0x53, 0x54, 0x10, 0x02, 0x12, 0x0b, 0x0a, 0x07, 0x4e, 0x4f, 0x54, 0x5f, 0x44,
+	0x49, 0x52, 0x10, 0x03, 0x12, 0x0e, 0x0a, 0x0a, 0x50, 0x45, 0x52, 0x4d, 0x49, 0x53, 0x53, 0x49,
+	0x4f, 0x4e, 0x10, 0x04, 0x12, 0x09, 0x0a, 0x05, 0x45, 0x58, 0x49, 0x53, 0x54, 0x10, 0x05, 0x12,
+	0x0d, 0x0a, 0x09, 0x4e, 0x4f, 0x54, 0x5f, 0x45, 0x4d, 0x50, 0x54, 0x59, 0x10, 0x06, 0x12, 0x0b,
+	0x0a, 0x07, 0x54, 0x49, 0x4d, 0x45, 0x4f, 0x55, 0x54, 0x10, 0x07, 0x42, 0x3d, 0x5a, 0x3b, 0x67,
+	0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d,
+	0x2d, 0x69, 0x6f, 0x2f, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2d, 0x70, 0x6c, 0x75, 0x67, 0x69,
+	0x6e, 0x73, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2f, 0x74, 0x79, 0x70, 0x65,
+	0x73, 0x2f, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -603,38 +678,41 @@ func file_protobuf_result_type_proto_rawDescGZIP() []byte {
 	return file_protobuf_result_type_proto_rawDescData
 }
 
+var file_protobuf_result_type_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_protobuf_result_type_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_protobuf_result_type_proto_goTypes = []interface{}{
-	(*Result)(nil),              // 0: nodeum.protobuf.Result
-	(*ProgressResult)(nil),      // 1: nodeum.protobuf.ProgressResult
-	(*CheckInResult)(nil),       // 2: nodeum.protobuf.CheckInResult
-	(*CheckOutResult)(nil),      // 3: nodeum.protobuf.CheckOutResult
-	(*SeenResult)(nil),          // 4: nodeum.protobuf.SeenResult
-	(*OverResult)(nil),          // 5: nodeum.protobuf.OverResult
-	(*FailedResult)(nil),        // 6: nodeum.protobuf.FailedResult
-	(*requestpb.Request)(nil),   // 7: nodeum.protobuf.Request
-	(*storagespb.Storage)(nil),  // 8: nodeum.protobuf.Storage
-	(*nodeinfopb.NodeInfo)(nil), // 9: nodeum.protobuf.NodeInfo
+	(FailedResult_ErrorType)(0), // 0: nodeum.protobuf.FailedResult.ErrorType
+	(*Result)(nil),              // 1: nodeum.protobuf.Result
+	(*ProgressResult)(nil),      // 2: nodeum.protobuf.ProgressResult
+	(*CheckInResult)(nil),       // 3: nodeum.protobuf.CheckInResult
+	(*CheckOutResult)(nil),      // 4: nodeum.protobuf.CheckOutResult
+	(*SeenResult)(nil),          // 5: nodeum.protobuf.SeenResult
+	(*OverResult)(nil),          // 6: nodeum.protobuf.OverResult
+	(*FailedResult)(nil),        // 7: nodeum.protobuf.FailedResult
+	(*requestpb.Request)(nil),   // 8: nodeum.protobuf.Request
+	(*storagespb.Storage)(nil),  // 9: nodeum.protobuf.Storage
+	(*nodeinfopb.NodeInfo)(nil), // 10: nodeum.protobuf.NodeInfo
 }
 var file_protobuf_result_type_proto_depIdxs = []int32{
-	7,  // 0: nodeum.protobuf.Result.request:type_name -> nodeum.protobuf.Request
-	1,  // 1: nodeum.protobuf.Result.progress:type_name -> nodeum.protobuf.ProgressResult
-	2,  // 2: nodeum.protobuf.Result.checkin:type_name -> nodeum.protobuf.CheckInResult
-	3,  // 3: nodeum.protobuf.Result.checkout:type_name -> nodeum.protobuf.CheckOutResult
-	4,  // 4: nodeum.protobuf.Result.seen:type_name -> nodeum.protobuf.SeenResult
-	5,  // 5: nodeum.protobuf.Result.over:type_name -> nodeum.protobuf.OverResult
-	6,  // 6: nodeum.protobuf.Result.failed:type_name -> nodeum.protobuf.FailedResult
-	8,  // 7: nodeum.protobuf.CheckInResult.storage:type_name -> nodeum.protobuf.Storage
-	9,  // 8: nodeum.protobuf.CheckInResult.info:type_name -> nodeum.protobuf.NodeInfo
-	8,  // 9: nodeum.protobuf.CheckOutResult.storage:type_name -> nodeum.protobuf.Storage
-	8,  // 10: nodeum.protobuf.SeenResult.storage:type_name -> nodeum.protobuf.Storage
-	9,  // 11: nodeum.protobuf.SeenResult.info:type_name -> nodeum.protobuf.NodeInfo
-	8,  // 12: nodeum.protobuf.FailedResult.storage:type_name -> nodeum.protobuf.Storage
-	13, // [13:13] is the sub-list for method output_type
-	13, // [13:13] is the sub-list for method input_type
-	13, // [13:13] is the sub-list for extension type_name
-	13, // [13:13] is the sub-list for extension extendee
-	0,  // [0:13] is the sub-list for field type_name
+	8,  // 0: nodeum.protobuf.Result.request:type_name -> nodeum.protobuf.Request
+	2,  // 1: nodeum.protobuf.Result.progress:type_name -> nodeum.protobuf.ProgressResult
+	3,  // 2: nodeum.protobuf.Result.checkin:type_name -> nodeum.protobuf.CheckInResult
+	4,  // 3: nodeum.protobuf.Result.checkout:type_name -> nodeum.protobuf.CheckOutResult
+	5,  // 4: nodeum.protobuf.Result.seen:type_name -> nodeum.protobuf.SeenResult
+	6,  // 5: nodeum.protobuf.Result.over:type_name -> nodeum.protobuf.OverResult
+	7,  // 6: nodeum.protobuf.Result.failed:type_name -> nodeum.protobuf.FailedResult
+	9,  // 7: nodeum.protobuf.CheckInResult.storage:type_name -> nodeum.protobuf.Storage
+	10, // 8: nodeum.protobuf.CheckInResult.info:type_name -> nodeum.protobuf.NodeInfo
+	9,  // 9: nodeum.protobuf.CheckOutResult.storage:type_name -> nodeum.protobuf.Storage
+	9,  // 10: nodeum.protobuf.SeenResult.storage:type_name -> nodeum.protobuf.Storage
+	10, // 11: nodeum.protobuf.SeenResult.info:type_name -> nodeum.protobuf.NodeInfo
+	9,  // 12: nodeum.protobuf.FailedResult.storage:type_name -> nodeum.protobuf.Storage
+	0,  // 13: nodeum.protobuf.FailedResult.error:type_name -> nodeum.protobuf.FailedResult.ErrorType
+	14, // [14:14] is the sub-list for method output_type
+	14, // [14:14] is the sub-list for method input_type
+	14, // [14:14] is the sub-list for extension type_name
+	14, // [14:14] is the sub-list for extension extendee
+	0,  // [0:14] is the sub-list for field type_name
 }
 
 func init() { file_protobuf_result_type_proto_init() }
@@ -741,13 +819,14 @@ func file_protobuf_result_type_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_protobuf_result_type_proto_rawDesc,
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_protobuf_result_type_proto_goTypes,
 		DependencyIndexes: file_protobuf_result_type_proto_depIdxs,
+		EnumInfos:         file_protobuf_result_type_proto_enumTypes,
 		MessageInfos:      file_protobuf_result_type_proto_msgTypes,
 	}.Build()
 	File_protobuf_result_type_proto = out.File

@@ -45,6 +45,17 @@ message OverResult { }
 message FailedResult {
   Storage storage = 2;
   string path = 3;
-  string error = 4;
+
+  enum ErrorType {
+    UNDEFINED = 0;
+    UNKNOWN = 1;
+    NOT_EXIST = 2;
+    NOT_DIR = 3;
+    PERMISSION = 4;
+    EXIST = 5;
+    NOT_EMPTY = 6;
+    TIMEOUT = 7;
+  }
+  ErrorType error = 4;
   string error_str = 5;
 }
