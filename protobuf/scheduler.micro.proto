@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package nodeum.protobuf.scheduler;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/protobuf/micro/schedulerpb";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service Scheduler {
+  // ReadSchedule returns information about a specific schedule, including date
+  // of next occurrence. 
+  rpc ReadSchedule(ScheduleIdRequest) returns (ReadScheduleResponse) {
+    option (google.api.http) = { get: "/schedules/{task_id}"; };
+  }
+  
+  // ListSchedules returns all actives schedules.
+  rpc ListSchedules(google.protobuf.Empty) returns (ListSchedulesResponse) {
+    option (google.api.http) = { get: "/schedules"; };
+  }
+
+  // WriteSchedule creates or update a schedule for a task.
+  // If one schedule already exists for the task, it will be overwritten.
+  rpc WriteSchedule(WriteScheduleRequest) returns (ScheduleResponse) {
+    option (google.api.http) = { post: "/schedules"; };
+  }
+
+  rpc DeleteSchedule(ScheduleIdRequest) returns (ScheduleResponse) {
+    option (google.api.http) = { delete: "/schedules/{task_id}"; };
+  }
+}
+
+message ScheduleIdRequest {
+  string task_id = 2;
+}
+
+message ReadScheduleResponse {
+  string task_id = 2;
+  string rrule = 4;
+  google.protobuf.Timestamp next = 5;
+}
+
+message ListSchedulesResponse {
+  repeated ReadScheduleResponse schedules = 1;
+}
+
+message WriteScheduleRequest {
+  string task_id = 2;
+  string rrule = 4;
+}
+
+message ScheduleResponse {
+  string msg = 1;
+}
