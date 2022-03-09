@@ -47,10 +47,8 @@ message ReadScheduleResponse {
 message ListSchedulesResponse {
   repeated Schedule schedules = 1;
 }
-
 message WriteScheduleRequest {
-  string task_id = 2;
-  string rrule = 4;
+  Schedule schedule = 1;
 }
 
 message ScheduleResponse {
