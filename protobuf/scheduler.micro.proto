@@ -35,14 +35,17 @@ message ScheduleIdRequest {
   string task_id = 2;
 }
 
-message ReadScheduleResponse {
+message Schedule {
   string task_id = 2;
   string rrule = 4;
   google.protobuf.Timestamp next = 5;
 }
 
+message ReadScheduleResponse {
+  Schedule schedule = 1;
+}
 message ListSchedulesResponse {
-  repeated ReadScheduleResponse schedules = 1;
+  repeated Schedule schedules = 1;
 }
 
 message WriteScheduleRequest {
