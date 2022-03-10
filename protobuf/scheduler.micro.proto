@@ -23,7 +23,7 @@ service Scheduler {
   // WriteSchedule creates or update a schedule for a task.
   // If one schedule already exists for the task, it will be overwritten.
   rpc WriteSchedule(WriteScheduleRequest) returns (ScheduleResponse) {
-    option (google.api.http) = { post: "/schedules"; };
+    option (google.api.http) = { post: "/schedules"; body: "*"; };
   }
 
   rpc DeleteSchedule(ScheduleIdRequest) returns (ScheduleResponse) {
