@@ -50,7 +50,7 @@ func NewSchedulerEndpoints() []*api.Endpoint {
 			Name:    "Scheduler.WriteSchedule",
 			Path:    []string{"/schedules"},
 			Method:  []string{"POST"},
-			Body:    "",
+			Body:    "*",
 			Handler: "rpc",
 		},
 		{
@@ -170,7 +170,7 @@ func RegisterSchedulerHandler(s server.Server, hdlr SchedulerHandler, opts ...se
 		Name:    "Scheduler.WriteSchedule",
 		Path:    []string{"/schedules"},
 		Method:  []string{"POST"},
-		Body:    "",
+		Body:    "*",
 		Handler: "rpc",
 	}))
 	opts = append(opts, api.WithEndpoint(&api.Endpoint{
