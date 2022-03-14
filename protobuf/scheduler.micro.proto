@@ -36,9 +36,19 @@ message ScheduleIdRequest {
 }
 
 message Schedule {
+  enum Status {
+    // Waiting for the scheduler to find the next schedule
+    PENDING = 0;
+    // Next scheduled has been defined
+    SCHEDULED = 1;
+    // Schedule is finished, no more occurences
+    DONE = 2;
+  }
+
   string task_id = 2;
   string rrule = 4;
   google.protobuf.Timestamp next = 5;
+  Status status = 6;
 }
 
 message ReadScheduleResponse {
