@@ -22,8 +22,8 @@ message Result {
 }
 
 message ProgressResult {
-  int64 size_done = 2;
-  int64 size_todo = 3;
+  int64 size_done = 2 [json_name = "size_done"];
+  int64 size_todo = 3 [json_name = "size_todo"];
 }
 
 message CheckInResult {
@@ -57,5 +57,5 @@ message FailedResult {
     TIMEOUT = 7;
   }
   ErrorType error = 4;
-  string error_str = 5;
+  string error_str = 5 [json_name = "error_str"];
 }

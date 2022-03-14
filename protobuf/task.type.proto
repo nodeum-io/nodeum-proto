@@ -18,13 +18,13 @@ message Source {
 	}
 
 	Type type = 1;
-	repeated string node_paths = 2;
-	repeated string node_ids = 3;
-	uint64 pool_id = 4;
-	uint64 storage_id = 5;
+	repeated string node_paths = 2 [json_name = "node_paths"];
+	repeated string node_ids = 3 [json_name = "node_ids"];
+	uint64 pool_id = 4 [json_name = "pool_id"];
+	uint64 storage_id = 5 [json_name = "storage_id"];
 
-	uint64 parent_storage_id = 16;
-	string storage_name = 17;
+	uint64 parent_storage_id = 16 [json_name = "parent_storage_id"];
+	string storage_name = 17 [json_name = "storage_name"];
 }
 
 message Task {

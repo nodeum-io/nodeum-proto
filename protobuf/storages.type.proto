@@ -7,8 +7,8 @@ option go_package = "github.com/nodeum-io/nodeum-plugins/protobuf/types/storages
 message Bucket {
   uint64 id = 1;
   string name = 2;
-  string connector_name = 3;
-  string primary_name = 4;
+  string connector_name = 3 [json_name = "connector_name"];
+  string primary_name = 4 [json_name = "primary_name"];
 
   enum Provider {
     UNDEFINED = 0;
@@ -27,16 +27,16 @@ message Bucket {
 	string url = 16;
 	Provider provider = 17;
 	string region = 18;
-	string access_key = 19;
-	string secret_key = 20;
+	string access_key = 19 [json_name = "access_key"];
+	string secret_key = 20 [json_name = "secret_key"];
 	string options = 21;
 }
 
 message NASShare {
   uint64 id = 1;
   string name = 2;
-  string nas_name = 3;
-  string primary_name = 4;
+  string nas_name = 3 [json_name = "nas_name"];
+  string primary_name = 4 [json_name = "primary_name"];
 
   enum Protocol {
     UNDEFINED = 0;
@@ -64,7 +64,7 @@ message Container {
 message Storage {
   oneof storage {
     Bucket bucket = 1;
-    NASShare nas_share = 2;
+    NASShare nas_share = 2 [json_name = "nas_share"];
     Container container = 3;
   }
 }

@@ -28,9 +28,9 @@ message CopyRequest {
   Type type = 2;
   
   Storage source = 3;
-  string source_path = 4;
+  string source_path = 4 [json_name = "source_path"];
   Storage destination = 5;
-  string destination_path = 6;
+  string destination_path = 6 [json_name = "destination_path"];
 
   NodeInfo info = 7;
 }

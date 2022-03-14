@@ -32,7 +32,7 @@ service Scheduler {
 }
 
 message ScheduleIdRequest {
-  string task_id = 2;
+  string task_id = 2 [json_name = "task_id"];
 }
 
 message Schedule {
@@ -45,7 +45,7 @@ message Schedule {
     DONE = 2;
   }
 
-  string task_id = 2;
+  string task_id = 2 [json_name = "task_id"];
   string rrule = 4;
   google.protobuf.Timestamp next = 5;
   Status status = 6;

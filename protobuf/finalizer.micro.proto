@@ -12,9 +12,9 @@ service Finalizer {
 }
 
 message StartRequest {
-  string general_queue = 1;
-  string requests_queue = 2;
-  string results_queue = 3;
+  string general_queue = 1 [json_name = "general_queue"];
+  string requests_queue = 2 [json_name = "requests_queue"];
+  string results_queue = 3 [json_name = "results_queue"];
 
   Execution execution = 4;
   Storage source = 5;
