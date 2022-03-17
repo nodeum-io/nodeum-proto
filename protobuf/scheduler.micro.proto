@@ -49,6 +49,10 @@ message Schedule {
   string rrule = 4;
   google.protobuf.Timestamp next = 5;
   Status status = 6;
+
+  uint32 missed_count = 7 [json_name = "missed_count"];
+  google.protobuf.Timestamp missed_first = 8 [json_name = "missed_first"];
+  google.protobuf.Timestamp missed_last = 9 [json_name = "missed_last"];
 }
 
 message ReadScheduleResponse {
