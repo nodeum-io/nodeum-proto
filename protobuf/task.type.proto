@@ -3,6 +3,7 @@ syntax = "proto3";
 package nodeum.protobuf;
 
 import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/nodeum-io/nodeum-plugins/protobuf/types/taskpb";
 
@@ -47,10 +48,33 @@ message Task {
 	repeated Source destinations = 6;
 	google.protobuf.Struct options = 7;
 	google.protobuf.Struct metadata = 8;
+
+	Execution last_execution = 15 [json_name = "last_execution"];
 }
 
 message Execution {
+	enum Progress {
+		UNSET = 0;
+		INIT_STARTED = 0x001;
+		INIT_DONE = 0x002;
+		PROCESS_STARTED = 0x004;
+		PROCESS_DONE = 0x008;
+		FINAL_STARTED = 0x010;
+		FINAL_DONE = 0x020;
+		HAS_ERROR = 0x040;
+		STOPPED = 0x080;
+		STOPPED_BY_USER = 0x100;
+		PAUSED = 0x200;
+	}
+
 	string id = 1;
 	Task task = 2;
 	google.protobuf.Struct metadata = 3;
+
+	uint32 progress = 4 [json_name = "progress"];
+	int64 size_done = 5 [json_name = "size_done"];
+	int64 size_todo = 6 [json_name = "size_todo"];
+	int32 nodes_done = 7 [json_name = "nodes_done"];
+	int32 nodes_todo = 8 [json_name = "nodes_todo"];
+	google.protobuf.Timestamp finished_at = 9 [json_name = "finished_at"];
 }
