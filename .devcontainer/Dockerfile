@@ -16,10 +16,8 @@ RUN if [ "${INSTALL_NODE}" = "true" ]; then su vscode -c "umask 0002 && . /usr/l
 RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.19.2/protoc-3.19.2-linux-x86_64.zip \
     && unzip -d /usr/local/ -o protoc-3.19.2-linux-x86_64.zip -x readme.txt
 
-RUN mkdir -p $GOPATH/src/github.com/googleapis/googleapis \
-    && git clone https://github.com/googleapis/googleapis.git --depth 1 $GOPATH/src/github.com/googleapis/googleapis
-
 # [Optional] Uncomment the next line to use go get to install anything else you need
+RUN go install github.com/googleapis/googleapis@v0.0.0-20220408000435-23a2d2961f24
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 RUN go install go-micro.dev/v4/cmd/protoc-gen-micro@v4
