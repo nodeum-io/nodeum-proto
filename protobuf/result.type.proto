@@ -24,6 +24,7 @@ message Result {
 message ProgressResult {
   int64 size_done = 2 [json_name = "size_done"];
   int64 size_todo = 3 [json_name = "size_todo"];
+  double speed = 4;
 }
 
 message CheckInResult {
