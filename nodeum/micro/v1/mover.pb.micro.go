@@ -6,6 +6,7 @@ package microv1
 import (
 	fmt "fmt"
 	_ "github.com/nodeum-io/nodeum-proto/nodeum/common/v1"
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	proto "google.golang.org/protobuf/proto"
 	math "math"
 )
@@ -37,7 +38,10 @@ func NewMoverServiceEndpoints() []*api.Endpoint {
 // Client API for MoverService service
 
 type MoverService interface {
+	// Starts a task execution on the mover
 	Start(ctx context.Context, in *MoverServiceStartRequest, opts ...client.CallOption) (*MoverServiceStartResponse, error)
+	// Executes a single request on the mover
+	Request(ctx context.Context, in *MoverServiceRequestRequest, opts ...client.CallOption) (MoverService_RequestService, error)
 }
 
 type moverService struct {
@@ -62,15 +66,73 @@ func (c *moverService) Start(ctx context.Context, in *MoverServiceStartRequest, 
 	return out, nil
 }
 
+func (c *moverService) Request(ctx context.Context, in *MoverServiceRequestRequest, opts ...client.CallOption) (MoverService_RequestService, error) {
+	req := c.c.NewRequest(c.name, "MoverService.Request", &MoverServiceRequestRequest{})
+	stream, err := c.c.Stream(ctx, req, opts...)
+	if err != nil {
+		return nil, err
+	}
+	if err := stream.Send(in); err != nil {
+		return nil, err
+	}
+	return &moverServiceRequest{stream}, nil
+}
+
+type MoverService_RequestService interface {
+	Context() context.Context
+	SendMsg(interface{}) error
+	RecvMsg(interface{}) error
+	CloseSend() error
+	Close() error
+	Recv() (*MoverServiceRequestResponse, error)
+}
+
+type moverServiceRequest struct {
+	stream client.Stream
+}
+
+func (x *moverServiceRequest) CloseSend() error {
+	return x.stream.CloseSend()
+}
+
+func (x *moverServiceRequest) Close() error {
+	return x.stream.Close()
+}
+
+func (x *moverServiceRequest) Context() context.Context {
+	return x.stream.Context()
+}
+
+func (x *moverServiceRequest) SendMsg(m interface{}) error {
+	return x.stream.Send(m)
+}
+
+func (x *moverServiceRequest) RecvMsg(m interface{}) error {
+	return x.stream.Recv(m)
+}
+
+func (x *moverServiceRequest) Recv() (*MoverServiceRequestResponse, error) {
+	m := new(MoverServiceRequestResponse)
+	err := x.stream.Recv(m)
+	if err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // Server API for MoverService service
 
 type MoverServiceHandler interface {
+	// Starts a task execution on the mover
 	Start(context.Context, *MoverServiceStartRequest, *MoverServiceStartResponse) error
+	// Executes a single request on the mover
+	Request(context.Context, *MoverServiceRequestRequest, MoverService_RequestStream) error
 }
 
 func RegisterMoverServiceHandler(s server.Server, hdlr MoverServiceHandler, opts ...server.HandlerOption) error {
 	type moverService interface {
 		Start(ctx context.Context, in *MoverServiceStartRequest, out *MoverServiceStartResponse) error
+		Request(ctx context.Context, stream server.Stream) error
 	}
 	type MoverService struct {
 		moverService
@@ -85,4 +147,44 @@ type moverServiceHandler struct {
 
 func (h *moverServiceHandler) Start(ctx context.Context, in *MoverServiceStartRequest, out *MoverServiceStartResponse) error {
 	return h.MoverServiceHandler.Start(ctx, in, out)
+}
+
+func (h *moverServiceHandler) Request(ctx context.Context, stream server.Stream) error {
+	m := new(MoverServiceRequestRequest)
+	if err := stream.Recv(m); err != nil {
+		return err
+	}
+	return h.MoverServiceHandler.Request(ctx, m, &moverServiceRequestStream{stream})
+}
+
+type MoverService_RequestStream interface {
+	Context() context.Context
+	SendMsg(interface{}) error
+	RecvMsg(interface{}) error
+	Close() error
+	Send(*MoverServiceRequestResponse) error
+}
+
+type moverServiceRequestStream struct {
+	stream server.Stream
+}
+
+func (x *moverServiceRequestStream) Close() error {
+	return x.stream.Close()
+}
+
+func (x *moverServiceRequestStream) Context() context.Context {
+	return x.stream.Context()
+}
+
+func (x *moverServiceRequestStream) SendMsg(m interface{}) error {
+	return x.stream.Send(m)
+}
+
+func (x *moverServiceRequestStream) RecvMsg(m interface{}) error {
+	return x.stream.Recv(m)
+}
+
+func (x *moverServiceRequestStream) Send(m *MoverServiceRequestResponse) error {
+	return x.stream.Send(m)
 }

@@ -4,11 +4,18 @@ package nodeum.micro.v1;
 
 option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 
+import "google/api/annotations.proto";
+import "nodeum/common/v1/request.proto";
+import "nodeum/common/v1/result.proto";
 import "nodeum/common/v1/storages.proto";
 import "nodeum/common/v1/task.proto";
 
 service MoverService {
+  // Starts a task execution on the mover
   rpc Start(MoverServiceStartRequest) returns (MoverServiceStartResponse);
+
+  // Executes a single request on the mover
+  rpc Request(MoverServiceRequestRequest) returns (stream MoverServiceRequestResponse);
 }
 
 message MoverServiceStartRequest {
@@ -20,3 +27,10 @@ message MoverServiceStartRequest {
 }
 
 message MoverServiceStartResponse {}
+
+message MoverServiceRequestRequest {
+  nodeum.common.v1.Request request = 1;
+}
+message MoverServiceRequestResponse {
+  nodeum.common.v1.Result result = 1;
+}
