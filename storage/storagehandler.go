@@ -28,7 +28,7 @@ type Handler interface {
 	SetNodeInfo(path string, info NodeInfo) (NodeInfo, error)
 
 	Reader(path string) (io.Reader, error)
-	Writer(path string, exclusive bool) (io.Writer, error)
+	Writer(path string, opts ...WriterOption) (io.Writer, error)
 
 	// Finalize is called after each operation
 	Finalize() error
