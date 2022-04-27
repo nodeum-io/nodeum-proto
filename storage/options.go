@@ -3,8 +3,8 @@ package storage
 type WriterOptions struct {
 	// Exclusive will fail the writing if the destination already exists
 	Exclusive bool
-	// Size indicate the total size that is expected to be copied
-	Size int64
+	// NodeInfo indicate metadata that also need to be applied.
+	NodeInfo *NodeInfo
 }
 
 type WriterOption func(o *WriterOptions)
@@ -15,8 +15,8 @@ func WithExclusive(v bool) WriterOption {
 	}
 }
 
-func WithSize(v int64) WriterOption {
+func WithNodeInfo(v *NodeInfo) WriterOption {
 	return func(o *WriterOptions) {
-		o.Size = v
+		o.NodeInfo = v
 	}
 }
