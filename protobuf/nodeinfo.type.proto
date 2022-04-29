@@ -15,4 +15,6 @@ message NodeInfo {
   google.protobuf.Timestamp atime = 6;
   google.protobuf.Timestamp mtime = 7;
   google.protobuf.Timestamp ctime = 8;
+
+  map<string, string> metadata = 9;
 }

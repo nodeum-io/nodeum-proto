@@ -15,4 +15,6 @@ type NodeInfo struct {
 	ATime time.Time
 	MTime time.Time
 	CTime time.Time
+
+	Metadata map[string]string
 }
