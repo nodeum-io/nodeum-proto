@@ -28,6 +28,12 @@ message Source {
 	string storage_name = 17 [json_name = "storage_name"];
 }
 
+message Metadata {
+	map<string, string> files = 1;
+	google.protobuf.Struct task = 2;
+	google.protobuf.Struct trigger = 3;
+}
+
 message Task {
 	enum Type {
 		ACTIVE_ARCHIVE = 0;
@@ -47,7 +53,7 @@ message Task {
 	repeated Source sources = 5;
 	repeated Source destinations = 6;
 	google.protobuf.Struct options = 7;
-	google.protobuf.Struct metadata = 8;
+	Metadata metadata = 8;
 
 	Execution last_execution = 15 [json_name = "last_execution"];
 }
@@ -69,7 +75,7 @@ message Execution {
 
 	string id = 1;
 	Task task = 2;
-	google.protobuf.Struct metadata = 3;
+	Metadata metadata = 3;
 
 	uint32 progress = 4 [json_name = "progress"];
 	int64 size_done = 5 [json_name = "size_done"];
