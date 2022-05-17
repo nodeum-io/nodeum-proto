@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package nodeum.micro.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/micro/v1;microv1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+service SchedulerService {
+  // ReadSchedule returns information about a specific schedule, including date
+  // of next occurrence.
+  rpc ReadSchedule(ReadScheduleRequest) returns (ReadScheduleResponse) {
+    option (google.api.http) = {
+      get: "/schedules/{task_id}";
+    };
+  }
+
+  // ListSchedules returns all actives schedules.
+  rpc ListSchedules(ListSchedulesRequest) returns (ListSchedulesResponse) {
+    option (google.api.http) = {
+      get: "/schedules";
+    };
+  }
+
+  // WriteSchedule creates or update a schedule for a task.
+  // If one schedule already exists for the task, it will be overwritten.
+  rpc WriteSchedule(WriteScheduleRequest) returns (WriteScheduleResponse) {
+    option (google.api.http) = {
+      post: "/schedules";
+      body: "*";
+    };
+  }
+
+  rpc DeleteSchedule(DeleteScheduleRequest) returns (DeleteScheduleResponse) {
+    option (google.api.http) = {
+      delete: "/schedules/{task_id}";
+    };
+  }
+}
+
+message Schedule {
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    // Waiting for the scheduler to find the next schedule
+    STATUS_PENDING = 1;
+    // Next scheduled has been defined
+    STATUS_SCHEDULED = 2;
+    // Schedule is finished, no more occurences
+    STATUS_DONE = 3;
+  }
+
+  string task_id = 2 [json_name = "task_id"];
+  string rrule = 4;
+  google.protobuf.Timestamp next = 5;
+  Status status = 6;
+
+  uint32 missed_count = 7 [json_name = "missed_count"];
+  google.protobuf.Timestamp missed_first = 8 [json_name = "missed_first"];
+  google.protobuf.Timestamp missed_last = 9 [json_name = "missed_last"];
+}
+
+message ReadScheduleRequest {
+  string task_id = 2 [json_name = "task_id"];
+}
+message ReadScheduleResponse {
+  Schedule schedule = 1;
+}
+
+message ListSchedulesRequest {}
+message ListSchedulesResponse {
+  repeated Schedule schedules = 1;
+}
+
+message WriteScheduleRequest {
+  Schedule schedule = 1;
+}
+message WriteScheduleResponse {
+  string msg = 1;
+}
+
+message DeleteScheduleRequest {
+  string task_id = 2 [json_name = "task_id"];
+}
+message DeleteScheduleResponse {
+  string msg = 1;
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package nodeum.micro.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/micro/v1;microv1";
+
+import "nodeum/common/v1/storages.proto";
+import "nodeum/common/v1/task.proto";
+
+service MoverService {
+  rpc Start(MoverServiceStartRequest) returns (MoverServiceStartResponse);
+}
+
+message MoverServiceStartRequest {
+  string general_queue = 1 [json_name = "general_queue"];
+  string requests_queue = 2 [json_name = "requests_queue"];
+  string results_queue = 3 [json_name = "results_queue"];
+
+  nodeum.common.v1.Execution execution = 4;
+  nodeum.common.v1.Storage source = 5;
+  nodeum.common.v1.Storage destination = 6;
+}
+
+message MoverServiceStartResponse {}

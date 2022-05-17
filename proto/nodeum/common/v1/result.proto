@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package nodeum.common.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/common/v1;commonv1";
+
+import "nodeum/common/v1/nodeinfo.proto";
+import "nodeum/common/v1/request.proto";
+import "nodeum/common/v1/storages.proto";
+
+message Result {
+  Request request = 1;
+
+  oneof result {
+    ProgressResult progress = 2;
+    CheckInResult checkin = 3;
+    CheckOutResult checkout = 4;
+    SeenResult seen = 5;
+    OverResult over = 6;
+    FailedResult failed = 7;
+  }
+}
+
+message ProgressResult {
+  int64 size_done = 2 [json_name = "size_done"];
+  int64 size_todo = 3 [json_name = "size_todo"];
+  double speed = 4;
+}
+
+message CheckInResult {
+  Storage storage = 2;
+  NodeInfo info = 3;
+  bool indirect = 4;
+}
+message CheckOutResult {
+  Storage storage = 2;
+  string path = 3;
+}
+
+message SeenResult {
+  Storage storage = 2;
+  NodeInfo info = 3;
+}
+message OverResult {}
+
+message FailedResult {
+  Storage storage = 2;
+  string path = 3;
+
+  enum ErrorType {
+    ERROR_TYPE_UNSPECIFIED = 0;
+    ERROR_TYPE_UNKNOWN = 1;
+    ERROR_TYPE_NOT_EXIST = 2;
+    ERROR_TYPE_NOT_DIR = 3;
+    ERROR_TYPE_PERMISSION = 4;
+    ERROR_TYPE_EXIST = 5;
+    ERROR_TYPE_NOT_EMPTY = 6;
+    ERROR_TYPE_TIMEOUT = 7;
+  }
+  ErrorType error = 4;
+  string error_str = 5 [json_name = "error_str"];
+}

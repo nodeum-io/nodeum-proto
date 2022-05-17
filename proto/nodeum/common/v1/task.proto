@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package nodeum.common.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/common/v1;commonv1";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+message Source {
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    TYPE_CONTAINER = 1;
+    TYPE_PRIMARY_NAS = 2;
+    TYPE_SECONDARY_NAS = 3;
+    TYPE_PRIMARY_CLOUD = 4;
+    TYPE_SECONDARY_CLOUD = 5;
+    TYPE_PRIMARY_TAPE = 6;
+    TYPE_SECONDARY_TAPE = 7;
+  }
+
+  Type type = 1;
+  repeated string node_paths = 2 [json_name = "node_paths"];
+  repeated string node_ids = 3 [json_name = "node_ids"];
+  uint64 pool_id = 4 [json_name = "pool_id"];
+  uint64 storage_id = 5 [json_name = "storage_id"];
+
+  uint64 parent_storage_id = 16 [json_name = "parent_storage_id"];
+  string storage_name = 17 [json_name = "storage_name"];
+}
+
+message Metadata {
+  map<string, string> files = 1;
+  google.protobuf.Struct task = 2;
+  google.protobuf.Struct trigger = 3;
+}
+
+message Task {
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    TYPE_ACTIVE_ARCHIVE = 1;
+    TYPE_OFFLINE_ARCHIVE = 2;
+    TYPE_DATA_EXCHANGE = 3;
+    TYPE_DATA_MIGRATION = 6;
+  }
+  enum Action {
+    ACTION_UNSPECIFIED = 0;
+    ACTION_COPY = 1;
+    ACTION_MOVE = 2;
+  }
+
+  string id = 1;
+  string name = 2;
+  Type type = 3;
+  Action action = 4;
+  repeated Source sources = 5;
+  repeated Source destinations = 6;
+  google.protobuf.Struct options = 7;
+  Metadata metadata = 8;
+
+  Execution last_execution = 15 [json_name = "last_execution"];
+}
+
+message Execution {
+  enum Progress {
+    PROGRESS_UNSPECIFIED = 0;
+    PROGRESS_INIT_STARTED = 1;
+    PROGRESS_INIT_DONE = 2;
+    PROGRESS_PROCESS_STARTED = 4;
+    PROGRESS_PROCESS_DONE = 8;
+    PROGRESS_FINAL_STARTED = 16;
+    PROGRESS_FINAL_DONE = 32;
+    PROGRESS_HAS_ERROR = 64;
+    PROGRESS_STOPPED = 128;
+    PROGRESS_STOPPED_BY_USER = 256;
+    PROGRESS_PAUSED = 512;
+  }
+
+  string id = 1;
+  Task task = 2;
+  Metadata metadata = 3;
+
+  uint32 progress = 4 [json_name = "progress"];
+  int64 size_done = 5 [json_name = "size_done"];
+  int64 size_todo = 6 [json_name = "size_todo"];
+  int32 nodes_done = 7 [json_name = "nodes_done"];
+  int32 nodes_todo = 8 [json_name = "nodes_todo"];
+  google.protobuf.Timestamp finished_at = 9 [json_name = "finished_at"];
+}
