@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package nodeum.common.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/common/v1;commonv1";
+
+message Bucket {
+  uint64 id = 1;
+  string name = 2;
+  string connector_name = 3 [json_name = "connector_name"];
+  string primary_name = 4 [json_name = "primary_name"];
+
+  enum Provider {
+    PROVIDER_UNSPECIFIED = 0;
+    PROVIDER_GENERIC_S3 = 1;
+    PROVIDER_AMAZON_AWS_S3 = 2;
+    PROVIDER_CLOUDIAN_HYPERSTORE = 3;
+    PROVIDER_SCALITY_RING = 4;
+    PROVIDER_DELL_EMC_ECS = 5;
+    PROVIDER_AZURE = 6;
+    PROVIDER_GOOGLE_CLOUD_STORAGE = 7;
+    PROVIDER_OPENSTACK_SWIFT = 8;
+    PROVIDER_WASABI = 9;
+    PROVIDER_QUANTUM_ACTIVE_SCALE = 10;
+  }
+
+  string url = 16;
+  Provider provider = 17;
+  string region = 18;
+  string access_key = 19 [json_name = "access_key"];
+  string secret_key = 20 [json_name = "secret_key"];
+  string options = 21;
+}
+
+message NASShare {
+  uint64 id = 1;
+  string name = 2;
+  string nas_name = 3 [json_name = "nas_name"];
+  string primary_name = 4 [json_name = "primary_name"];
+
+  enum Protocol {
+    PROTOCOL_UNSPECIFIED = 0;
+    PROTOCOL_SMB_V1 = 1;
+    PROTOCOL_NFS_V3 = 2;
+    PROTOCOL_STORE_NEXT_V5 = 3;
+    PROTOCOL_NFS_V4 = 4;
+    PROTOCOL_SMB_V2_1 = 5;
+    PROTOCOL_SMB_V3 = 6;
+  }
+
+  Protocol protocol = 16;
+  string host = 17;
+  string path = 18;
+  string username = 19;
+  string password = 20;
+  string options = 21;
+}
+
+message Container {
+  uint64 id = 1;
+  string name = 2;
+}
+
+message Storage {
+  oneof storage {
+    Bucket bucket = 1;
+    NASShare nas_share = 2 [json_name = "nas_share"];
+    Container container = 3;
+  }
+}

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package nodeum.plugins.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/plugins/v1;pluginsv1";
+
+import "google/protobuf/struct.proto";
+import "nodeum/common/v1/request.proto";
+import "nodeum/common/v1/task.proto";
+
+service DispatcherPluginService {
+  // Before the task is started, you can change the task and/or the trigger metadata
+  rpc OnStartNewTask(OnStartNewTaskRequest) returns (OnStartNewTaskResponse);
+  // Before a request is dispatched, you can change it or discard it
+  rpc OnNewRequest(OnNewRequestRequest) returns (OnNewRequestResponse);
+}
+
+message OnStartNewTaskRequest {
+  nodeum.common.v1.Task task = 1;
+  google.protobuf.Struct metadata = 3;
+}
+message OnStartNewTaskResponse {
+  nodeum.common.v1.Task task = 1;
+  google.protobuf.Struct metadata = 3;
+}
+
+message OnNewRequestRequest {
+  nodeum.common.v1.Execution execution = 1;
+  nodeum.common.v1.Request request = 2;
+}
+message OnNewRequestResponse {
+  nodeum.common.v1.Request request = 2;
+  bool discard = 3;
+}

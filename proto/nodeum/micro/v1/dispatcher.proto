@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package nodeum.micro.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/micro/v1;microv1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+import "nodeum/common/v1/task.proto";
+
+service DispatcherService {
+  rpc Start(DispatcherServiceStartRequest) returns (DispatcherServiceStartResponse) {
+    option (google.api.http) = {
+      post: "/task/start";
+      body: "*";
+    };
+  }
+  rpc Pause(DispatcherServicePauseRequest) returns (DispatcherServicePauseResponse) {
+    option (google.api.http) = {
+      post: "/task/pause/{id}";
+    };
+  }
+  rpc Resume(DispatcherServiceResumeRequest) returns (DispatcherServiceResumeResponse) {
+    option (google.api.http) = {
+      post: "/task/resume/{id}";
+    };
+  }
+  rpc Stop(DispatcherServiceStopRequest) returns (DispatcherServiceStopResponse) {
+    option (google.api.http) = {
+      post: "/task/stop/{id}";
+    };
+  }
+}
+
+message DispatcherServiceStartRequest {
+  oneof source {
+    nodeum.common.v1.Task task = 1;
+    string task_id = 2 [json_name = "task_id"];
+  }
+  google.protobuf.Struct metadata = 3;
+}
+
+message DispatcherServiceStartResponse {
+  string msg = 1;
+  nodeum.common.v1.Execution execution = 2;
+}
+
+message DispatcherServicePauseRequest {
+  string id = 1;
+}
+message DispatcherServicePauseResponse {
+  string msg = 1;
+}
+
+message DispatcherServiceResumeRequest {
+  string id = 1;
+}
+message DispatcherServiceResumeResponse {
+  string msg = 1;
+}
+
+message DispatcherServiceStopRequest {
+  string id = 1;
+}
+message DispatcherServiceStopResponse {
+  string msg = 1;
+}
