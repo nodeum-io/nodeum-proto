@@ -72,7 +72,7 @@ message Task {
   repeated Source destinations = 6;
   google.protobuf.Struct options = 7;
   Metadata metadata = 8;
-  Callback callbacks = 9;
+  repeated Callback callbacks = 9;
 
   Execution last_execution = 15 [json_name = "last_execution"];
 }
