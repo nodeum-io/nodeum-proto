@@ -40,7 +40,7 @@ type Bucket struct {
 	Region    string
 	AccessKey string
 	SecretKey string
-	Options   string
+	Options   []string
 }
 
 func (b Bucket) ID() interface{} {

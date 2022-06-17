@@ -55,7 +55,7 @@ type NASShare struct {
 	Path     string
 	Username string
 	Password string
-	Options  string
+	Options  []string
 }
 
 func (b NASShare) ID() interface{} {
