@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package nodeum.plugins.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/plugins/v1;pluginsv1";
+
+import "nodeum/common/v1/result.proto";
+import "nodeum/common/v1/task.proto";
+
+service FinalizerPluginService {
+  // After a result has been received and before it's being handled by finalizer.
+  // Progress results are excluded.
+  rpc AfterResultReceived(AfterResultReceivedRequest) returns (AfterResultReceivedResponse);
+  // After the task has been executed
+  rpc AfterTaskExecuted(AfterTaskExecutedRequest) returns (AfterTaskExecutedResponse);
+}
+
+
+message AfterResultReceivedRequest {
+  nodeum.common.v1.Execution execution = 1;
+  nodeum.common.v1.Result result = 2;
+}
+message AfterResultReceivedResponse {
+}
+
+message AfterTaskExecutedRequest {
+  nodeum.common.v1.Execution execution = 1;
+}
+message AfterTaskExecutedResponse {
+}
