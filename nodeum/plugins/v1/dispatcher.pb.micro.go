@@ -39,9 +39,9 @@ func NewDispatcherPluginServiceEndpoints() []*api.Endpoint {
 
 type DispatcherPluginService interface {
 	// Before the task is started, you can change the task and/or the trigger metadata
-	OnStartNewTask(ctx context.Context, in *OnStartNewTaskRequest, opts ...client.CallOption) (*OnStartNewTaskResponse, error)
+	BeforeTaskExecuted(ctx context.Context, in *BeforeTaskExecutedRequest, opts ...client.CallOption) (*BeforeTaskExecutedResponse, error)
 	// Before a request is dispatched, you can change it or discard it
-	OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...client.CallOption) (*OnNewRequestResponse, error)
+	BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, opts ...client.CallOption) (*BeforeRequestDispatchedResponse, error)
 }
 
 type dispatcherPluginService struct {
@@ -56,9 +56,9 @@ func NewDispatcherPluginService(name string, c client.Client) DispatcherPluginSe
 	}
 }
 
-func (c *dispatcherPluginService) OnStartNewTask(ctx context.Context, in *OnStartNewTaskRequest, opts ...client.CallOption) (*OnStartNewTaskResponse, error) {
-	req := c.c.NewRequest(c.name, "DispatcherPluginService.OnStartNewTask", in)
-	out := new(OnStartNewTaskResponse)
+func (c *dispatcherPluginService) BeforeTaskExecuted(ctx context.Context, in *BeforeTaskExecutedRequest, opts ...client.CallOption) (*BeforeTaskExecutedResponse, error) {
+	req := c.c.NewRequest(c.name, "DispatcherPluginService.BeforeTaskExecuted", in)
+	out := new(BeforeTaskExecutedResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -66,9 +66,9 @@ func (c *dispatcherPluginService) OnStartNewTask(ctx context.Context, in *OnStar
 	return out, nil
 }
 
-func (c *dispatcherPluginService) OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...client.CallOption) (*OnNewRequestResponse, error) {
-	req := c.c.NewRequest(c.name, "DispatcherPluginService.OnNewRequest", in)
-	out := new(OnNewRequestResponse)
+func (c *dispatcherPluginService) BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, opts ...client.CallOption) (*BeforeRequestDispatchedResponse, error) {
+	req := c.c.NewRequest(c.name, "DispatcherPluginService.BeforeRequestDispatched", in)
+	out := new(BeforeRequestDispatchedResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -80,15 +80,15 @@ func (c *dispatcherPluginService) OnNewRequest(ctx context.Context, in *OnNewReq
 
 type DispatcherPluginServiceHandler interface {
 	// Before the task is started, you can change the task and/or the trigger metadata
-	OnStartNewTask(context.Context, *OnStartNewTaskRequest, *OnStartNewTaskResponse) error
+	BeforeTaskExecuted(context.Context, *BeforeTaskExecutedRequest, *BeforeTaskExecutedResponse) error
 	// Before a request is dispatched, you can change it or discard it
-	OnNewRequest(context.Context, *OnNewRequestRequest, *OnNewRequestResponse) error
+	BeforeRequestDispatched(context.Context, *BeforeRequestDispatchedRequest, *BeforeRequestDispatchedResponse) error
 }
 
 func RegisterDispatcherPluginServiceHandler(s server.Server, hdlr DispatcherPluginServiceHandler, opts ...server.HandlerOption) error {
 	type dispatcherPluginService interface {
-		OnStartNewTask(ctx context.Context, in *OnStartNewTaskRequest, out *OnStartNewTaskResponse) error
-		OnNewRequest(ctx context.Context, in *OnNewRequestRequest, out *OnNewRequestResponse) error
+		BeforeTaskExecuted(ctx context.Context, in *BeforeTaskExecutedRequest, out *BeforeTaskExecutedResponse) error
+		BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, out *BeforeRequestDispatchedResponse) error
 	}
 	type DispatcherPluginService struct {
 		dispatcherPluginService
@@ -101,10 +101,10 @@ type dispatcherPluginServiceHandler struct {
 	DispatcherPluginServiceHandler
 }
 
-func (h *dispatcherPluginServiceHandler) OnStartNewTask(ctx context.Context, in *OnStartNewTaskRequest, out *OnStartNewTaskResponse) error {
-	return h.DispatcherPluginServiceHandler.OnStartNewTask(ctx, in, out)
+func (h *dispatcherPluginServiceHandler) BeforeTaskExecuted(ctx context.Context, in *BeforeTaskExecutedRequest, out *BeforeTaskExecutedResponse) error {
+	return h.DispatcherPluginServiceHandler.BeforeTaskExecuted(ctx, in, out)
 }
 
-func (h *dispatcherPluginServiceHandler) OnNewRequest(ctx context.Context, in *OnNewRequestRequest, out *OnNewRequestResponse) error {
-	return h.DispatcherPluginServiceHandler.OnNewRequest(ctx, in, out)
+func (h *dispatcherPluginServiceHandler) BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, out *BeforeRequestDispatchedResponse) error {
+	return h.DispatcherPluginServiceHandler.BeforeRequestDispatched(ctx, in, out)
 }

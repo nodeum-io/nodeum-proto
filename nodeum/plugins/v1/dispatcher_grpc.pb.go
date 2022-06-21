@@ -23,9 +23,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DispatcherPluginServiceClient interface {
 	// Before the task is started, you can change the task and/or the trigger metadata
-	OnStartNewTask(ctx context.Context, in *OnStartNewTaskRequest, opts ...grpc.CallOption) (*OnStartNewTaskResponse, error)
+	BeforeTaskExecuted(ctx context.Context, in *BeforeTaskExecutedRequest, opts ...grpc.CallOption) (*BeforeTaskExecutedResponse, error)
 	// Before a request is dispatched, you can change it or discard it
-	OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...grpc.CallOption) (*OnNewRequestResponse, error)
+	BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, opts ...grpc.CallOption) (*BeforeRequestDispatchedResponse, error)
 }
 
 type dispatcherPluginServiceClient struct {
@@ -36,18 +36,18 @@ func NewDispatcherPluginServiceClient(cc grpc.ClientConnInterface) DispatcherPlu
 	return &dispatcherPluginServiceClient{cc}
 }
 
-func (c *dispatcherPluginServiceClient) OnStartNewTask(ctx context.Context, in *OnStartNewTaskRequest, opts ...grpc.CallOption) (*OnStartNewTaskResponse, error) {
-	out := new(OnStartNewTaskResponse)
-	err := c.cc.Invoke(ctx, "/nodeum.plugins.v1.DispatcherPluginService/OnStartNewTask", in, out, opts...)
+func (c *dispatcherPluginServiceClient) BeforeTaskExecuted(ctx context.Context, in *BeforeTaskExecutedRequest, opts ...grpc.CallOption) (*BeforeTaskExecutedResponse, error) {
+	out := new(BeforeTaskExecutedResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.plugins.v1.DispatcherPluginService/BeforeTaskExecuted", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *dispatcherPluginServiceClient) OnNewRequest(ctx context.Context, in *OnNewRequestRequest, opts ...grpc.CallOption) (*OnNewRequestResponse, error) {
-	out := new(OnNewRequestResponse)
-	err := c.cc.Invoke(ctx, "/nodeum.plugins.v1.DispatcherPluginService/OnNewRequest", in, out, opts...)
+func (c *dispatcherPluginServiceClient) BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, opts ...grpc.CallOption) (*BeforeRequestDispatchedResponse, error) {
+	out := new(BeforeRequestDispatchedResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.plugins.v1.DispatcherPluginService/BeforeRequestDispatched", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -59,9 +59,9 @@ func (c *dispatcherPluginServiceClient) OnNewRequest(ctx context.Context, in *On
 // for forward compatibility
 type DispatcherPluginServiceServer interface {
 	// Before the task is started, you can change the task and/or the trigger metadata
-	OnStartNewTask(context.Context, *OnStartNewTaskRequest) (*OnStartNewTaskResponse, error)
+	BeforeTaskExecuted(context.Context, *BeforeTaskExecutedRequest) (*BeforeTaskExecutedResponse, error)
 	// Before a request is dispatched, you can change it or discard it
-	OnNewRequest(context.Context, *OnNewRequestRequest) (*OnNewRequestResponse, error)
+	BeforeRequestDispatched(context.Context, *BeforeRequestDispatchedRequest) (*BeforeRequestDispatchedResponse, error)
 	mustEmbedUnimplementedDispatcherPluginServiceServer()
 }
 
@@ -69,11 +69,11 @@ type DispatcherPluginServiceServer interface {
 type UnimplementedDispatcherPluginServiceServer struct {
 }
 
-func (UnimplementedDispatcherPluginServiceServer) OnStartNewTask(context.Context, *OnStartNewTaskRequest) (*OnStartNewTaskResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OnStartNewTask not implemented")
+func (UnimplementedDispatcherPluginServiceServer) BeforeTaskExecuted(context.Context, *BeforeTaskExecutedRequest) (*BeforeTaskExecutedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BeforeTaskExecuted not implemented")
 }
-func (UnimplementedDispatcherPluginServiceServer) OnNewRequest(context.Context, *OnNewRequestRequest) (*OnNewRequestResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method OnNewRequest not implemented")
+func (UnimplementedDispatcherPluginServiceServer) BeforeRequestDispatched(context.Context, *BeforeRequestDispatchedRequest) (*BeforeRequestDispatchedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BeforeRequestDispatched not implemented")
 }
 func (UnimplementedDispatcherPluginServiceServer) mustEmbedUnimplementedDispatcherPluginServiceServer() {
 }
@@ -89,38 +89,38 @@ func RegisterDispatcherPluginServiceServer(s grpc.ServiceRegistrar, srv Dispatch
 	s.RegisterService(&DispatcherPluginService_ServiceDesc, srv)
 }
 
-func _DispatcherPluginService_OnStartNewTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OnStartNewTaskRequest)
+func _DispatcherPluginService_BeforeTaskExecuted_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BeforeTaskExecutedRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DispatcherPluginServiceServer).OnStartNewTask(ctx, in)
+		return srv.(DispatcherPluginServiceServer).BeforeTaskExecuted(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nodeum.plugins.v1.DispatcherPluginService/OnStartNewTask",
+		FullMethod: "/nodeum.plugins.v1.DispatcherPluginService/BeforeTaskExecuted",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DispatcherPluginServiceServer).OnStartNewTask(ctx, req.(*OnStartNewTaskRequest))
+		return srv.(DispatcherPluginServiceServer).BeforeTaskExecuted(ctx, req.(*BeforeTaskExecutedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _DispatcherPluginService_OnNewRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(OnNewRequestRequest)
+func _DispatcherPluginService_BeforeRequestDispatched_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BeforeRequestDispatchedRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DispatcherPluginServiceServer).OnNewRequest(ctx, in)
+		return srv.(DispatcherPluginServiceServer).BeforeRequestDispatched(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/nodeum.plugins.v1.DispatcherPluginService/OnNewRequest",
+		FullMethod: "/nodeum.plugins.v1.DispatcherPluginService/BeforeRequestDispatched",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DispatcherPluginServiceServer).OnNewRequest(ctx, req.(*OnNewRequestRequest))
+		return srv.(DispatcherPluginServiceServer).BeforeRequestDispatched(ctx, req.(*BeforeRequestDispatchedRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -133,12 +133,12 @@ var DispatcherPluginService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*DispatcherPluginServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "OnStartNewTask",
-			Handler:    _DispatcherPluginService_OnStartNewTask_Handler,
+			MethodName: "BeforeTaskExecuted",
+			Handler:    _DispatcherPluginService_BeforeTaskExecuted_Handler,
 		},
 		{
-			MethodName: "OnNewRequest",
-			Handler:    _DispatcherPluginService_OnNewRequest_Handler,
+			MethodName: "BeforeRequestDispatched",
+			Handler:    _DispatcherPluginService_BeforeRequestDispatched_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
