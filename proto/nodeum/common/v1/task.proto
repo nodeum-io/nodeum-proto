@@ -33,6 +33,9 @@ message Callback {
   enum Type {
     TYPE_UNSPECIFIED = 0;
     TYPE_FILTER = 1;
+    TYPE_AFTER_RESULT_RECEIVED = 2;
+    TYPE_BEFORE_TASK_EXECUTED = 3;
+    TYPE_AFTER_TASK_EXECUTED = 4;
   }
   enum Language {
     LANGUAGE_UNSPECIFIED = 0;
