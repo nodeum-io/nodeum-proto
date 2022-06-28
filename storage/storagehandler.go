@@ -1,6 +1,9 @@
 package storage
 
-import "io"
+import (
+	"context"
+	"io"
+)
 
 type HandlerOptions map[string]interface{}
 
@@ -8,9 +11,9 @@ type ReaddirFunc func(info NodeInfo)
 
 type Handler interface {
 	// Prepare is called when the Handler is needed for the first time
-	Prepare() error
+	Prepare(ctx context.Context) error
 	// Dispose is called when the Handler is not needed anymore
-	Dispose() error
+	Dispose(ctx context.Context) error
 
 	// Storage returns the storage sets with `NewStorageHandler`
 	Storage() Storage
@@ -18,27 +21,27 @@ type Handler interface {
 	Options() HandlerOptions
 
 	// Remove removes a node
-	Remove(path string) error
+	Remove(ctx context.Context, path string) error
 	// Readdir iterates on every node inside the folder
-	Readdir(path string, readdirFn ReaddirFunc) error
+	Readdir(ctx context.Context, path string, readdirFn ReaddirFunc) error
 
 	// NodeInfo returns information for the node located at `path`
-	NodeInfo(path string) (NodeInfo, error)
+	NodeInfo(ctx context.Context, path string) (NodeInfo, error)
 	// SetNodeInfo sets info like FileMode, UID, GID and times. Returns info effectively set.
-	SetNodeInfo(path string, info NodeInfo) (NodeInfo, error)
+	SetNodeInfo(ctx context.Context, path string, info NodeInfo) (NodeInfo, error)
 
-	Reader(path string) (io.Reader, error)
-	Writer(path string, opts ...WriterOption) (io.Writer, error)
+	Reader(ctx context.Context, path string) (io.Reader, error)
+	Writer(ctx context.Context, path string, opts ...WriterOption) (io.Writer, error)
 
 	// Finalize is called after each operation
-	Finalize() error
+	Finalize(ctx context.Context) error
 }
 
 // DirCreator is an optional interface allowing folder creation
 type DirCreator interface {
 	// Mkdir creates a directory at `path`. Also create parents if missing.
 	// Returns infos about all folders created, with the last item being `path`.
-	Mkdir(path string) ([]NodeInfo, error)
+	Mkdir(ctx context.Context, path string) ([]NodeInfo, error)
 }
 
 type HandlerProvider interface {
