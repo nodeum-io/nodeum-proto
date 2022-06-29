@@ -12,9 +12,7 @@ service FinalizerService {
 }
 
 message FinalizerServiceStartRequest {
-  string general_queue = 1 [json_name = "general_queue"];
-  string requests_queue = 2 [json_name = "requests_queue"];
-  string results_queue = 3 [json_name = "results_queue"];
+  string workflow_id = 1 [json_name = "workflow_id"];
 
   nodeum.common.v1.Execution execution = 4;
   nodeum.common.v1.Storage source = 5;
