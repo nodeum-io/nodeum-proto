@@ -40,6 +40,7 @@ message Callback {
   enum Language {
     LANGUAGE_UNSPECIFIED = 0;
     LANGUAGE_JAVASCRIPT = 1;
+    LANGUAGE_PYTHON = 2;
   }
 
   Type type = 1;
