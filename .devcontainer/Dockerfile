@@ -20,7 +20,7 @@ RUN wget https://github.com/protocolbuffers/protobuf/releases/download/v3.19.2/p
 RUN go install github.com/googleapis/googleapis@v0.0.0-20220408000435-23a2d2961f24
 RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 RUN go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-RUN go install go-micro.dev/v4/cmd/protoc-gen-micro@v4
+RUN go install github.com/go-micro/generator/cmd/protoc-gen-micro@latest
 
 # [Optional] Uncomment this line to install global node packages.
 # RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1

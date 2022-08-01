@@ -38,28 +38,24 @@ func NewDispatcherServiceEndpoints() []*api.Endpoint {
 			Name:    "DispatcherService.Start",
 			Path:    []string{"/task/start"},
 			Method:  []string{"POST"},
-			Body:    "*",
 			Handler: "rpc",
 		},
 		{
 			Name:    "DispatcherService.Pause",
 			Path:    []string{"/task/pause/{id}"},
 			Method:  []string{"POST"},
-			Body:    "",
 			Handler: "rpc",
 		},
 		{
 			Name:    "DispatcherService.Resume",
 			Path:    []string{"/task/resume/{id}"},
 			Method:  []string{"POST"},
-			Body:    "",
 			Handler: "rpc",
 		},
 		{
 			Name:    "DispatcherService.Stop",
 			Path:    []string{"/task/stop/{id}"},
 			Method:  []string{"POST"},
-			Body:    "",
 			Handler: "rpc",
 		},
 	}
@@ -150,28 +146,24 @@ func RegisterDispatcherServiceHandler(s server.Server, hdlr DispatcherServiceHan
 		Name:    "DispatcherService.Start",
 		Path:    []string{"/task/start"},
 		Method:  []string{"POST"},
-		Body:    "*",
 		Handler: "rpc",
 	}))
 	opts = append(opts, api.WithEndpoint(&api.Endpoint{
 		Name:    "DispatcherService.Pause",
 		Path:    []string{"/task/pause/{id}"},
 		Method:  []string{"POST"},
-		Body:    "",
 		Handler: "rpc",
 	}))
 	opts = append(opts, api.WithEndpoint(&api.Endpoint{
 		Name:    "DispatcherService.Resume",
 		Path:    []string{"/task/resume/{id}"},
 		Method:  []string{"POST"},
-		Body:    "",
 		Handler: "rpc",
 	}))
 	opts = append(opts, api.WithEndpoint(&api.Endpoint{
 		Name:    "DispatcherService.Stop",
 		Path:    []string{"/task/stop/{id}"},
 		Method:  []string{"POST"},
-		Body:    "",
 		Handler: "rpc",
 	}))
 	return s.Handle(s.NewHandler(&DispatcherService{h}, opts...))

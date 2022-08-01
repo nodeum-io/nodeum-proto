@@ -49,14 +49,12 @@ func NewSchedulerServiceEndpoints() []*api.Endpoint {
 			Name:    "SchedulerService.WriteSchedule",
 			Path:    []string{"/schedules"},
 			Method:  []string{"POST"},
-			Body:    "*",
 			Handler: "rpc",
 		},
 		{
 			Name:    "SchedulerService.DeleteSchedule",
 			Path:    []string{"/schedules/{task_id}"},
 			Method:  []string{"DELETE"},
-			Body:    "",
 			Handler: "rpc",
 		},
 	}
@@ -169,14 +167,12 @@ func RegisterSchedulerServiceHandler(s server.Server, hdlr SchedulerServiceHandl
 		Name:    "SchedulerService.WriteSchedule",
 		Path:    []string{"/schedules"},
 		Method:  []string{"POST"},
-		Body:    "*",
 		Handler: "rpc",
 	}))
 	opts = append(opts, api.WithEndpoint(&api.Endpoint{
 		Name:    "SchedulerService.DeleteSchedule",
 		Path:    []string{"/schedules/{task_id}"},
 		Method:  []string{"DELETE"},
-		Body:    "",
 		Handler: "rpc",
 	}))
 	return s.Handle(s.NewHandler(&SchedulerService{h}, opts...))

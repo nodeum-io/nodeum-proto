@@ -18,7 +18,7 @@ Install these required golang modules:
 ```
 go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-go install go-micro.dev/v4/cmd/protoc-gen-micro@v4
+go install github.com/go-micro/generator/cmd/protoc-gen-micro@latest
 ```
 
 Generate with `buf generate`. Publish with `buf push`.
