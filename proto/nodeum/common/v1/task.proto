@@ -17,6 +17,9 @@ message Source {
     TYPE_SECONDARY_CLOUD = 5;
     TYPE_PRIMARY_TAPE = 6;
     TYPE_SECONDARY_TAPE = 7;
+    TYPE_NAS = 8;
+    TYPE_CLOUD = 9;
+    TYPE_TAPE = 10;
   }
 
   Type type = 1;
