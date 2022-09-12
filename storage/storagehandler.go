@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"io"
+	"time"
 )
 
 type HandlerOptions map[string]interface{}
@@ -35,6 +36,12 @@ type Handler interface {
 
 	// Finalize is called after each operation
 	Finalize(ctx context.Context) error
+}
+
+type Expirable interface {
+	// Expires returns the expiration date.
+	// Return zero time if it doesn't expires.
+	Expires() time.Time
 }
 
 // DirCreator is an optional interface allowing folder creation
