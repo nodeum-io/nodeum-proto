@@ -81,6 +81,10 @@ message Task {
   Metadata metadata = 8;
   repeated Callback callbacks = 9;
 
+  google.protobuf.Timestamp updated_at = 12 [json_name = "updated_at"];
+  string created_by = 13 [json_name = "created_by"];
+  string updated_by = 14 [json_name = "updated_by"];
+
   Execution last_execution = 15 [json_name = "last_execution"];
 }
 
