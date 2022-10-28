@@ -36,13 +36,17 @@ message DispatcherServiceStartRequest {
   oneof source {
     nodeum.common.v1.Task task = 1;
     string task_id = 2 [json_name = "task_id"];
+    string defer_id = 4 [json_name = "defer_id"];
   }
   google.protobuf.Struct metadata = 3;
+  bool defer = 5;
 }
-
 message DispatcherServiceStartResponse {
   string msg = 1;
-  nodeum.common.v1.Execution execution = 2;
+  oneof result {
+    nodeum.common.v1.Execution execution = 2;
+    string defer_id = 3;
+  }
 }
 
 message DispatcherServicePauseRequest {
