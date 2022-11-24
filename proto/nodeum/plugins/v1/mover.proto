@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package nodeum.plugins.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/plugins/v1;pluginsv1";
+
+import "nodeum/common/v1/storages.proto";
+import "nodeum/common/v1/task.proto";
+
+service MoverPluginService {
+  // Before the storage (source or destination) is reserved and initialized
+  rpc BeforeStorageBooked(BeforeStorageBookedRequest) returns (BeforeStorageBookedResponse);
+}
+
+message BeforeStorageBookedRequest {
+  nodeum.common.v1.Storage storage = 1;
+
+  string workflow_id = 2 [json_name = "workflow_id"];
+  nodeum.common.v1.Execution execution = 3;
+}
+message BeforeStorageBookedResponse {
+  nodeum.common.v1.Storage storage = 1;
+}
