@@ -1,5 +1,5 @@
 version: v1
-name: buf.build/nodeum/nodeum-proto
+name: buf.build/nodeum/nodeum-plugins
 deps:
   - buf.build/googleapis/googleapis
 breaking:
