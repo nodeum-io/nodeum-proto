@@ -1,4 +1,4 @@
-module github.com/nodeum-io/nodeum-plugins
+module github.com/nodeum-io/nodeum-proto
 
 go 1.18
 

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package nodeum.plugins.v1;
 
-option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/plugins/v1;pluginsv1";
+option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/plugins/v1;pluginsv1";
 
 import "nodeum/common/v1/result.proto";
 import "nodeum/common/v1/task.proto";

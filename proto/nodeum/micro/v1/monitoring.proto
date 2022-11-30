@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package nodeum.micro.v1;
 
-option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/micro/v1;microv1";
+option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 
 import "google/api/annotations.proto";
 

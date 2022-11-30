@@ -5,7 +5,7 @@ package pluginsv1
 
 import (
 	fmt "fmt"
-	_ "github.com/nodeum-io/nodeum-plugins/nodeum/common/v1"
+	_ "github.com/nodeum-io/nodeum-proto/nodeum/common/v1"
 	proto "google.golang.org/protobuf/proto"
 	math "math"
 )

@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package nodeum.common.v1;
 
-option go_package = "github.com/nodeum-io/nodeum-plugins/nodeum/common/v1;commonv1";
+option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/common/v1;commonv1";
 
 message Bucket {
   uint64 id = 1;
