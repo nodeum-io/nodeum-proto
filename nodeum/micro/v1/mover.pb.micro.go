@@ -6,7 +6,6 @@ package microv1
 import (
 	fmt "fmt"
 	_ "github.com/nodeum-io/nodeum-proto/nodeum/common/v1"
-	_ "google.golang.org/genproto/googleapis/api/annotations"
 	proto "google.golang.org/protobuf/proto"
 	math "math"
 )

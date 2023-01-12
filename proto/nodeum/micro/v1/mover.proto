@@ -4,7 +4,6 @@ package nodeum.micro.v1;
 
 option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 
-import "google/api/annotations.proto";
 import "nodeum/common/v1/request.proto";
 import "nodeum/common/v1/result.proto";
 import "nodeum/common/v1/storages.proto";
