@@ -5,6 +5,7 @@ package nodeum.micro.v1;
 option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 
 service SchedulerService {
@@ -52,12 +53,23 @@ message TaskSchedule {
 
   string task_id = 2 [json_name = "task_id"];
   string rrule = 4;
-  google.protobuf.Timestamp next = 5;
+  google.protobuf.Timestamp next = 5 [
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
   Status status = 6;
 
-  uint32 missed_count = 7 [json_name = "missed_count"];
-  google.protobuf.Timestamp missed_first = 8 [json_name = "missed_first"];
-  google.protobuf.Timestamp missed_last = 9 [json_name = "missed_last"];
+  uint32 missed_count = 7 [
+    json_name = "missed_count",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  google.protobuf.Timestamp missed_first = 8 [
+    json_name = "missed_first",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  google.protobuf.Timestamp missed_last = 9 [
+    json_name = "missed_last",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
 }
 
 message ReadScheduleRequest {
