@@ -19,6 +19,7 @@ service LicenseService {
 	rpc UpdateLicense(UpdateLicenseRequest) returns (UpdateLicenseResponse) {
 		option (google.api.http) = {
 			put: "/license";
+			body: "*";
 		};
 	}
 }
