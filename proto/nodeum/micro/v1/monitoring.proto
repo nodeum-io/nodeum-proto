@@ -15,40 +15,40 @@ service MonitoringService {
   }
 }
 
-// (from https://github.com/asim/go-micro/blob/master/debug/proto/debug.proto)
-message StatsResponse {
-	// timestamp of recording
-	uint64 timestamp = 1;
-	// unix timestamp
-	uint64 started = 2;
-	// in seconds
-	uint64 uptime = 3;
-	// in bytes
-	uint64 memory = 4;
-	// num threads
-	uint64 threads = 5;
-	// total gc in nanoseconds
-	uint64 gc = 6;
-	// total number of requests
-	uint64 requests = 7;
-	// total number of errors
-	uint64 errors = 8;
-}
-
-message Node {
-  string id = 1;
-  string address = 2;
-  StatsResponse stats = 3;
-
-	enum Status {
-		STATUS_UNSPECIFIED = 0;
-		STATUS_ALIVE = 1;
-		STATUS_DEAD = 2;
-	}
-	Status status = 4;
-}
-
 message Service {
+	message Node {
+		// (from https://github.com/asim/go-micro/blob/master/debug/proto/debug.proto)
+		message StatsResponse {
+			// timestamp of recording
+			int64 timestamp = 1;
+			// unix timestamp
+			int64 started = 2;
+			// in seconds
+			int64 uptime = 3;
+			// in bytes
+			int64 memory = 4;
+			// num threads
+			int64 threads = 5;
+			// total gc in nanoseconds
+			int64 gc = 6;
+			// total number of requests
+			int64 requests = 7;
+			// total number of errors
+			int64 errors = 8;
+		}
+
+		string id = 1;
+		string address = 2;
+		StatsResponse stats = 3;
+	
+		enum Status {
+			STATUS_UNSPECIFIED = 0;
+			STATUS_ALIVE = 1;
+			STATUS_DEAD = 2;
+		}
+		Status status = 4;
+	}
+
   string name = 1;
   string version = 2;
   repeated Node nodes = 3;

@@ -39,7 +39,7 @@ service SchedulerService {
   }
 }
 
-message Schedule {
+message TaskSchedule {
   enum Status {
     STATUS_UNSPECIFIED = 0;
     // Waiting for the scheduler to find the next schedule
@@ -64,16 +64,16 @@ message ReadScheduleRequest {
   string task_id = 2 [json_name = "task_id"];
 }
 message ReadScheduleResponse {
-  Schedule schedule = 1;
+  TaskSchedule schedule = 1;
 }
 
 message ListSchedulesRequest {}
 message ListSchedulesResponse {
-  repeated Schedule schedules = 1;
+  repeated TaskSchedule schedules = 1;
 }
 
 message WriteScheduleRequest {
-  Schedule schedule = 1;
+  TaskSchedule schedule = 1;
 }
 message WriteScheduleResponse {
   string msg = 1;
