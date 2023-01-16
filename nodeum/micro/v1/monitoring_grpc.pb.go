@@ -18,6 +18,128 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
+// DebugServiceClient is the client API for DebugService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type DebugServiceClient interface {
+	Info(ctx context.Context, in *InfoRequest, opts ...grpc.CallOption) (*InfoResponse, error)
+	Stats(ctx context.Context, in *StatsRequest, opts ...grpc.CallOption) (*StatsResponse, error)
+}
+
+type debugServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewDebugServiceClient(cc grpc.ClientConnInterface) DebugServiceClient {
+	return &debugServiceClient{cc}
+}
+
+func (c *debugServiceClient) Info(ctx context.Context, in *InfoRequest, opts ...grpc.CallOption) (*InfoResponse, error) {
+	out := new(InfoResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.DebugService/Info", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *debugServiceClient) Stats(ctx context.Context, in *StatsRequest, opts ...grpc.CallOption) (*StatsResponse, error) {
+	out := new(StatsResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.DebugService/Stats", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// DebugServiceServer is the server API for DebugService service.
+// All implementations must embed UnimplementedDebugServiceServer
+// for forward compatibility
+type DebugServiceServer interface {
+	Info(context.Context, *InfoRequest) (*InfoResponse, error)
+	Stats(context.Context, *StatsRequest) (*StatsResponse, error)
+	mustEmbedUnimplementedDebugServiceServer()
+}
+
+// UnimplementedDebugServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedDebugServiceServer struct {
+}
+
+func (UnimplementedDebugServiceServer) Info(context.Context, *InfoRequest) (*InfoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Info not implemented")
+}
+func (UnimplementedDebugServiceServer) Stats(context.Context, *StatsRequest) (*StatsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Stats not implemented")
+}
+func (UnimplementedDebugServiceServer) mustEmbedUnimplementedDebugServiceServer() {}
+
+// UnsafeDebugServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to DebugServiceServer will
+// result in compilation errors.
+type UnsafeDebugServiceServer interface {
+	mustEmbedUnimplementedDebugServiceServer()
+}
+
+func RegisterDebugServiceServer(s grpc.ServiceRegistrar, srv DebugServiceServer) {
+	s.RegisterService(&DebugService_ServiceDesc, srv)
+}
+
+func _DebugService_Info_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DebugServiceServer).Info(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.DebugService/Info",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DebugServiceServer).Info(ctx, req.(*InfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DebugService_Stats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DebugServiceServer).Stats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.DebugService/Stats",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DebugServiceServer).Stats(ctx, req.(*StatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// DebugService_ServiceDesc is the grpc.ServiceDesc for DebugService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var DebugService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "nodeum.micro.v1.DebugService",
+	HandlerType: (*DebugServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Info",
+			Handler:    _DebugService_Info_Handler,
+		},
+		{
+			MethodName: "Stats",
+			Handler:    _DebugService_Stats_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "nodeum/micro/v1/monitoring.proto",
+}
+
 // MonitoringServiceClient is the client API for MonitoringService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.

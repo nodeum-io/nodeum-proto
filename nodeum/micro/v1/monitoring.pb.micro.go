@@ -28,6 +28,82 @@ var _ context.Context
 var _ client.Option
 var _ server.Option
 
+// Api Endpoints for DebugService service
+
+func NewDebugServiceEndpoints() []*api.Endpoint {
+	return []*api.Endpoint{}
+}
+
+// Client API for DebugService service
+
+type DebugService interface {
+	Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error)
+	Stats(ctx context.Context, in *StatsRequest, opts ...client.CallOption) (*StatsResponse, error)
+}
+
+type debugService struct {
+	c    client.Client
+	name string
+}
+
+func NewDebugService(name string, c client.Client) DebugService {
+	return &debugService{
+		c:    c,
+		name: name,
+	}
+}
+
+func (c *debugService) Info(ctx context.Context, in *InfoRequest, opts ...client.CallOption) (*InfoResponse, error) {
+	req := c.c.NewRequest(c.name, "DebugService.Info", in)
+	out := new(InfoResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *debugService) Stats(ctx context.Context, in *StatsRequest, opts ...client.CallOption) (*StatsResponse, error) {
+	req := c.c.NewRequest(c.name, "DebugService.Stats", in)
+	out := new(StatsResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// Server API for DebugService service
+
+type DebugServiceHandler interface {
+	Info(context.Context, *InfoRequest, *InfoResponse) error
+	Stats(context.Context, *StatsRequest, *StatsResponse) error
+}
+
+func RegisterDebugServiceHandler(s server.Server, hdlr DebugServiceHandler, opts ...server.HandlerOption) error {
+	type debugService interface {
+		Info(ctx context.Context, in *InfoRequest, out *InfoResponse) error
+		Stats(ctx context.Context, in *StatsRequest, out *StatsResponse) error
+	}
+	type DebugService struct {
+		debugService
+	}
+	h := &debugServiceHandler{hdlr}
+	return s.Handle(s.NewHandler(&DebugService{h}, opts...))
+}
+
+type debugServiceHandler struct {
+	DebugServiceHandler
+}
+
+func (h *debugServiceHandler) Info(ctx context.Context, in *InfoRequest, out *InfoResponse) error {
+	return h.DebugServiceHandler.Info(ctx, in, out)
+}
+
+func (h *debugServiceHandler) Stats(ctx context.Context, in *StatsRequest, out *StatsResponse) error {
+	return h.DebugServiceHandler.Stats(ctx, in, out)
+}
+
 // Api Endpoints for MonitoringService service
 
 func NewMonitoringServiceEndpoints() []*api.Endpoint {
