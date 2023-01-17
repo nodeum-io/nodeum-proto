@@ -114,6 +114,12 @@ func NewMonitoringServiceEndpoints() []*api.Endpoint {
 			Method:  []string{"GET"},
 			Handler: "rpc",
 		},
+		{
+			Name:    "MonitoringService.ListHosts",
+			Path:    []string{"/hosts"},
+			Method:  []string{"GET"},
+			Handler: "rpc",
+		},
 	}
 }
 
@@ -122,6 +128,7 @@ func NewMonitoringServiceEndpoints() []*api.Endpoint {
 type MonitoringService interface {
 	// ListServices returns all registered services.
 	ListServices(ctx context.Context, in *ListServicesRequest, opts ...client.CallOption) (*ListServicesResponse, error)
+	ListHosts(ctx context.Context, in *ListHostsRequest, opts ...client.CallOption) (*ListHostsResponse, error)
 }
 
 type monitoringService struct {
@@ -146,16 +153,28 @@ func (c *monitoringService) ListServices(ctx context.Context, in *ListServicesRe
 	return out, nil
 }
 
+func (c *monitoringService) ListHosts(ctx context.Context, in *ListHostsRequest, opts ...client.CallOption) (*ListHostsResponse, error) {
+	req := c.c.NewRequest(c.name, "MonitoringService.ListHosts", in)
+	out := new(ListHostsResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for MonitoringService service
 
 type MonitoringServiceHandler interface {
 	// ListServices returns all registered services.
 	ListServices(context.Context, *ListServicesRequest, *ListServicesResponse) error
+	ListHosts(context.Context, *ListHostsRequest, *ListHostsResponse) error
 }
 
 func RegisterMonitoringServiceHandler(s server.Server, hdlr MonitoringServiceHandler, opts ...server.HandlerOption) error {
 	type monitoringService interface {
 		ListServices(ctx context.Context, in *ListServicesRequest, out *ListServicesResponse) error
+		ListHosts(ctx context.Context, in *ListHostsRequest, out *ListHostsResponse) error
 	}
 	type MonitoringService struct {
 		monitoringService
@@ -164,6 +183,12 @@ func RegisterMonitoringServiceHandler(s server.Server, hdlr MonitoringServiceHan
 	opts = append(opts, api.WithEndpoint(&api.Endpoint{
 		Name:    "MonitoringService.ListServices",
 		Path:    []string{"/services"},
+		Method:  []string{"GET"},
+		Handler: "rpc",
+	}))
+	opts = append(opts, api.WithEndpoint(&api.Endpoint{
+		Name:    "MonitoringService.ListHosts",
+		Path:    []string{"/hosts"},
 		Method:  []string{"GET"},
 		Handler: "rpc",
 	}))
@@ -176,4 +201,8 @@ type monitoringServiceHandler struct {
 
 func (h *monitoringServiceHandler) ListServices(ctx context.Context, in *ListServicesRequest, out *ListServicesResponse) error {
 	return h.MonitoringServiceHandler.ListServices(ctx, in, out)
+}
+
+func (h *monitoringServiceHandler) ListHosts(ctx context.Context, in *ListHostsRequest, out *ListHostsResponse) error {
+	return h.MonitoringServiceHandler.ListHosts(ctx, in, out)
 }

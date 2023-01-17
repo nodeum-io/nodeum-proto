@@ -146,6 +146,7 @@ var DebugService_ServiceDesc = grpc.ServiceDesc{
 type MonitoringServiceClient interface {
 	// ListServices returns all registered services.
 	ListServices(ctx context.Context, in *ListServicesRequest, opts ...grpc.CallOption) (*ListServicesResponse, error)
+	ListHosts(ctx context.Context, in *ListHostsRequest, opts ...grpc.CallOption) (*ListHostsResponse, error)
 }
 
 type monitoringServiceClient struct {
@@ -165,12 +166,22 @@ func (c *monitoringServiceClient) ListServices(ctx context.Context, in *ListServ
 	return out, nil
 }
 
+func (c *monitoringServiceClient) ListHosts(ctx context.Context, in *ListHostsRequest, opts ...grpc.CallOption) (*ListHostsResponse, error) {
+	out := new(ListHostsResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.MonitoringService/ListHosts", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MonitoringServiceServer is the server API for MonitoringService service.
 // All implementations must embed UnimplementedMonitoringServiceServer
 // for forward compatibility
 type MonitoringServiceServer interface {
 	// ListServices returns all registered services.
 	ListServices(context.Context, *ListServicesRequest) (*ListServicesResponse, error)
+	ListHosts(context.Context, *ListHostsRequest) (*ListHostsResponse, error)
 	mustEmbedUnimplementedMonitoringServiceServer()
 }
 
@@ -180,6 +191,9 @@ type UnimplementedMonitoringServiceServer struct {
 
 func (UnimplementedMonitoringServiceServer) ListServices(context.Context, *ListServicesRequest) (*ListServicesResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListServices not implemented")
+}
+func (UnimplementedMonitoringServiceServer) ListHosts(context.Context, *ListHostsRequest) (*ListHostsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListHosts not implemented")
 }
 func (UnimplementedMonitoringServiceServer) mustEmbedUnimplementedMonitoringServiceServer() {}
 
@@ -212,6 +226,24 @@ func _MonitoringService_ListServices_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MonitoringService_ListHosts_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListHostsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MonitoringServiceServer).ListHosts(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.MonitoringService/ListHosts",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MonitoringServiceServer).ListHosts(ctx, req.(*ListHostsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MonitoringService_ServiceDesc is the grpc.ServiceDesc for MonitoringService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -222,6 +254,10 @@ var MonitoringService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListServices",
 			Handler:    _MonitoringService_ListServices_Handler,
+		},
+		{
+			MethodName: "ListHosts",
+			Handler:    _MonitoringService_ListHosts_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

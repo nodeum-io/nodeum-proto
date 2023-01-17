@@ -18,11 +18,17 @@ service MonitoringService {
       get: "/services";
     };
   }
+	rpc ListHosts(ListHostsRequest) returns (ListHostsResponse) {
+    option (google.api.http) = {
+      get: "/hosts";
+    };
+	}
 }
 
 message InfoRequest { }
 message InfoResponse {
 	string uuid = 1;
+	string hostname = 2;
 }
 
 message StatsRequest {
@@ -70,4 +76,14 @@ message Service {
 message ListServicesRequest {}
 message ListServicesResponse {
   repeated Service services = 1;
+}
+
+message Host {
+	string uuid = 1;
+	string hostname = 2;
+}
+
+message ListHostsRequest {}
+message ListHostsResponse {
+	repeated Host hosts = 1;
 }
