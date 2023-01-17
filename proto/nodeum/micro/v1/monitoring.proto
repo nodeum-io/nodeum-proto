@@ -29,6 +29,9 @@ message InfoRequest { }
 message InfoResponse {
 	string uuid = 1;
 	string hostname = 2;
+	string ip = 3;
+	int64 memory = 4;
+	int32 cpus = 5;
 }
 
 message StatsRequest {
@@ -78,12 +81,7 @@ message ListServicesResponse {
   repeated Service services = 1;
 }
 
-message Host {
-	string uuid = 1;
-	string hostname = 2;
-}
-
 message ListHostsRequest {}
 message ListHostsResponse {
-	repeated Host hosts = 1;
+	repeated InfoResponse hosts = 1;
 }
