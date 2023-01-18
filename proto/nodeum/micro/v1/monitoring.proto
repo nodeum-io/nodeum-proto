@@ -5,6 +5,8 @@ package nodeum.micro.v1;
 option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 
 import "google/api/annotations.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
 
 service DebugService {
 	rpc Info(InfoRequest) returns (InfoResponse) {};
@@ -32,6 +34,9 @@ message InfoResponse {
 	string ip = 3;
 	int64 memory = 4;
 	int32 cpus = 5;
+	google.protobuf.Timestamp time = 6;
+	string timezone = 7;
+	google.protobuf.Duration uptime = 8;
 }
 
 message StatsRequest {
