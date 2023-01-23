@@ -24,6 +24,9 @@ const _ = grpc.SupportPackageIsVersion7
 type MoverServiceClient interface {
 	// Starts a task execution on the mover
 	Start(ctx context.Context, in *MoverServiceStartRequest, opts ...grpc.CallOption) (*MoverServiceStartResponse, error)
+	Pause(ctx context.Context, in *MoverServicePauseRequest, opts ...grpc.CallOption) (*MoverServicePauseResponse, error)
+	Resume(ctx context.Context, in *MoverServiceResumeRequest, opts ...grpc.CallOption) (*MoverServiceResumeResponse, error)
+	Stop(ctx context.Context, in *MoverServiceStopRequest, opts ...grpc.CallOption) (*MoverServiceStopResponse, error)
 	// Executes a single request on the mover
 	Request(ctx context.Context, in *MoverServiceRequestRequest, opts ...grpc.CallOption) (MoverService_RequestClient, error)
 }
@@ -39,6 +42,33 @@ func NewMoverServiceClient(cc grpc.ClientConnInterface) MoverServiceClient {
 func (c *moverServiceClient) Start(ctx context.Context, in *MoverServiceStartRequest, opts ...grpc.CallOption) (*MoverServiceStartResponse, error) {
 	out := new(MoverServiceStartResponse)
 	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.MoverService/Start", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moverServiceClient) Pause(ctx context.Context, in *MoverServicePauseRequest, opts ...grpc.CallOption) (*MoverServicePauseResponse, error) {
+	out := new(MoverServicePauseResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.MoverService/Pause", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moverServiceClient) Resume(ctx context.Context, in *MoverServiceResumeRequest, opts ...grpc.CallOption) (*MoverServiceResumeResponse, error) {
+	out := new(MoverServiceResumeResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.MoverService/Resume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moverServiceClient) Stop(ctx context.Context, in *MoverServiceStopRequest, opts ...grpc.CallOption) (*MoverServiceStopResponse, error) {
+	out := new(MoverServiceStopResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.MoverService/Stop", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -83,6 +113,9 @@ func (x *moverServiceRequestClient) Recv() (*MoverServiceRequestResponse, error)
 type MoverServiceServer interface {
 	// Starts a task execution on the mover
 	Start(context.Context, *MoverServiceStartRequest) (*MoverServiceStartResponse, error)
+	Pause(context.Context, *MoverServicePauseRequest) (*MoverServicePauseResponse, error)
+	Resume(context.Context, *MoverServiceResumeRequest) (*MoverServiceResumeResponse, error)
+	Stop(context.Context, *MoverServiceStopRequest) (*MoverServiceStopResponse, error)
 	// Executes a single request on the mover
 	Request(*MoverServiceRequestRequest, MoverService_RequestServer) error
 	mustEmbedUnimplementedMoverServiceServer()
@@ -94,6 +127,15 @@ type UnimplementedMoverServiceServer struct {
 
 func (UnimplementedMoverServiceServer) Start(context.Context, *MoverServiceStartRequest) (*MoverServiceStartResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Start not implemented")
+}
+func (UnimplementedMoverServiceServer) Pause(context.Context, *MoverServicePauseRequest) (*MoverServicePauseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Pause not implemented")
+}
+func (UnimplementedMoverServiceServer) Resume(context.Context, *MoverServiceResumeRequest) (*MoverServiceResumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Resume not implemented")
+}
+func (UnimplementedMoverServiceServer) Stop(context.Context, *MoverServiceStopRequest) (*MoverServiceStopResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Stop not implemented")
 }
 func (UnimplementedMoverServiceServer) Request(*MoverServiceRequestRequest, MoverService_RequestServer) error {
 	return status.Errorf(codes.Unimplemented, "method Request not implemented")
@@ -129,6 +171,60 @@ func _MoverService_Start_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MoverService_Pause_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoverServicePauseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MoverServiceServer).Pause(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.MoverService/Pause",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MoverServiceServer).Pause(ctx, req.(*MoverServicePauseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MoverService_Resume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoverServiceResumeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MoverServiceServer).Resume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.MoverService/Resume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MoverServiceServer).Resume(ctx, req.(*MoverServiceResumeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _MoverService_Stop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MoverServiceStopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MoverServiceServer).Stop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.MoverService/Stop",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MoverServiceServer).Stop(ctx, req.(*MoverServiceStopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _MoverService_Request_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(MoverServiceRequestRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -160,6 +256,18 @@ var MoverService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Start",
 			Handler:    _MoverService_Start_Handler,
+		},
+		{
+			MethodName: "Pause",
+			Handler:    _MoverService_Pause_Handler,
+		},
+		{
+			MethodName: "Resume",
+			Handler:    _MoverService_Resume_Handler,
+		},
+		{
+			MethodName: "Stop",
+			Handler:    _MoverService_Stop_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

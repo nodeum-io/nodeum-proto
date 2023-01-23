@@ -12,6 +12,9 @@ import "nodeum/common/v1/task.proto";
 service MoverService {
   // Starts a task execution on the mover
   rpc Start(MoverServiceStartRequest) returns (MoverServiceStartResponse);
+  rpc Pause(MoverServicePauseRequest) returns (MoverServicePauseResponse) {}
+  rpc Resume(MoverServiceResumeRequest) returns (MoverServiceResumeResponse) {}
+  rpc Stop(MoverServiceStopRequest) returns (MoverServiceStopResponse) {}
 
   // Executes a single request on the mover
   rpc Request(MoverServiceRequestRequest) returns (stream MoverServiceRequestResponse);
@@ -26,6 +29,13 @@ message MoverServiceStartRequest {
 }
 
 message MoverServiceStartResponse {}
+
+message MoverServicePauseRequest { string id = 1; }
+message MoverServicePauseResponse { string msg = 1; }
+message MoverServiceResumeRequest { string id = 1; }
+message MoverServiceResumeResponse { string msg = 1; }
+message MoverServiceStopRequest { string id = 1; }
+message MoverServiceStopResponse { string msg = 1; }
 
 message MoverServiceRequestRequest {
   nodeum.common.v1.Request request = 1;

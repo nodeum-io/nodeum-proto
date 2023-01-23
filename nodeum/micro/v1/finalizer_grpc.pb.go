@@ -23,6 +23,9 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type FinalizerServiceClient interface {
 	Start(ctx context.Context, in *FinalizerServiceStartRequest, opts ...grpc.CallOption) (*FinalizerServiceStartResponse, error)
+	Pause(ctx context.Context, in *FinalizerServicePauseRequest, opts ...grpc.CallOption) (*FinalizerServicePauseResponse, error)
+	Resume(ctx context.Context, in *FinalizerServiceResumeRequest, opts ...grpc.CallOption) (*FinalizerServiceResumeResponse, error)
+	Stop(ctx context.Context, in *FinalizerServiceStopRequest, opts ...grpc.CallOption) (*FinalizerServiceStopResponse, error)
 }
 
 type finalizerServiceClient struct {
@@ -42,11 +45,41 @@ func (c *finalizerServiceClient) Start(ctx context.Context, in *FinalizerService
 	return out, nil
 }
 
+func (c *finalizerServiceClient) Pause(ctx context.Context, in *FinalizerServicePauseRequest, opts ...grpc.CallOption) (*FinalizerServicePauseResponse, error) {
+	out := new(FinalizerServicePauseResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.FinalizerService/Pause", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *finalizerServiceClient) Resume(ctx context.Context, in *FinalizerServiceResumeRequest, opts ...grpc.CallOption) (*FinalizerServiceResumeResponse, error) {
+	out := new(FinalizerServiceResumeResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.FinalizerService/Resume", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *finalizerServiceClient) Stop(ctx context.Context, in *FinalizerServiceStopRequest, opts ...grpc.CallOption) (*FinalizerServiceStopResponse, error) {
+	out := new(FinalizerServiceStopResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.FinalizerService/Stop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // FinalizerServiceServer is the server API for FinalizerService service.
 // All implementations must embed UnimplementedFinalizerServiceServer
 // for forward compatibility
 type FinalizerServiceServer interface {
 	Start(context.Context, *FinalizerServiceStartRequest) (*FinalizerServiceStartResponse, error)
+	Pause(context.Context, *FinalizerServicePauseRequest) (*FinalizerServicePauseResponse, error)
+	Resume(context.Context, *FinalizerServiceResumeRequest) (*FinalizerServiceResumeResponse, error)
+	Stop(context.Context, *FinalizerServiceStopRequest) (*FinalizerServiceStopResponse, error)
 	mustEmbedUnimplementedFinalizerServiceServer()
 }
 
@@ -56,6 +89,15 @@ type UnimplementedFinalizerServiceServer struct {
 
 func (UnimplementedFinalizerServiceServer) Start(context.Context, *FinalizerServiceStartRequest) (*FinalizerServiceStartResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Start not implemented")
+}
+func (UnimplementedFinalizerServiceServer) Pause(context.Context, *FinalizerServicePauseRequest) (*FinalizerServicePauseResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Pause not implemented")
+}
+func (UnimplementedFinalizerServiceServer) Resume(context.Context, *FinalizerServiceResumeRequest) (*FinalizerServiceResumeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Resume not implemented")
+}
+func (UnimplementedFinalizerServiceServer) Stop(context.Context, *FinalizerServiceStopRequest) (*FinalizerServiceStopResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Stop not implemented")
 }
 func (UnimplementedFinalizerServiceServer) mustEmbedUnimplementedFinalizerServiceServer() {}
 
@@ -88,6 +130,60 @@ func _FinalizerService_Start_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _FinalizerService_Pause_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FinalizerServicePauseRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinalizerServiceServer).Pause(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.FinalizerService/Pause",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinalizerServiceServer).Pause(ctx, req.(*FinalizerServicePauseRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinalizerService_Resume_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FinalizerServiceResumeRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinalizerServiceServer).Resume(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.FinalizerService/Resume",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinalizerServiceServer).Resume(ctx, req.(*FinalizerServiceResumeRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _FinalizerService_Stop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FinalizerServiceStopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(FinalizerServiceServer).Stop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.FinalizerService/Stop",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(FinalizerServiceServer).Stop(ctx, req.(*FinalizerServiceStopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // FinalizerService_ServiceDesc is the grpc.ServiceDesc for FinalizerService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -98,6 +194,18 @@ var FinalizerService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Start",
 			Handler:    _FinalizerService_Start_Handler,
+		},
+		{
+			MethodName: "Pause",
+			Handler:    _FinalizerService_Pause_Handler,
+		},
+		{
+			MethodName: "Resume",
+			Handler:    _FinalizerService_Resume_Handler,
+		},
+		{
+			MethodName: "Stop",
+			Handler:    _FinalizerService_Stop_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

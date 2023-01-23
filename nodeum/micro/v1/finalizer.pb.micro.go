@@ -38,6 +38,9 @@ func NewFinalizerServiceEndpoints() []*api.Endpoint {
 
 type FinalizerService interface {
 	Start(ctx context.Context, in *FinalizerServiceStartRequest, opts ...client.CallOption) (*FinalizerServiceStartResponse, error)
+	Pause(ctx context.Context, in *FinalizerServicePauseRequest, opts ...client.CallOption) (*FinalizerServicePauseResponse, error)
+	Resume(ctx context.Context, in *FinalizerServiceResumeRequest, opts ...client.CallOption) (*FinalizerServiceResumeResponse, error)
+	Stop(ctx context.Context, in *FinalizerServiceStopRequest, opts ...client.CallOption) (*FinalizerServiceStopResponse, error)
 }
 
 type finalizerService struct {
@@ -62,15 +65,51 @@ func (c *finalizerService) Start(ctx context.Context, in *FinalizerServiceStartR
 	return out, nil
 }
 
+func (c *finalizerService) Pause(ctx context.Context, in *FinalizerServicePauseRequest, opts ...client.CallOption) (*FinalizerServicePauseResponse, error) {
+	req := c.c.NewRequest(c.name, "FinalizerService.Pause", in)
+	out := new(FinalizerServicePauseResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *finalizerService) Resume(ctx context.Context, in *FinalizerServiceResumeRequest, opts ...client.CallOption) (*FinalizerServiceResumeResponse, error) {
+	req := c.c.NewRequest(c.name, "FinalizerService.Resume", in)
+	out := new(FinalizerServiceResumeResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *finalizerService) Stop(ctx context.Context, in *FinalizerServiceStopRequest, opts ...client.CallOption) (*FinalizerServiceStopResponse, error) {
+	req := c.c.NewRequest(c.name, "FinalizerService.Stop", in)
+	out := new(FinalizerServiceStopResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for FinalizerService service
 
 type FinalizerServiceHandler interface {
 	Start(context.Context, *FinalizerServiceStartRequest, *FinalizerServiceStartResponse) error
+	Pause(context.Context, *FinalizerServicePauseRequest, *FinalizerServicePauseResponse) error
+	Resume(context.Context, *FinalizerServiceResumeRequest, *FinalizerServiceResumeResponse) error
+	Stop(context.Context, *FinalizerServiceStopRequest, *FinalizerServiceStopResponse) error
 }
 
 func RegisterFinalizerServiceHandler(s server.Server, hdlr FinalizerServiceHandler, opts ...server.HandlerOption) error {
 	type finalizerService interface {
 		Start(ctx context.Context, in *FinalizerServiceStartRequest, out *FinalizerServiceStartResponse) error
+		Pause(ctx context.Context, in *FinalizerServicePauseRequest, out *FinalizerServicePauseResponse) error
+		Resume(ctx context.Context, in *FinalizerServiceResumeRequest, out *FinalizerServiceResumeResponse) error
+		Stop(ctx context.Context, in *FinalizerServiceStopRequest, out *FinalizerServiceStopResponse) error
 	}
 	type FinalizerService struct {
 		finalizerService
@@ -85,4 +124,16 @@ type finalizerServiceHandler struct {
 
 func (h *finalizerServiceHandler) Start(ctx context.Context, in *FinalizerServiceStartRequest, out *FinalizerServiceStartResponse) error {
 	return h.FinalizerServiceHandler.Start(ctx, in, out)
+}
+
+func (h *finalizerServiceHandler) Pause(ctx context.Context, in *FinalizerServicePauseRequest, out *FinalizerServicePauseResponse) error {
+	return h.FinalizerServiceHandler.Pause(ctx, in, out)
+}
+
+func (h *finalizerServiceHandler) Resume(ctx context.Context, in *FinalizerServiceResumeRequest, out *FinalizerServiceResumeResponse) error {
+	return h.FinalizerServiceHandler.Resume(ctx, in, out)
+}
+
+func (h *finalizerServiceHandler) Stop(ctx context.Context, in *FinalizerServiceStopRequest, out *FinalizerServiceStopResponse) error {
+	return h.FinalizerServiceHandler.Stop(ctx, in, out)
 }

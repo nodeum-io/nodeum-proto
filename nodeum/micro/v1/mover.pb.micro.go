@@ -39,6 +39,9 @@ func NewMoverServiceEndpoints() []*api.Endpoint {
 type MoverService interface {
 	// Starts a task execution on the mover
 	Start(ctx context.Context, in *MoverServiceStartRequest, opts ...client.CallOption) (*MoverServiceStartResponse, error)
+	Pause(ctx context.Context, in *MoverServicePauseRequest, opts ...client.CallOption) (*MoverServicePauseResponse, error)
+	Resume(ctx context.Context, in *MoverServiceResumeRequest, opts ...client.CallOption) (*MoverServiceResumeResponse, error)
+	Stop(ctx context.Context, in *MoverServiceStopRequest, opts ...client.CallOption) (*MoverServiceStopResponse, error)
 	// Executes a single request on the mover
 	Request(ctx context.Context, in *MoverServiceRequestRequest, opts ...client.CallOption) (MoverService_RequestService, error)
 }
@@ -58,6 +61,36 @@ func NewMoverService(name string, c client.Client) MoverService {
 func (c *moverService) Start(ctx context.Context, in *MoverServiceStartRequest, opts ...client.CallOption) (*MoverServiceStartResponse, error) {
 	req := c.c.NewRequest(c.name, "MoverService.Start", in)
 	out := new(MoverServiceStartResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moverService) Pause(ctx context.Context, in *MoverServicePauseRequest, opts ...client.CallOption) (*MoverServicePauseResponse, error) {
+	req := c.c.NewRequest(c.name, "MoverService.Pause", in)
+	out := new(MoverServicePauseResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moverService) Resume(ctx context.Context, in *MoverServiceResumeRequest, opts ...client.CallOption) (*MoverServiceResumeResponse, error) {
+	req := c.c.NewRequest(c.name, "MoverService.Resume", in)
+	out := new(MoverServiceResumeResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *moverService) Stop(ctx context.Context, in *MoverServiceStopRequest, opts ...client.CallOption) (*MoverServiceStopResponse, error) {
+	req := c.c.NewRequest(c.name, "MoverService.Stop", in)
+	out := new(MoverServiceStopResponse)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -124,6 +157,9 @@ func (x *moverServiceRequest) Recv() (*MoverServiceRequestResponse, error) {
 type MoverServiceHandler interface {
 	// Starts a task execution on the mover
 	Start(context.Context, *MoverServiceStartRequest, *MoverServiceStartResponse) error
+	Pause(context.Context, *MoverServicePauseRequest, *MoverServicePauseResponse) error
+	Resume(context.Context, *MoverServiceResumeRequest, *MoverServiceResumeResponse) error
+	Stop(context.Context, *MoverServiceStopRequest, *MoverServiceStopResponse) error
 	// Executes a single request on the mover
 	Request(context.Context, *MoverServiceRequestRequest, MoverService_RequestStream) error
 }
@@ -131,6 +167,9 @@ type MoverServiceHandler interface {
 func RegisterMoverServiceHandler(s server.Server, hdlr MoverServiceHandler, opts ...server.HandlerOption) error {
 	type moverService interface {
 		Start(ctx context.Context, in *MoverServiceStartRequest, out *MoverServiceStartResponse) error
+		Pause(ctx context.Context, in *MoverServicePauseRequest, out *MoverServicePauseResponse) error
+		Resume(ctx context.Context, in *MoverServiceResumeRequest, out *MoverServiceResumeResponse) error
+		Stop(ctx context.Context, in *MoverServiceStopRequest, out *MoverServiceStopResponse) error
 		Request(ctx context.Context, stream server.Stream) error
 	}
 	type MoverService struct {
@@ -146,6 +185,18 @@ type moverServiceHandler struct {
 
 func (h *moverServiceHandler) Start(ctx context.Context, in *MoverServiceStartRequest, out *MoverServiceStartResponse) error {
 	return h.MoverServiceHandler.Start(ctx, in, out)
+}
+
+func (h *moverServiceHandler) Pause(ctx context.Context, in *MoverServicePauseRequest, out *MoverServicePauseResponse) error {
+	return h.MoverServiceHandler.Pause(ctx, in, out)
+}
+
+func (h *moverServiceHandler) Resume(ctx context.Context, in *MoverServiceResumeRequest, out *MoverServiceResumeResponse) error {
+	return h.MoverServiceHandler.Resume(ctx, in, out)
+}
+
+func (h *moverServiceHandler) Stop(ctx context.Context, in *MoverServiceStopRequest, out *MoverServiceStopResponse) error {
+	return h.MoverServiceHandler.Stop(ctx, in, out)
 }
 
 func (h *moverServiceHandler) Request(ctx context.Context, stream server.Stream) error {

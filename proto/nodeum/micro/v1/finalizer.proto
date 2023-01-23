@@ -9,6 +9,9 @@ import "nodeum/common/v1/task.proto";
 
 service FinalizerService {
   rpc Start(FinalizerServiceStartRequest) returns (FinalizerServiceStartResponse);
+  rpc Pause(FinalizerServicePauseRequest) returns (FinalizerServicePauseResponse) {}
+  rpc Resume(FinalizerServiceResumeRequest) returns (FinalizerServiceResumeResponse) {}
+  rpc Stop(FinalizerServiceStopRequest) returns (FinalizerServiceStopResponse) {}
 }
 
 message FinalizerServiceStartRequest {
@@ -20,3 +23,10 @@ message FinalizerServiceStartRequest {
 }
 
 message FinalizerServiceStartResponse {}
+
+message FinalizerServicePauseRequest { string id = 1; }
+message FinalizerServicePauseResponse { string msg = 1; }
+message FinalizerServiceResumeRequest { string id = 1; }
+message FinalizerServiceResumeResponse { string msg = 1; }
+message FinalizerServiceStopRequest { string id = 1; }
+message FinalizerServiceStopResponse { string msg = 1; }
