@@ -7,6 +7,14 @@ option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 import "google/api/annotations.proto";
 
 service ConfigService {
+	// ShowConfig shows the current config
+	rpc ShowConfig(ShowConfigRequest) returns (ShowConfigResponse) {
+		option (google.api.http) = {
+			get: "/config";
+		};
+	}
+
+  // UpdateConfig updates the current config
   rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse) {
     option (google.api.http) = {
 			put: "/config";
@@ -59,7 +67,14 @@ message Config {
   // Redis redis = 6;
 }
 
+message ShowConfigRequest {}
+message ShowConfigResponse {
+  Config config = 1;
+}
+
 message UpdateConfigRequest {
   Config config = 1;
 }
-message UpdateConfigResponse {}
+message UpdateConfigResponse {
+  Config config = 1;
+}

@@ -22,6 +22,9 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ConfigServiceClient interface {
+	// ShowConfig shows the current config
+	ShowConfig(ctx context.Context, in *ShowConfigRequest, opts ...grpc.CallOption) (*ShowConfigResponse, error)
+	// UpdateConfig updates the current config
 	UpdateConfig(ctx context.Context, in *UpdateConfigRequest, opts ...grpc.CallOption) (*UpdateConfigResponse, error)
 }
 
@@ -31,6 +34,15 @@ type configServiceClient struct {
 
 func NewConfigServiceClient(cc grpc.ClientConnInterface) ConfigServiceClient {
 	return &configServiceClient{cc}
+}
+
+func (c *configServiceClient) ShowConfig(ctx context.Context, in *ShowConfigRequest, opts ...grpc.CallOption) (*ShowConfigResponse, error) {
+	out := new(ShowConfigResponse)
+	err := c.cc.Invoke(ctx, "/nodeum.micro.v1.ConfigService/ShowConfig", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *configServiceClient) UpdateConfig(ctx context.Context, in *UpdateConfigRequest, opts ...grpc.CallOption) (*UpdateConfigResponse, error) {
@@ -46,6 +58,9 @@ func (c *configServiceClient) UpdateConfig(ctx context.Context, in *UpdateConfig
 // All implementations must embed UnimplementedConfigServiceServer
 // for forward compatibility
 type ConfigServiceServer interface {
+	// ShowConfig shows the current config
+	ShowConfig(context.Context, *ShowConfigRequest) (*ShowConfigResponse, error)
+	// UpdateConfig updates the current config
 	UpdateConfig(context.Context, *UpdateConfigRequest) (*UpdateConfigResponse, error)
 	mustEmbedUnimplementedConfigServiceServer()
 }
@@ -54,6 +69,9 @@ type ConfigServiceServer interface {
 type UnimplementedConfigServiceServer struct {
 }
 
+func (UnimplementedConfigServiceServer) ShowConfig(context.Context, *ShowConfigRequest) (*ShowConfigResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ShowConfig not implemented")
+}
 func (UnimplementedConfigServiceServer) UpdateConfig(context.Context, *UpdateConfigRequest) (*UpdateConfigResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateConfig not implemented")
 }
@@ -68,6 +86,24 @@ type UnsafeConfigServiceServer interface {
 
 func RegisterConfigServiceServer(s grpc.ServiceRegistrar, srv ConfigServiceServer) {
 	s.RegisterService(&ConfigService_ServiceDesc, srv)
+}
+
+func _ConfigService_ShowConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ShowConfigRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ConfigServiceServer).ShowConfig(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/nodeum.micro.v1.ConfigService/ShowConfig",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ConfigServiceServer).ShowConfig(ctx, req.(*ShowConfigRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _ConfigService_UpdateConfig_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -95,6 +131,10 @@ var ConfigService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "nodeum.micro.v1.ConfigService",
 	HandlerType: (*ConfigServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "ShowConfig",
+			Handler:    _ConfigService_ShowConfig_Handler,
+		},
 		{
 			MethodName: "UpdateConfig",
 			Handler:    _ConfigService_UpdateConfig_Handler,

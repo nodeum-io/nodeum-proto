@@ -76,6 +76,91 @@ func (x *Config) GetLogger() *Config_Logger {
 	return nil
 }
 
+type ShowConfigRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *ShowConfigRequest) Reset() {
+	*x = ShowConfigRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_nodeum_micro_v1_config_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ShowConfigRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShowConfigRequest) ProtoMessage() {}
+
+func (x *ShowConfigRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nodeum_micro_v1_config_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShowConfigRequest.ProtoReflect.Descriptor instead.
+func (*ShowConfigRequest) Descriptor() ([]byte, []int) {
+	return file_nodeum_micro_v1_config_proto_rawDescGZIP(), []int{1}
+}
+
+type ShowConfigResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Config *Config `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
+}
+
+func (x *ShowConfigResponse) Reset() {
+	*x = ShowConfigResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_nodeum_micro_v1_config_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ShowConfigResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ShowConfigResponse) ProtoMessage() {}
+
+func (x *ShowConfigResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nodeum_micro_v1_config_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ShowConfigResponse.ProtoReflect.Descriptor instead.
+func (*ShowConfigResponse) Descriptor() ([]byte, []int) {
+	return file_nodeum_micro_v1_config_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *ShowConfigResponse) GetConfig() *Config {
+	if x != nil {
+		return x.Config
+	}
+	return nil
+}
+
 type UpdateConfigRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -87,7 +172,7 @@ type UpdateConfigRequest struct {
 func (x *UpdateConfigRequest) Reset() {
 	*x = UpdateConfigRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_nodeum_micro_v1_config_proto_msgTypes[1]
+		mi := &file_nodeum_micro_v1_config_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -100,7 +185,7 @@ func (x *UpdateConfigRequest) String() string {
 func (*UpdateConfigRequest) ProtoMessage() {}
 
 func (x *UpdateConfigRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_nodeum_micro_v1_config_proto_msgTypes[1]
+	mi := &file_nodeum_micro_v1_config_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -113,7 +198,7 @@ func (x *UpdateConfigRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateConfigRequest.ProtoReflect.Descriptor instead.
 func (*UpdateConfigRequest) Descriptor() ([]byte, []int) {
-	return file_nodeum_micro_v1_config_proto_rawDescGZIP(), []int{1}
+	return file_nodeum_micro_v1_config_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *UpdateConfigRequest) GetConfig() *Config {
@@ -127,12 +212,14 @@ type UpdateConfigResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
+
+	Config *Config `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
 }
 
 func (x *UpdateConfigResponse) Reset() {
 	*x = UpdateConfigResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_nodeum_micro_v1_config_proto_msgTypes[2]
+		mi := &file_nodeum_micro_v1_config_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -145,7 +232,7 @@ func (x *UpdateConfigResponse) String() string {
 func (*UpdateConfigResponse) ProtoMessage() {}
 
 func (x *UpdateConfigResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_nodeum_micro_v1_config_proto_msgTypes[2]
+	mi := &file_nodeum_micro_v1_config_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -158,7 +245,14 @@ func (x *UpdateConfigResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateConfigResponse.ProtoReflect.Descriptor instead.
 func (*UpdateConfigResponse) Descriptor() ([]byte, []int) {
-	return file_nodeum_micro_v1_config_proto_rawDescGZIP(), []int{2}
+	return file_nodeum_micro_v1_config_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpdateConfigResponse) GetConfig() *Config {
+	if x != nil {
+		return x.Config
+	}
+	return nil
 }
 
 type Config_Misc struct {
@@ -172,7 +266,7 @@ type Config_Misc struct {
 func (x *Config_Misc) Reset() {
 	*x = Config_Misc{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_nodeum_micro_v1_config_proto_msgTypes[3]
+		mi := &file_nodeum_micro_v1_config_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -185,7 +279,7 @@ func (x *Config_Misc) String() string {
 func (*Config_Misc) ProtoMessage() {}
 
 func (x *Config_Misc) ProtoReflect() protoreflect.Message {
-	mi := &file_nodeum_micro_v1_config_proto_msgTypes[3]
+	mi := &file_nodeum_micro_v1_config_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -219,7 +313,7 @@ type Config_Logger struct {
 func (x *Config_Logger) Reset() {
 	*x = Config_Logger{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_nodeum_micro_v1_config_proto_msgTypes[4]
+		mi := &file_nodeum_micro_v1_config_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -232,7 +326,7 @@ func (x *Config_Logger) String() string {
 func (*Config_Logger) ProtoMessage() {}
 
 func (x *Config_Logger) ProtoReflect() protoreflect.Message {
-	mi := &file_nodeum_micro_v1_config_proto_msgTypes[4]
+	mi := &file_nodeum_micro_v1_config_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -276,25 +370,41 @@ var file_nodeum_micro_v1_config_proto_rawDesc = []byte{
 	0x63, 0x65, 0x6e, 0x73, 0x65, 0x1a, 0x2d, 0x0a, 0x06, 0x4c, 0x6f, 0x67, 0x67, 0x65, 0x72, 0x12,
 	0x19, 0x0a, 0x05, 0x6c, 0x65, 0x76, 0x65, 0x6c, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x48, 0x00,
 	0x52, 0x05, 0x6c, 0x65, 0x76, 0x65, 0x6c, 0x88, 0x01, 0x01, 0x42, 0x08, 0x0a, 0x06, 0x5f, 0x6c,
-	0x65, 0x76, 0x65, 0x6c, 0x22, 0x46, 0x0a, 0x13, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x43, 0x6f,
-	0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2f, 0x0a, 0x06, 0x63,
-	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x6e, 0x6f,
-	0x64, 0x65, 0x75, 0x6d, 0x2e, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f,
-	0x6e, 0x66, 0x69, 0x67, 0x52, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x22, 0x16, 0x0a, 0x14,
-	0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70,
-	0x6f, 0x6e, 0x73, 0x65, 0x32, 0x80, 0x01, 0x0a, 0x0d, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x53,
-	0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x6f, 0x0a, 0x0c, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65,
-	0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x24, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2e,
-	0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x43,
-	0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x25, 0x2e, 0x6e,
-	0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2e, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2e, 0x76, 0x31, 0x2e, 0x55,
-	0x70, 0x64, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f,
-	0x6e, 0x73, 0x65, 0x22, 0x12, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x0c, 0x3a, 0x01, 0x2a, 0x1a, 0x07,
-	0x2f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x42, 0x3b, 0x5a, 0x39, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2d, 0x69, 0x6f, 0x2f,
-	0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2d, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x6e, 0x6f, 0x64,
-	0x65, 0x75, 0x6d, 0x2f, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2f, 0x76, 0x31, 0x3b, 0x6d, 0x69, 0x63,
-	0x72, 0x6f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x76, 0x65, 0x6c, 0x22, 0x13, 0x0a, 0x11, 0x53, 0x68, 0x6f, 0x77, 0x43, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x45, 0x0a, 0x12, 0x53, 0x68, 0x6f,
+	0x77, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x2f, 0x0a, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x17, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2e, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2e, 0x76,
+	0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x22, 0x46, 0x0a, 0x13, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x2f, 0x0a, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d,
+	0x2e, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2e, 0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x52, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x22, 0x47, 0x0a, 0x14, 0x55, 0x70, 0x64, 0x61,
+	0x74, 0x65, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x2f, 0x0a, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x17, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2e, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2e,
+	0x76, 0x31, 0x2e, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x06, 0x63, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x32, 0xe8, 0x01, 0x0a, 0x0d, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x53, 0x65, 0x72, 0x76,
+	0x69, 0x63, 0x65, 0x12, 0x66, 0x0a, 0x0a, 0x53, 0x68, 0x6f, 0x77, 0x43, 0x6f, 0x6e, 0x66, 0x69,
+	0x67, 0x12, 0x22, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2e, 0x6d, 0x69, 0x63, 0x72, 0x6f,
+	0x2e, 0x76, 0x31, 0x2e, 0x53, 0x68, 0x6f, 0x77, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x23, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2e, 0x6d,
+	0x69, 0x63, 0x72, 0x6f, 0x2e, 0x76, 0x31, 0x2e, 0x53, 0x68, 0x6f, 0x77, 0x43, 0x6f, 0x6e, 0x66,
+	0x69, 0x67, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x0f, 0x82, 0xd3, 0xe4, 0x93,
+	0x02, 0x09, 0x12, 0x07, 0x2f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x6f, 0x0a, 0x0c, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x12, 0x24, 0x2e, 0x6e, 0x6f,
+	0x64, 0x65, 0x75, 0x6d, 0x2e, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2e, 0x76, 0x31, 0x2e, 0x55, 0x70,
+	0x64, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x1a, 0x25, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2e, 0x6d, 0x69, 0x63, 0x72, 0x6f,
+	0x2e, 0x76, 0x31, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x43, 0x6f, 0x6e, 0x66, 0x69, 0x67,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x12, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x0c,
+	0x3a, 0x01, 0x2a, 0x1a, 0x07, 0x2f, 0x63, 0x6f, 0x6e, 0x66, 0x69, 0x67, 0x42, 0x3b, 0x5a, 0x39,
+	0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x6e, 0x6f, 0x64, 0x65, 0x75,
+	0x6d, 0x2d, 0x69, 0x6f, 0x2f, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2d, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x2f, 0x6e, 0x6f, 0x64, 0x65, 0x75, 0x6d, 0x2f, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x2f, 0x76,
+	0x31, 0x3b, 0x6d, 0x69, 0x63, 0x72, 0x6f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -309,25 +419,31 @@ func file_nodeum_micro_v1_config_proto_rawDescGZIP() []byte {
 	return file_nodeum_micro_v1_config_proto_rawDescData
 }
 
-var file_nodeum_micro_v1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_nodeum_micro_v1_config_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_nodeum_micro_v1_config_proto_goTypes = []interface{}{
 	(*Config)(nil),               // 0: nodeum.micro.v1.Config
-	(*UpdateConfigRequest)(nil),  // 1: nodeum.micro.v1.UpdateConfigRequest
-	(*UpdateConfigResponse)(nil), // 2: nodeum.micro.v1.UpdateConfigResponse
-	(*Config_Misc)(nil),          // 3: nodeum.micro.v1.Config.Misc
-	(*Config_Logger)(nil),        // 4: nodeum.micro.v1.Config.Logger
+	(*ShowConfigRequest)(nil),    // 1: nodeum.micro.v1.ShowConfigRequest
+	(*ShowConfigResponse)(nil),   // 2: nodeum.micro.v1.ShowConfigResponse
+	(*UpdateConfigRequest)(nil),  // 3: nodeum.micro.v1.UpdateConfigRequest
+	(*UpdateConfigResponse)(nil), // 4: nodeum.micro.v1.UpdateConfigResponse
+	(*Config_Misc)(nil),          // 5: nodeum.micro.v1.Config.Misc
+	(*Config_Logger)(nil),        // 6: nodeum.micro.v1.Config.Logger
 }
 var file_nodeum_micro_v1_config_proto_depIdxs = []int32{
-	3, // 0: nodeum.micro.v1.Config.misc:type_name -> nodeum.micro.v1.Config.Misc
-	4, // 1: nodeum.micro.v1.Config.logger:type_name -> nodeum.micro.v1.Config.Logger
-	0, // 2: nodeum.micro.v1.UpdateConfigRequest.config:type_name -> nodeum.micro.v1.Config
-	1, // 3: nodeum.micro.v1.ConfigService.UpdateConfig:input_type -> nodeum.micro.v1.UpdateConfigRequest
-	2, // 4: nodeum.micro.v1.ConfigService.UpdateConfig:output_type -> nodeum.micro.v1.UpdateConfigResponse
-	4, // [4:5] is the sub-list for method output_type
-	3, // [3:4] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	5, // 0: nodeum.micro.v1.Config.misc:type_name -> nodeum.micro.v1.Config.Misc
+	6, // 1: nodeum.micro.v1.Config.logger:type_name -> nodeum.micro.v1.Config.Logger
+	0, // 2: nodeum.micro.v1.ShowConfigResponse.config:type_name -> nodeum.micro.v1.Config
+	0, // 3: nodeum.micro.v1.UpdateConfigRequest.config:type_name -> nodeum.micro.v1.Config
+	0, // 4: nodeum.micro.v1.UpdateConfigResponse.config:type_name -> nodeum.micro.v1.Config
+	1, // 5: nodeum.micro.v1.ConfigService.ShowConfig:input_type -> nodeum.micro.v1.ShowConfigRequest
+	3, // 6: nodeum.micro.v1.ConfigService.UpdateConfig:input_type -> nodeum.micro.v1.UpdateConfigRequest
+	2, // 7: nodeum.micro.v1.ConfigService.ShowConfig:output_type -> nodeum.micro.v1.ShowConfigResponse
+	4, // 8: nodeum.micro.v1.ConfigService.UpdateConfig:output_type -> nodeum.micro.v1.UpdateConfigResponse
+	7, // [7:9] is the sub-list for method output_type
+	5, // [5:7] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_nodeum_micro_v1_config_proto_init() }
@@ -349,7 +465,7 @@ func file_nodeum_micro_v1_config_proto_init() {
 			}
 		}
 		file_nodeum_micro_v1_config_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateConfigRequest); i {
+			switch v := v.(*ShowConfigRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -361,7 +477,7 @@ func file_nodeum_micro_v1_config_proto_init() {
 			}
 		}
 		file_nodeum_micro_v1_config_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateConfigResponse); i {
+			switch v := v.(*ShowConfigResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -373,7 +489,7 @@ func file_nodeum_micro_v1_config_proto_init() {
 			}
 		}
 		file_nodeum_micro_v1_config_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Config_Misc); i {
+			switch v := v.(*UpdateConfigRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -385,6 +501,30 @@ func file_nodeum_micro_v1_config_proto_init() {
 			}
 		}
 		file_nodeum_micro_v1_config_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*UpdateConfigResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_nodeum_micro_v1_config_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Config_Misc); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_nodeum_micro_v1_config_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Config_Logger); i {
 			case 0:
 				return &v.state
@@ -397,15 +537,15 @@ func file_nodeum_micro_v1_config_proto_init() {
 			}
 		}
 	}
-	file_nodeum_micro_v1_config_proto_msgTypes[3].OneofWrappers = []interface{}{}
-	file_nodeum_micro_v1_config_proto_msgTypes[4].OneofWrappers = []interface{}{}
+	file_nodeum_micro_v1_config_proto_msgTypes[5].OneofWrappers = []interface{}{}
+	file_nodeum_micro_v1_config_proto_msgTypes[6].OneofWrappers = []interface{}{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_nodeum_micro_v1_config_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
