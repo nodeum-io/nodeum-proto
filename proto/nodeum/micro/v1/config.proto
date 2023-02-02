@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+package nodeum.micro.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
+
+import "google/api/annotations.proto";
+
+service ConfigService {
+  rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse) {
+    option (google.api.http) = {
+			put: "/config";
+			body: "*";
+		};
+  }
+}
+
+message Config {
+  message Misc {
+    optional string license = 1;
+  }
+
+  message Logger {
+    optional string level = 1;
+  }
+
+  // message Kafka {
+  //   repeated string hosts = 1;
+  // }
+
+  // message Mongo {
+  //   repeated string hosts = 1;
+  //   optional string replica_set = 2;
+  //   optional string db = 3;
+  //   optional string user = 4;
+  //   optional string password = 5;
+  // }
+
+  // message MySQL {
+  //   optional string host = 1;
+  //   optional string user = 2;
+  //   optional string password = 3;
+  //   optional string database = 4;
+  // }
+
+  // message Redis {
+  //   repeated string hosts = 1;
+  //   optional string master_name = 2;
+  //   optional string user = 3;
+  //   optional string password = 4;
+  //   optional int32 db = 5;
+  // }
+
+  Misc misc = 1;
+  Logger logger = 2;
+  // Kafka kafka = 3;
+  // Mongo mongo = 4;
+  // MySQL mysql = 5;
+  // Redis redis = 6;
+}
+
+message UpdateConfigRequest {
+  Config config = 1;
+}
+message UpdateConfigResponse {}
