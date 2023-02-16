@@ -31,7 +31,8 @@ message Task {
   
     Type type = 1;
     repeated string node_paths = 2 [json_name = "node_paths"];
-    repeated string node_ids = 3 [json_name = "node_ids"];
+    // repeated string node_ids = 3 [json_name = "node_ids"];
+    reserved 3;
     uint64 pool_id = 4 [json_name = "pool_id"];
     uint64 storage_id = 5 [json_name = "storage_id"];
   
