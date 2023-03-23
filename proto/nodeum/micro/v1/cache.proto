@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package nodeum.micro.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
+
+import "google/api/annotations.proto";
+import "nodeum/common/v1/nodeinfo.proto";
+
+service CacheService {
+  rpc Mkdir(MkdirRequest) returns (MkdirResponse) {
+    option (google.api.http) = {
+      put: "/cache/mkdir";
+      body: "*";
+    };
+  }
+
+  rpc ReadDir(ReadDirRequest) returns (stream ReadDirResponse) {
+    option (google.api.http) = {
+      get: "/cache/readdir";
+    };
+  }
+}
+
+message MkdirRequest {
+  string path = 1;
+  uint32 mode = 2;
+}
+message MkdirResponse {}
+
+message ReadDirRequest {
+  string path = 1;
+  bool recursive = 2;
+}
+message ReadDirResponse {
+  nodeum.common.v1.NodeInfo info = 1;
+}
