@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package nodeum.common.v1;
+
+option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/common/v1;commonv1";
+
+message Secondary {
+  enum Type {
+    TYPE_UNSPECIFIED = 0;
+    TYPE_TAPE = 1;
+    TYPE_CLOUD = 2;
+    TYPE_NAS = 3;
+  }
+  Type type = 1;
+  uint64 storage_id = 2;
+}

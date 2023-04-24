@@ -6,6 +6,7 @@ option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 
 import "google/api/annotations.proto";
 import "nodeum/common/v1/nodeinfo.proto";
+import "nodeum/common/v1/secondary.proto";
 
 service CacheService {
   rpc Mkdir(MkdirRequest) returns (MkdirResponse) {
@@ -29,8 +30,21 @@ message MkdirRequest {
 message MkdirResponse {}
 
 message ReadDirRequest {
+
+  message Filter {
+    message OutOfDateSecondary {
+      repeated nodeum.common.v1.Secondary secondaries = 1;
+    }
+  
+    oneof filter {
+      OutOfDateSecondary out_of_date_secondary = 1;
+    }
+  }
+
   string path = 1;
   bool recursive = 2;
+
+  repeated Filter filters = 3;
 }
 message ReadDirResponse {
   nodeum.common.v1.NodeInfo info = 1;
