@@ -33,6 +33,7 @@ message License {
 	google.protobuf.Timestamp expires_at = 5;
 	google.protobuf.Timestamp not_before = 6;
 	google.protobuf.Timestamp issued_at = 7;
+	string semver = 8;
 }
 
 message ShowLicenseRequest {}
