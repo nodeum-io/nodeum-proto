@@ -15,6 +15,7 @@ message Request {
     CopyRequest copy = 2;
     RemoveRequest remove = 3;
     ScanRequest scan = 4;
+    CustomRequest custom = 5;
   }
 
   google.protobuf.Struct options = 8;
@@ -51,6 +52,12 @@ message ScanRequest {
   }
   Type type = 2;
 
+  Storage storage = 3;
+  string path = 4;
+}
+
+message CustomRequest {
+  string type = 1;
   Storage storage = 3;
   string path = 4;
 }

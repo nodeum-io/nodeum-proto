@@ -8,6 +8,8 @@ func (req *Request) GetSourceStorage() *Storage {
 		return reqt.Remove.GetStorage()
 	case *Request_Scan:
 		return reqt.Scan.GetStorage()
+	case *Request_Custom:
+		return reqt.Custom.GetStorage()
 	}
 
 	return nil

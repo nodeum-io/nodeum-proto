@@ -6,6 +6,7 @@ package commonv1
 import (
 	fmt "fmt"
 	proto "google.golang.org/protobuf/proto"
+	_ "google.golang.org/protobuf/types/known/structpb"
 	math "math"
 )
 

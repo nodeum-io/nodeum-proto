@@ -4,6 +4,7 @@ package nodeum.common.v1;
 
 option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/common/v1;commonv1";
 
+import "google/protobuf/struct.proto";
 import "nodeum/common/v1/nodeinfo.proto";
 import "nodeum/common/v1/request.proto";
 import "nodeum/common/v1/storages.proto";
@@ -18,6 +19,7 @@ message Result {
     SeenResult seen = 5;
     OverResult over = 6;
     FailedResult failed = 7;
+    CustomResult custom = 8;
   }
 }
 
@@ -59,4 +61,11 @@ message FailedResult {
   }
   ErrorType error = 4;
   string error_str = 5 [json_name = "error_str"];
+}
+
+message CustomResult {
+  string type = 1;
+  Storage storage = 2;
+  string path = 3;
+  google.protobuf.Struct params = 4;
 }

@@ -70,6 +70,7 @@ message Task {
     ACTION_UNSPECIFIED = 0;
     ACTION_COPY = 1;
     ACTION_MOVE = 2;
+    ACTION_RESTORE = 14;
   }
 
   string id = 1;
