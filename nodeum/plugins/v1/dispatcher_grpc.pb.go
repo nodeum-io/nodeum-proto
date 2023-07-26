@@ -21,6 +21,8 @@ const _ = grpc.SupportPackageIsVersion7
 const (
 	DispatcherPluginService_BeforeTaskExecuted_FullMethodName      = "/nodeum.plugins.v1.DispatcherPluginService/BeforeTaskExecuted"
 	DispatcherPluginService_BeforeRequestDispatched_FullMethodName = "/nodeum.plugins.v1.DispatcherPluginService/BeforeRequestDispatched"
+	DispatcherPluginService_AfterResultReceived_FullMethodName     = "/nodeum.plugins.v1.DispatcherPluginService/AfterResultReceived"
+	DispatcherPluginService_AfterTaskExecuted_FullMethodName       = "/nodeum.plugins.v1.DispatcherPluginService/AfterTaskExecuted"
 )
 
 // DispatcherPluginServiceClient is the client API for DispatcherPluginService service.
@@ -31,6 +33,11 @@ type DispatcherPluginServiceClient interface {
 	BeforeTaskExecuted(ctx context.Context, in *BeforeTaskExecutedRequest, opts ...grpc.CallOption) (*BeforeTaskExecutedResponse, error)
 	// Before a request is dispatched, you can change it or discard it
 	BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, opts ...grpc.CallOption) (*BeforeRequestDispatchedResponse, error)
+	// After a result has been received and before it's being handled by finalizer.
+	// Progress results are excluded.
+	AfterResultReceived(ctx context.Context, in *AfterResultReceivedRequest, opts ...grpc.CallOption) (*AfterResultReceivedResponse, error)
+	// After the task has been executed
+	AfterTaskExecuted(ctx context.Context, in *AfterTaskExecutedRequest, opts ...grpc.CallOption) (*AfterTaskExecutedResponse, error)
 }
 
 type dispatcherPluginServiceClient struct {
@@ -59,6 +66,24 @@ func (c *dispatcherPluginServiceClient) BeforeRequestDispatched(ctx context.Cont
 	return out, nil
 }
 
+func (c *dispatcherPluginServiceClient) AfterResultReceived(ctx context.Context, in *AfterResultReceivedRequest, opts ...grpc.CallOption) (*AfterResultReceivedResponse, error) {
+	out := new(AfterResultReceivedResponse)
+	err := c.cc.Invoke(ctx, DispatcherPluginService_AfterResultReceived_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dispatcherPluginServiceClient) AfterTaskExecuted(ctx context.Context, in *AfterTaskExecutedRequest, opts ...grpc.CallOption) (*AfterTaskExecutedResponse, error) {
+	out := new(AfterTaskExecutedResponse)
+	err := c.cc.Invoke(ctx, DispatcherPluginService_AfterTaskExecuted_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DispatcherPluginServiceServer is the server API for DispatcherPluginService service.
 // All implementations must embed UnimplementedDispatcherPluginServiceServer
 // for forward compatibility
@@ -67,6 +92,11 @@ type DispatcherPluginServiceServer interface {
 	BeforeTaskExecuted(context.Context, *BeforeTaskExecutedRequest) (*BeforeTaskExecutedResponse, error)
 	// Before a request is dispatched, you can change it or discard it
 	BeforeRequestDispatched(context.Context, *BeforeRequestDispatchedRequest) (*BeforeRequestDispatchedResponse, error)
+	// After a result has been received and before it's being handled by finalizer.
+	// Progress results are excluded.
+	AfterResultReceived(context.Context, *AfterResultReceivedRequest) (*AfterResultReceivedResponse, error)
+	// After the task has been executed
+	AfterTaskExecuted(context.Context, *AfterTaskExecutedRequest) (*AfterTaskExecutedResponse, error)
 	mustEmbedUnimplementedDispatcherPluginServiceServer()
 }
 
@@ -79,6 +109,12 @@ func (UnimplementedDispatcherPluginServiceServer) BeforeTaskExecuted(context.Con
 }
 func (UnimplementedDispatcherPluginServiceServer) BeforeRequestDispatched(context.Context, *BeforeRequestDispatchedRequest) (*BeforeRequestDispatchedResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method BeforeRequestDispatched not implemented")
+}
+func (UnimplementedDispatcherPluginServiceServer) AfterResultReceived(context.Context, *AfterResultReceivedRequest) (*AfterResultReceivedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AfterResultReceived not implemented")
+}
+func (UnimplementedDispatcherPluginServiceServer) AfterTaskExecuted(context.Context, *AfterTaskExecutedRequest) (*AfterTaskExecutedResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AfterTaskExecuted not implemented")
 }
 func (UnimplementedDispatcherPluginServiceServer) mustEmbedUnimplementedDispatcherPluginServiceServer() {
 }
@@ -130,6 +166,42 @@ func _DispatcherPluginService_BeforeRequestDispatched_Handler(srv interface{}, c
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DispatcherPluginService_AfterResultReceived_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AfterResultReceivedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DispatcherPluginServiceServer).AfterResultReceived(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DispatcherPluginService_AfterResultReceived_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DispatcherPluginServiceServer).AfterResultReceived(ctx, req.(*AfterResultReceivedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DispatcherPluginService_AfterTaskExecuted_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AfterTaskExecutedRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DispatcherPluginServiceServer).AfterTaskExecuted(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: DispatcherPluginService_AfterTaskExecuted_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DispatcherPluginServiceServer).AfterTaskExecuted(ctx, req.(*AfterTaskExecutedRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DispatcherPluginService_ServiceDesc is the grpc.ServiceDesc for DispatcherPluginService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -144,6 +216,14 @@ var DispatcherPluginService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "BeforeRequestDispatched",
 			Handler:    _DispatcherPluginService_BeforeRequestDispatched_Handler,
+		},
+		{
+			MethodName: "AfterResultReceived",
+			Handler:    _DispatcherPluginService_AfterResultReceived_Handler,
+		},
+		{
+			MethodName: "AfterTaskExecuted",
+			Handler:    _DispatcherPluginService_AfterTaskExecuted_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

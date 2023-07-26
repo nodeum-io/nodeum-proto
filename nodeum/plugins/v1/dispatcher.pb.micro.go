@@ -42,6 +42,11 @@ type DispatcherPluginService interface {
 	BeforeTaskExecuted(ctx context.Context, in *BeforeTaskExecutedRequest, opts ...client.CallOption) (*BeforeTaskExecutedResponse, error)
 	// Before a request is dispatched, you can change it or discard it
 	BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, opts ...client.CallOption) (*BeforeRequestDispatchedResponse, error)
+	// After a result has been received and before it's being handled by finalizer.
+	// Progress results are excluded.
+	AfterResultReceived(ctx context.Context, in *AfterResultReceivedRequest, opts ...client.CallOption) (*AfterResultReceivedResponse, error)
+	// After the task has been executed
+	AfterTaskExecuted(ctx context.Context, in *AfterTaskExecutedRequest, opts ...client.CallOption) (*AfterTaskExecutedResponse, error)
 }
 
 type dispatcherPluginService struct {
@@ -76,6 +81,26 @@ func (c *dispatcherPluginService) BeforeRequestDispatched(ctx context.Context, i
 	return out, nil
 }
 
+func (c *dispatcherPluginService) AfterResultReceived(ctx context.Context, in *AfterResultReceivedRequest, opts ...client.CallOption) (*AfterResultReceivedResponse, error) {
+	req := c.c.NewRequest(c.name, "DispatcherPluginService.AfterResultReceived", in)
+	out := new(AfterResultReceivedResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dispatcherPluginService) AfterTaskExecuted(ctx context.Context, in *AfterTaskExecutedRequest, opts ...client.CallOption) (*AfterTaskExecutedResponse, error) {
+	req := c.c.NewRequest(c.name, "DispatcherPluginService.AfterTaskExecuted", in)
+	out := new(AfterTaskExecutedResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for DispatcherPluginService service
 
 type DispatcherPluginServiceHandler interface {
@@ -83,12 +108,19 @@ type DispatcherPluginServiceHandler interface {
 	BeforeTaskExecuted(context.Context, *BeforeTaskExecutedRequest, *BeforeTaskExecutedResponse) error
 	// Before a request is dispatched, you can change it or discard it
 	BeforeRequestDispatched(context.Context, *BeforeRequestDispatchedRequest, *BeforeRequestDispatchedResponse) error
+	// After a result has been received and before it's being handled by finalizer.
+	// Progress results are excluded.
+	AfterResultReceived(context.Context, *AfterResultReceivedRequest, *AfterResultReceivedResponse) error
+	// After the task has been executed
+	AfterTaskExecuted(context.Context, *AfterTaskExecutedRequest, *AfterTaskExecutedResponse) error
 }
 
 func RegisterDispatcherPluginServiceHandler(s server.Server, hdlr DispatcherPluginServiceHandler, opts ...server.HandlerOption) error {
 	type dispatcherPluginService interface {
 		BeforeTaskExecuted(ctx context.Context, in *BeforeTaskExecutedRequest, out *BeforeTaskExecutedResponse) error
 		BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, out *BeforeRequestDispatchedResponse) error
+		AfterResultReceived(ctx context.Context, in *AfterResultReceivedRequest, out *AfterResultReceivedResponse) error
+		AfterTaskExecuted(ctx context.Context, in *AfterTaskExecutedRequest, out *AfterTaskExecutedResponse) error
 	}
 	type DispatcherPluginService struct {
 		dispatcherPluginService
@@ -107,4 +139,12 @@ func (h *dispatcherPluginServiceHandler) BeforeTaskExecuted(ctx context.Context,
 
 func (h *dispatcherPluginServiceHandler) BeforeRequestDispatched(ctx context.Context, in *BeforeRequestDispatchedRequest, out *BeforeRequestDispatchedResponse) error {
 	return h.DispatcherPluginServiceHandler.BeforeRequestDispatched(ctx, in, out)
+}
+
+func (h *dispatcherPluginServiceHandler) AfterResultReceived(ctx context.Context, in *AfterResultReceivedRequest, out *AfterResultReceivedResponse) error {
+	return h.DispatcherPluginServiceHandler.AfterResultReceived(ctx, in, out)
+}
+
+func (h *dispatcherPluginServiceHandler) AfterTaskExecuted(ctx context.Context, in *AfterTaskExecutedRequest, out *AfterTaskExecutedResponse) error {
+	return h.DispatcherPluginServiceHandler.AfterTaskExecuted(ctx, in, out)
 }
