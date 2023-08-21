@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	MoverService_Start_FullMethodName   = "/nodeum.micro.v1.MoverService/Start"
-	MoverService_Pause_FullMethodName   = "/nodeum.micro.v1.MoverService/Pause"
-	MoverService_Resume_FullMethodName  = "/nodeum.micro.v1.MoverService/Resume"
-	MoverService_Stop_FullMethodName    = "/nodeum.micro.v1.MoverService/Stop"
-	MoverService_Request_FullMethodName = "/nodeum.micro.v1.MoverService/Request"
+	MoverService_Start_FullMethodName    = "/nodeum.micro.v1.MoverService/Start"
+	MoverService_Pause_FullMethodName    = "/nodeum.micro.v1.MoverService/Pause"
+	MoverService_Resume_FullMethodName   = "/nodeum.micro.v1.MoverService/Resume"
+	MoverService_Stop_FullMethodName     = "/nodeum.micro.v1.MoverService/Stop"
+	MoverService_Request_FullMethodName  = "/nodeum.micro.v1.MoverService/Request"
+	MoverService_Requests_FullMethodName = "/nodeum.micro.v1.MoverService/Requests"
 )
 
 // MoverServiceClient is the client API for MoverService service.
@@ -37,6 +38,7 @@ type MoverServiceClient interface {
 	Stop(ctx context.Context, in *MoverServiceStopRequest, opts ...grpc.CallOption) (*MoverServiceStopResponse, error)
 	// Executes a single request on the mover
 	Request(ctx context.Context, in *MoverServiceRequestRequest, opts ...grpc.CallOption) (MoverService_RequestClient, error)
+	Requests(ctx context.Context, opts ...grpc.CallOption) (MoverService_RequestsClient, error)
 }
 
 type moverServiceClient struct {
@@ -115,6 +117,37 @@ func (x *moverServiceRequestClient) Recv() (*MoverServiceRequestResponse, error)
 	return m, nil
 }
 
+func (c *moverServiceClient) Requests(ctx context.Context, opts ...grpc.CallOption) (MoverService_RequestsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &MoverService_ServiceDesc.Streams[1], MoverService_Requests_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &moverServiceRequestsClient{stream}
+	return x, nil
+}
+
+type MoverService_RequestsClient interface {
+	Send(*MoverServiceRequestsRequest) error
+	Recv() (*MoverServiceRequestsResponse, error)
+	grpc.ClientStream
+}
+
+type moverServiceRequestsClient struct {
+	grpc.ClientStream
+}
+
+func (x *moverServiceRequestsClient) Send(m *MoverServiceRequestsRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *moverServiceRequestsClient) Recv() (*MoverServiceRequestsResponse, error) {
+	m := new(MoverServiceRequestsResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // MoverServiceServer is the server API for MoverService service.
 // All implementations must embed UnimplementedMoverServiceServer
 // for forward compatibility
@@ -126,6 +159,7 @@ type MoverServiceServer interface {
 	Stop(context.Context, *MoverServiceStopRequest) (*MoverServiceStopResponse, error)
 	// Executes a single request on the mover
 	Request(*MoverServiceRequestRequest, MoverService_RequestServer) error
+	Requests(MoverService_RequestsServer) error
 	mustEmbedUnimplementedMoverServiceServer()
 }
 
@@ -147,6 +181,9 @@ func (UnimplementedMoverServiceServer) Stop(context.Context, *MoverServiceStopRe
 }
 func (UnimplementedMoverServiceServer) Request(*MoverServiceRequestRequest, MoverService_RequestServer) error {
 	return status.Errorf(codes.Unimplemented, "method Request not implemented")
+}
+func (UnimplementedMoverServiceServer) Requests(MoverService_RequestsServer) error {
+	return status.Errorf(codes.Unimplemented, "method Requests not implemented")
 }
 func (UnimplementedMoverServiceServer) mustEmbedUnimplementedMoverServiceServer() {}
 
@@ -254,6 +291,32 @@ func (x *moverServiceRequestServer) Send(m *MoverServiceRequestResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _MoverService_Requests_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(MoverServiceServer).Requests(&moverServiceRequestsServer{stream})
+}
+
+type MoverService_RequestsServer interface {
+	Send(*MoverServiceRequestsResponse) error
+	Recv() (*MoverServiceRequestsRequest, error)
+	grpc.ServerStream
+}
+
+type moverServiceRequestsServer struct {
+	grpc.ServerStream
+}
+
+func (x *moverServiceRequestsServer) Send(m *MoverServiceRequestsResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *moverServiceRequestsServer) Recv() (*MoverServiceRequestsRequest, error) {
+	m := new(MoverServiceRequestsRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // MoverService_ServiceDesc is the grpc.ServiceDesc for MoverService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -283,6 +346,12 @@ var MoverService_ServiceDesc = grpc.ServiceDesc{
 			StreamName:    "Request",
 			Handler:       _MoverService_Request_Handler,
 			ServerStreams: true,
+		},
+		{
+			StreamName:    "Requests",
+			Handler:       _MoverService_Requests_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
 		},
 	},
 	Metadata: "nodeum/micro/v1/mover.proto",

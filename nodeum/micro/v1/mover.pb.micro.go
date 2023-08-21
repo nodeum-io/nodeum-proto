@@ -44,6 +44,7 @@ type MoverService interface {
 	Stop(ctx context.Context, in *MoverServiceStopRequest, opts ...client.CallOption) (*MoverServiceStopResponse, error)
 	// Executes a single request on the mover
 	Request(ctx context.Context, in *MoverServiceRequestRequest, opts ...client.CallOption) (MoverService_RequestService, error)
+	Requests(ctx context.Context, opts ...client.CallOption) (MoverService_RequestsService, error)
 }
 
 type moverService struct {
@@ -152,6 +153,62 @@ func (x *moverServiceRequest) Recv() (*MoverServiceRequestResponse, error) {
 	return m, nil
 }
 
+func (c *moverService) Requests(ctx context.Context, opts ...client.CallOption) (MoverService_RequestsService, error) {
+	req := c.c.NewRequest(c.name, "MoverService.Requests", &MoverServiceRequestsRequest{})
+	stream, err := c.c.Stream(ctx, req, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return &moverServiceRequests{stream}, nil
+}
+
+type MoverService_RequestsService interface {
+	Context() context.Context
+	SendMsg(interface{}) error
+	RecvMsg(interface{}) error
+	CloseSend() error
+	Close() error
+	Send(*MoverServiceRequestsRequest) error
+	Recv() (*MoverServiceRequestsResponse, error)
+}
+
+type moverServiceRequests struct {
+	stream client.Stream
+}
+
+func (x *moverServiceRequests) CloseSend() error {
+	return x.stream.CloseSend()
+}
+
+func (x *moverServiceRequests) Close() error {
+	return x.stream.Close()
+}
+
+func (x *moverServiceRequests) Context() context.Context {
+	return x.stream.Context()
+}
+
+func (x *moverServiceRequests) SendMsg(m interface{}) error {
+	return x.stream.Send(m)
+}
+
+func (x *moverServiceRequests) RecvMsg(m interface{}) error {
+	return x.stream.Recv(m)
+}
+
+func (x *moverServiceRequests) Send(m *MoverServiceRequestsRequest) error {
+	return x.stream.Send(m)
+}
+
+func (x *moverServiceRequests) Recv() (*MoverServiceRequestsResponse, error) {
+	m := new(MoverServiceRequestsResponse)
+	err := x.stream.Recv(m)
+	if err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // Server API for MoverService service
 
 type MoverServiceHandler interface {
@@ -162,6 +219,7 @@ type MoverServiceHandler interface {
 	Stop(context.Context, *MoverServiceStopRequest, *MoverServiceStopResponse) error
 	// Executes a single request on the mover
 	Request(context.Context, *MoverServiceRequestRequest, MoverService_RequestStream) error
+	Requests(context.Context, MoverService_RequestsStream) error
 }
 
 func RegisterMoverServiceHandler(s server.Server, hdlr MoverServiceHandler, opts ...server.HandlerOption) error {
@@ -171,6 +229,7 @@ func RegisterMoverServiceHandler(s server.Server, hdlr MoverServiceHandler, opts
 		Resume(ctx context.Context, in *MoverServiceResumeRequest, out *MoverServiceResumeResponse) error
 		Stop(ctx context.Context, in *MoverServiceStopRequest, out *MoverServiceStopResponse) error
 		Request(ctx context.Context, stream server.Stream) error
+		Requests(ctx context.Context, stream server.Stream) error
 	}
 	type MoverService struct {
 		moverService
@@ -237,4 +296,49 @@ func (x *moverServiceRequestStream) RecvMsg(m interface{}) error {
 
 func (x *moverServiceRequestStream) Send(m *MoverServiceRequestResponse) error {
 	return x.stream.Send(m)
+}
+
+func (h *moverServiceHandler) Requests(ctx context.Context, stream server.Stream) error {
+	return h.MoverServiceHandler.Requests(ctx, &moverServiceRequestsStream{stream})
+}
+
+type MoverService_RequestsStream interface {
+	Context() context.Context
+	SendMsg(interface{}) error
+	RecvMsg(interface{}) error
+	Close() error
+	Send(*MoverServiceRequestsResponse) error
+	Recv() (*MoverServiceRequestsRequest, error)
+}
+
+type moverServiceRequestsStream struct {
+	stream server.Stream
+}
+
+func (x *moverServiceRequestsStream) Close() error {
+	return x.stream.Close()
+}
+
+func (x *moverServiceRequestsStream) Context() context.Context {
+	return x.stream.Context()
+}
+
+func (x *moverServiceRequestsStream) SendMsg(m interface{}) error {
+	return x.stream.Send(m)
+}
+
+func (x *moverServiceRequestsStream) RecvMsg(m interface{}) error {
+	return x.stream.Recv(m)
+}
+
+func (x *moverServiceRequestsStream) Send(m *MoverServiceRequestsResponse) error {
+	return x.stream.Send(m)
+}
+
+func (x *moverServiceRequestsStream) Recv() (*MoverServiceRequestsRequest, error) {
+	m := new(MoverServiceRequestsRequest)
+	if err := x.stream.Recv(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }

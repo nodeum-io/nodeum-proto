@@ -18,6 +18,7 @@ service MoverService {
 
   // Executes a single request on the mover
   rpc Request(MoverServiceRequestRequest) returns (stream MoverServiceRequestResponse);
+  rpc Requests(stream MoverServiceRequestsRequest) returns (stream MoverServiceRequestsResponse);
 }
 
 message MoverServiceStartRequest {
@@ -41,5 +42,15 @@ message MoverServiceRequestRequest {
   nodeum.common.v1.Request request = 1;
 }
 message MoverServiceRequestResponse {
+  nodeum.common.v1.Result result = 1;
+}
+
+message MoverServiceRequestsRequest {
+  oneof action {
+    MoverServiceStartRequest start = 1;
+    nodeum.common.v1.Request request = 5;
+  }
+}
+message MoverServiceRequestsResponse {
   nodeum.common.v1.Result result = 1;
 }
