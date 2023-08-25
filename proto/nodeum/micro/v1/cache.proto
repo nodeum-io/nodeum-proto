@@ -6,7 +6,7 @@ option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 
 import "google/api/annotations.proto";
 import "nodeum/common/v1/nodeinfo.proto";
-import "nodeum/common/v1/secondary.proto";
+import "nodeum/common/v1/version.proto";
 
 service CacheService {
   rpc Mkdir(MkdirRequest) returns (MkdirResponse) {
@@ -21,6 +21,8 @@ service CacheService {
       get: "/cache/readdir";
     };
   }
+
+  rpc SetVersion(SetVersionRequest) returns (SetVersionResponse) {};
 }
 
 message MkdirRequest {
@@ -49,3 +51,9 @@ message ReadDirRequest {
 message ReadDirResponse {
   nodeum.common.v1.NodeInfo info = 1;
 }
+
+message SetVersionRequest {
+  string path = 1;
+  nodeum.common.v1.Version version = 2;
+}
+message SetVersionResponse {}

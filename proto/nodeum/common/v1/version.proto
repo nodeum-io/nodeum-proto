@@ -4,6 +4,20 @@ package nodeum.common.v1;
 
 option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/common/v1;commonv1";
 
+import "nodeum/common/v1/nodeinfo.proto";
+
+message Version {
+  uint64 id = 1;
+  NodeInfo info = 2;
+
+  oneof type {
+    Primary primary = 3;
+    Secondary secondary = 4;
+  }
+}
+
+message Primary {}
+
 message Secondary {
   enum Type {
     TYPE_UNSPECIFIED = 0;
@@ -13,4 +27,5 @@ message Secondary {
   }
   Type type = 1;
   uint64 storage_id = 2;
+  string path = 3;
 }

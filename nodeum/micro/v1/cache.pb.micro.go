@@ -54,6 +54,7 @@ func NewCacheServiceEndpoints() []*api.Endpoint {
 type CacheService interface {
 	Mkdir(ctx context.Context, in *MkdirRequest, opts ...client.CallOption) (*MkdirResponse, error)
 	ReadDir(ctx context.Context, in *ReadDirRequest, opts ...client.CallOption) (CacheService_ReadDirService, error)
+	SetVersion(ctx context.Context, in *SetVersionRequest, opts ...client.CallOption) (*SetVersionResponse, error)
 }
 
 type cacheService struct {
@@ -132,17 +133,29 @@ func (x *cacheServiceReadDir) Recv() (*ReadDirResponse, error) {
 	return m, nil
 }
 
+func (c *cacheService) SetVersion(ctx context.Context, in *SetVersionRequest, opts ...client.CallOption) (*SetVersionResponse, error) {
+	req := c.c.NewRequest(c.name, "CacheService.SetVersion", in)
+	out := new(SetVersionResponse)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for CacheService service
 
 type CacheServiceHandler interface {
 	Mkdir(context.Context, *MkdirRequest, *MkdirResponse) error
 	ReadDir(context.Context, *ReadDirRequest, CacheService_ReadDirStream) error
+	SetVersion(context.Context, *SetVersionRequest, *SetVersionResponse) error
 }
 
 func RegisterCacheServiceHandler(s server.Server, hdlr CacheServiceHandler, opts ...server.HandlerOption) error {
 	type cacheService interface {
 		Mkdir(ctx context.Context, in *MkdirRequest, out *MkdirResponse) error
 		ReadDir(ctx context.Context, stream server.Stream) error
+		SetVersion(ctx context.Context, in *SetVersionRequest, out *SetVersionResponse) error
 	}
 	type CacheService struct {
 		cacheService
@@ -210,4 +223,8 @@ func (x *cacheServiceReadDirStream) RecvMsg(m interface{}) error {
 
 func (x *cacheServiceReadDirStream) Send(m *ReadDirResponse) error {
 	return x.stream.Send(m)
+}
+
+func (h *cacheServiceHandler) SetVersion(ctx context.Context, in *SetVersionRequest, out *SetVersionResponse) error {
+	return h.CacheServiceHandler.SetVersion(ctx, in, out)
 }

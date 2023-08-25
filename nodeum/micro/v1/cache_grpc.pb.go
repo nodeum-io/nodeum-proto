@@ -19,8 +19,9 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	CacheService_Mkdir_FullMethodName   = "/nodeum.micro.v1.CacheService/Mkdir"
-	CacheService_ReadDir_FullMethodName = "/nodeum.micro.v1.CacheService/ReadDir"
+	CacheService_Mkdir_FullMethodName      = "/nodeum.micro.v1.CacheService/Mkdir"
+	CacheService_ReadDir_FullMethodName    = "/nodeum.micro.v1.CacheService/ReadDir"
+	CacheService_SetVersion_FullMethodName = "/nodeum.micro.v1.CacheService/SetVersion"
 )
 
 // CacheServiceClient is the client API for CacheService service.
@@ -29,6 +30,7 @@ const (
 type CacheServiceClient interface {
 	Mkdir(ctx context.Context, in *MkdirRequest, opts ...grpc.CallOption) (*MkdirResponse, error)
 	ReadDir(ctx context.Context, in *ReadDirRequest, opts ...grpc.CallOption) (CacheService_ReadDirClient, error)
+	SetVersion(ctx context.Context, in *SetVersionRequest, opts ...grpc.CallOption) (*SetVersionResponse, error)
 }
 
 type cacheServiceClient struct {
@@ -80,12 +82,22 @@ func (x *cacheServiceReadDirClient) Recv() (*ReadDirResponse, error) {
 	return m, nil
 }
 
+func (c *cacheServiceClient) SetVersion(ctx context.Context, in *SetVersionRequest, opts ...grpc.CallOption) (*SetVersionResponse, error) {
+	out := new(SetVersionResponse)
+	err := c.cc.Invoke(ctx, CacheService_SetVersion_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CacheServiceServer is the server API for CacheService service.
 // All implementations must embed UnimplementedCacheServiceServer
 // for forward compatibility
 type CacheServiceServer interface {
 	Mkdir(context.Context, *MkdirRequest) (*MkdirResponse, error)
 	ReadDir(*ReadDirRequest, CacheService_ReadDirServer) error
+	SetVersion(context.Context, *SetVersionRequest) (*SetVersionResponse, error)
 	mustEmbedUnimplementedCacheServiceServer()
 }
 
@@ -98,6 +110,9 @@ func (UnimplementedCacheServiceServer) Mkdir(context.Context, *MkdirRequest) (*M
 }
 func (UnimplementedCacheServiceServer) ReadDir(*ReadDirRequest, CacheService_ReadDirServer) error {
 	return status.Errorf(codes.Unimplemented, "method ReadDir not implemented")
+}
+func (UnimplementedCacheServiceServer) SetVersion(context.Context, *SetVersionRequest) (*SetVersionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SetVersion not implemented")
 }
 func (UnimplementedCacheServiceServer) mustEmbedUnimplementedCacheServiceServer() {}
 
@@ -151,6 +166,24 @@ func (x *cacheServiceReadDirServer) Send(m *ReadDirResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _CacheService_SetVersion_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SetVersionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CacheServiceServer).SetVersion(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CacheService_SetVersion_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CacheServiceServer).SetVersion(ctx, req.(*SetVersionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CacheService_ServiceDesc is the grpc.ServiceDesc for CacheService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -161,6 +194,10 @@ var CacheService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Mkdir",
 			Handler:    _CacheService_Mkdir_Handler,
+		},
+		{
+			MethodName: "SetVersion",
+			Handler:    _CacheService_SetVersion_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
