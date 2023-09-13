@@ -51,6 +51,8 @@ message DispatcherServiceStartResponse {
 
 message DispatcherServicePauseRequest {
   string id = 1;
+  // Recursive sends the pause request to every dispatchers
+  bool recursive = 2;
 }
 message DispatcherServicePauseResponse {
   string msg = 1;
@@ -58,6 +60,8 @@ message DispatcherServicePauseResponse {
 
 message DispatcherServiceResumeRequest {
   string id = 1;
+  // Recursive sends the resume request to every dispatchers
+  bool recursive = 2;
 }
 message DispatcherServiceResumeResponse {
   string msg = 1;
@@ -65,6 +69,8 @@ message DispatcherServiceResumeResponse {
 
 message DispatcherServiceStopRequest {
   string id = 1;
+  // Recursive sends the stop request to every dispatchers
+  bool recursive = 2;
 }
 message DispatcherServiceStopResponse {
   string msg = 1;
