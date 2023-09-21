@@ -6,6 +6,18 @@ option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/common/v1;commonv1
 
 import "google/protobuf/timestamp.proto";
 
+message HashEntry {
+  enum HashType {
+    HASH_TYPE_UNSPECIFIED = 0;
+    HASH_TYPE_CRC32 = 1;
+    HASH_TYPE_MD5 = 2;
+    HASH_TYPE_XXHASH64 = 3;
+  }
+
+  HashType key = 1;
+  bytes value = 2;
+}
+
 message NodeInfo {
   string path = 1;
   uint32 mode = 2;
@@ -17,4 +29,5 @@ message NodeInfo {
   google.protobuf.Timestamp ctime = 8;
 
   map<string, string> metadata = 9;
+  repeated HashEntry hashes = 10;
 }
