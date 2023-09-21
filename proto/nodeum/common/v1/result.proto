@@ -58,6 +58,7 @@ message FailedResult {
     ERROR_TYPE_EXIST = 5;
     ERROR_TYPE_NOT_EMPTY = 6;
     ERROR_TYPE_TIMEOUT = 7;
+    ERROR_TYPE_UNKNOWN_COMMAND = 8;
   }
   ErrorType error = 4;
   string error_str = 5 [json_name = "error_str"];
