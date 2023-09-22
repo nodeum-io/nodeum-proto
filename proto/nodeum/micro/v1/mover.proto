@@ -10,8 +10,6 @@ import "nodeum/common/v1/storages.proto";
 import "nodeum/common/v1/task.proto";
 
 service MoverService {
-  // Starts a task execution on the mover
-  rpc Start(MoverServiceStartRequest) returns (MoverServiceStartResponse);
   rpc Pause(MoverServicePauseRequest) returns (MoverServicePauseResponse) {}
   rpc Resume(MoverServiceResumeRequest) returns (MoverServiceResumeResponse) {}
   rpc Stop(MoverServiceStopRequest) returns (MoverServiceStopResponse) {}
@@ -28,8 +26,6 @@ message MoverServiceStartRequest {
   nodeum.common.v1.Storage source = 5;
   nodeum.common.v1.Storage destination = 6;
 }
-
-message MoverServiceStartResponse {}
 
 message MoverServicePauseRequest { string id = 1; }
 message MoverServicePauseResponse { string msg = 1; }

@@ -19,7 +19,6 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	MoverService_Start_FullMethodName    = "/nodeum.micro.v1.MoverService/Start"
 	MoverService_Pause_FullMethodName    = "/nodeum.micro.v1.MoverService/Pause"
 	MoverService_Resume_FullMethodName   = "/nodeum.micro.v1.MoverService/Resume"
 	MoverService_Stop_FullMethodName     = "/nodeum.micro.v1.MoverService/Stop"
@@ -31,8 +30,6 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MoverServiceClient interface {
-	// Starts a task execution on the mover
-	Start(ctx context.Context, in *MoverServiceStartRequest, opts ...grpc.CallOption) (*MoverServiceStartResponse, error)
 	Pause(ctx context.Context, in *MoverServicePauseRequest, opts ...grpc.CallOption) (*MoverServicePauseResponse, error)
 	Resume(ctx context.Context, in *MoverServiceResumeRequest, opts ...grpc.CallOption) (*MoverServiceResumeResponse, error)
 	Stop(ctx context.Context, in *MoverServiceStopRequest, opts ...grpc.CallOption) (*MoverServiceStopResponse, error)
@@ -47,15 +44,6 @@ type moverServiceClient struct {
 
 func NewMoverServiceClient(cc grpc.ClientConnInterface) MoverServiceClient {
 	return &moverServiceClient{cc}
-}
-
-func (c *moverServiceClient) Start(ctx context.Context, in *MoverServiceStartRequest, opts ...grpc.CallOption) (*MoverServiceStartResponse, error) {
-	out := new(MoverServiceStartResponse)
-	err := c.cc.Invoke(ctx, MoverService_Start_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func (c *moverServiceClient) Pause(ctx context.Context, in *MoverServicePauseRequest, opts ...grpc.CallOption) (*MoverServicePauseResponse, error) {
@@ -152,8 +140,6 @@ func (x *moverServiceRequestsClient) Recv() (*MoverServiceRequestsResponse, erro
 // All implementations must embed UnimplementedMoverServiceServer
 // for forward compatibility
 type MoverServiceServer interface {
-	// Starts a task execution on the mover
-	Start(context.Context, *MoverServiceStartRequest) (*MoverServiceStartResponse, error)
 	Pause(context.Context, *MoverServicePauseRequest) (*MoverServicePauseResponse, error)
 	Resume(context.Context, *MoverServiceResumeRequest) (*MoverServiceResumeResponse, error)
 	Stop(context.Context, *MoverServiceStopRequest) (*MoverServiceStopResponse, error)
@@ -167,9 +153,6 @@ type MoverServiceServer interface {
 type UnimplementedMoverServiceServer struct {
 }
 
-func (UnimplementedMoverServiceServer) Start(context.Context, *MoverServiceStartRequest) (*MoverServiceStartResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Start not implemented")
-}
 func (UnimplementedMoverServiceServer) Pause(context.Context, *MoverServicePauseRequest) (*MoverServicePauseResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Pause not implemented")
 }
@@ -196,24 +179,6 @@ type UnsafeMoverServiceServer interface {
 
 func RegisterMoverServiceServer(s grpc.ServiceRegistrar, srv MoverServiceServer) {
 	s.RegisterService(&MoverService_ServiceDesc, srv)
-}
-
-func _MoverService_Start_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MoverServiceStartRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(MoverServiceServer).Start(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: MoverService_Start_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MoverServiceServer).Start(ctx, req.(*MoverServiceStartRequest))
-	}
-	return interceptor(ctx, in, info, handler)
 }
 
 func _MoverService_Pause_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -324,10 +289,6 @@ var MoverService_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "nodeum.micro.v1.MoverService",
 	HandlerType: (*MoverServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Start",
-			Handler:    _MoverService_Start_Handler,
-		},
 		{
 			MethodName: "Pause",
 			Handler:    _MoverService_Pause_Handler,
