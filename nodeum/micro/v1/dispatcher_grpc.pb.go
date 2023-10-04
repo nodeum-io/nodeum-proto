@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	DispatcherService_Start_FullMethodName  = "/nodeum.micro.v1.DispatcherService/Start"
-	DispatcherService_Pause_FullMethodName  = "/nodeum.micro.v1.DispatcherService/Pause"
-	DispatcherService_Resume_FullMethodName = "/nodeum.micro.v1.DispatcherService/Resume"
-	DispatcherService_Stop_FullMethodName   = "/nodeum.micro.v1.DispatcherService/Stop"
+	DispatcherService_Start_FullMethodName   = "/nodeum.micro.v1.DispatcherService/Start"
+	DispatcherService_Pause_FullMethodName   = "/nodeum.micro.v1.DispatcherService/Pause"
+	DispatcherService_Resume_FullMethodName  = "/nodeum.micro.v1.DispatcherService/Resume"
+	DispatcherService_Stop_FullMethodName    = "/nodeum.micro.v1.DispatcherService/Stop"
+	DispatcherService_ReadDir_FullMethodName = "/nodeum.micro.v1.DispatcherService/ReadDir"
 )
 
 // DispatcherServiceClient is the client API for DispatcherService service.
@@ -33,6 +34,7 @@ type DispatcherServiceClient interface {
 	Pause(ctx context.Context, in *DispatcherServicePauseRequest, opts ...grpc.CallOption) (*DispatcherServicePauseResponse, error)
 	Resume(ctx context.Context, in *DispatcherServiceResumeRequest, opts ...grpc.CallOption) (*DispatcherServiceResumeResponse, error)
 	Stop(ctx context.Context, in *DispatcherServiceStopRequest, opts ...grpc.CallOption) (*DispatcherServiceStopResponse, error)
+	ReadDir(ctx context.Context, in *DispatcherServiceReadDirRequest, opts ...grpc.CallOption) (DispatcherService_ReadDirClient, error)
 }
 
 type dispatcherServiceClient struct {
@@ -79,6 +81,38 @@ func (c *dispatcherServiceClient) Stop(ctx context.Context, in *DispatcherServic
 	return out, nil
 }
 
+func (c *dispatcherServiceClient) ReadDir(ctx context.Context, in *DispatcherServiceReadDirRequest, opts ...grpc.CallOption) (DispatcherService_ReadDirClient, error) {
+	stream, err := c.cc.NewStream(ctx, &DispatcherService_ServiceDesc.Streams[0], DispatcherService_ReadDir_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &dispatcherServiceReadDirClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type DispatcherService_ReadDirClient interface {
+	Recv() (*DispatcherServiceReadDirResponse, error)
+	grpc.ClientStream
+}
+
+type dispatcherServiceReadDirClient struct {
+	grpc.ClientStream
+}
+
+func (x *dispatcherServiceReadDirClient) Recv() (*DispatcherServiceReadDirResponse, error) {
+	m := new(DispatcherServiceReadDirResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // DispatcherServiceServer is the server API for DispatcherService service.
 // All implementations must embed UnimplementedDispatcherServiceServer
 // for forward compatibility
@@ -87,6 +121,7 @@ type DispatcherServiceServer interface {
 	Pause(context.Context, *DispatcherServicePauseRequest) (*DispatcherServicePauseResponse, error)
 	Resume(context.Context, *DispatcherServiceResumeRequest) (*DispatcherServiceResumeResponse, error)
 	Stop(context.Context, *DispatcherServiceStopRequest) (*DispatcherServiceStopResponse, error)
+	ReadDir(*DispatcherServiceReadDirRequest, DispatcherService_ReadDirServer) error
 	mustEmbedUnimplementedDispatcherServiceServer()
 }
 
@@ -105,6 +140,9 @@ func (UnimplementedDispatcherServiceServer) Resume(context.Context, *DispatcherS
 }
 func (UnimplementedDispatcherServiceServer) Stop(context.Context, *DispatcherServiceStopRequest) (*DispatcherServiceStopResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Stop not implemented")
+}
+func (UnimplementedDispatcherServiceServer) ReadDir(*DispatcherServiceReadDirRequest, DispatcherService_ReadDirServer) error {
+	return status.Errorf(codes.Unimplemented, "method ReadDir not implemented")
 }
 func (UnimplementedDispatcherServiceServer) mustEmbedUnimplementedDispatcherServiceServer() {}
 
@@ -191,6 +229,27 @@ func _DispatcherService_Stop_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DispatcherService_ReadDir_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(DispatcherServiceReadDirRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(DispatcherServiceServer).ReadDir(m, &dispatcherServiceReadDirServer{stream})
+}
+
+type DispatcherService_ReadDirServer interface {
+	Send(*DispatcherServiceReadDirResponse) error
+	grpc.ServerStream
+}
+
+type dispatcherServiceReadDirServer struct {
+	grpc.ServerStream
+}
+
+func (x *dispatcherServiceReadDirServer) Send(m *DispatcherServiceReadDirResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // DispatcherService_ServiceDesc is the grpc.ServiceDesc for DispatcherService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -215,6 +274,12 @@ var DispatcherService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _DispatcherService_Stop_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "ReadDir",
+			Handler:       _DispatcherService_ReadDir_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "nodeum/micro/v1/dispatcher.proto",
 }

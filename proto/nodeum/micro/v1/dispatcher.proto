@@ -6,6 +6,7 @@ option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 
 import "google/api/annotations.proto";
 import "google/protobuf/struct.proto";
+import "nodeum/common/v1/nodeinfo.proto";
 import "nodeum/common/v1/task.proto";
 
 service DispatcherService {
@@ -28,6 +29,12 @@ service DispatcherService {
   rpc Stop(DispatcherServiceStopRequest) returns (DispatcherServiceStopResponse) {
     option (google.api.http) = {
       post: "/task/stop/{id}";
+    };
+  }
+
+  rpc ReadDir(DispatcherServiceReadDirRequest) returns (stream DispatcherServiceReadDirResponse) {
+    option (google.api.http) = {
+      get: "/dispatcher/readdir";
     };
   }
 }
@@ -74,4 +81,12 @@ message DispatcherServiceStopRequest {
 }
 message DispatcherServiceStopResponse {
   string msg = 1;
+}
+
+message DispatcherServiceReadDirRequest {
+  string path = 1;
+  bool recursive = 2;
+}
+message DispatcherServiceReadDirResponse {
+  nodeum.common.v1.NodeInfo info = 1;
 }
