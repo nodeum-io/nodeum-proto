@@ -86,6 +86,9 @@ message DispatcherServiceStopResponse {
 message DispatcherServiceReadDirRequest {
   string path = 1;
   bool recursive = 2;
+
+  string context_uid = 4;
+  string context_gid = 5;
 }
 message DispatcherServiceReadDirResponse {
   nodeum.common.v1.NodeInfo info = 1;
