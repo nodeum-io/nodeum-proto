@@ -33,6 +33,7 @@ service SchedulerService {
     };
   }
 
+  // DeleteSchedule cancels and deletes a schedule for a task.
   rpc DeleteSchedule(DeleteScheduleRequest) returns (DeleteScheduleResponse) {
     option (google.api.http) = {
       delete: "/schedules/{task_id}";
@@ -47,25 +48,35 @@ message TaskSchedule {
     STATUS_PENDING = 1;
     // Next scheduled has been defined
     STATUS_SCHEDULED = 2;
-    // Schedule is finished, no more occurences
+    // Schedule is finished, no more occurrences
     STATUS_DONE = 3;
   }
 
+  // Task ID
   string task_id = 2 [json_name = "task_id"];
+  // Recurrence Rules (RRULE), as defined by RFC 2445 (iCalendar)
   string rrule = 4;
+  // Date of scheduled next occurrence
   google.protobuf.Timestamp next = 5 [
     (google.api.field_behavior) = OUTPUT_ONLY
   ];
+  // Status of schedule
   Status status = 6;
 
+  // Count of scheduled occurrences that were missed.
+  // Reset to zero on success.
   uint32 missed_count = 7 [
     json_name = "missed_count",
     (google.api.field_behavior) = OUTPUT_ONLY
   ];
+  // Date of first missed occurrence.
+  // Reset to nil on success.
   google.protobuf.Timestamp missed_first = 8 [
     json_name = "missed_first",
     (google.api.field_behavior) = OUTPUT_ONLY
   ];
+  // Date of last missed occurrence.
+  // Reset to nil on success.
   google.protobuf.Timestamp missed_last = 9 [
     json_name = "missed_last",
     (google.api.field_behavior) = OUTPUT_ONLY
@@ -73,27 +84,34 @@ message TaskSchedule {
 }
 
 message ReadScheduleRequest {
+  // Task ID of schedule to read
   string task_id = 2 [json_name = "task_id"];
 }
 message ReadScheduleResponse {
+  // Requested schedule
   TaskSchedule schedule = 1;
 }
 
 message ListSchedulesRequest {}
 message ListSchedulesResponse {
+  // List of all schedules
   repeated TaskSchedule schedules = 1;
 }
 
 message WriteScheduleRequest {
+  // Schedule to create or update
   TaskSchedule schedule = 1;
 }
 message WriteScheduleResponse {
+  // English user-friendly message (eg. "Schedule x set")
   string msg = 1;
 }
 
 message DeleteScheduleRequest {
+  // Task ID of schedule to delete
   string task_id = 2 [json_name = "task_id"];
 }
 message DeleteScheduleResponse {
+  // English user-friendly message (eg. "Schedule x deleted")
   string msg = 1;
 }

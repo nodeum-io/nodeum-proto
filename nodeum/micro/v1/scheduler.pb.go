@@ -30,7 +30,7 @@ const (
 	TaskSchedule_STATUS_PENDING TaskSchedule_Status = 1
 	// Next scheduled has been defined
 	TaskSchedule_STATUS_SCHEDULED TaskSchedule_Status = 2
-	// Schedule is finished, no more occurences
+	// Schedule is finished, no more occurrences
 	TaskSchedule_STATUS_DONE TaskSchedule_Status = 3
 )
 
@@ -82,13 +82,23 @@ type TaskSchedule struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	TaskId      string                 `protobuf:"bytes,2,opt,name=task_id,proto3" json:"task_id,omitempty"`
-	Rrule       string                 `protobuf:"bytes,4,opt,name=rrule,proto3" json:"rrule,omitempty"`
-	Next        *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=next,proto3" json:"next,omitempty"`
-	Status      TaskSchedule_Status    `protobuf:"varint,6,opt,name=status,proto3,enum=nodeum.micro.v1.TaskSchedule_Status" json:"status,omitempty"`
-	MissedCount uint32                 `protobuf:"varint,7,opt,name=missed_count,proto3" json:"missed_count,omitempty"`
+	// Task ID
+	TaskId string `protobuf:"bytes,2,opt,name=task_id,proto3" json:"task_id,omitempty"`
+	// Recurrence Rules (RRULE), as defined by RFC 2445 (iCalendar)
+	Rrule string `protobuf:"bytes,4,opt,name=rrule,proto3" json:"rrule,omitempty"`
+	// Date of scheduled next occurrence
+	Next *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=next,proto3" json:"next,omitempty"`
+	// Status of schedule
+	Status TaskSchedule_Status `protobuf:"varint,6,opt,name=status,proto3,enum=nodeum.micro.v1.TaskSchedule_Status" json:"status,omitempty"`
+	// Count of scheduled occurrences that were missed.
+	// Reset to zero on success.
+	MissedCount uint32 `protobuf:"varint,7,opt,name=missed_count,proto3" json:"missed_count,omitempty"`
+	// Date of first missed occurrence.
+	// Reset to nil on success.
 	MissedFirst *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=missed_first,proto3" json:"missed_first,omitempty"`
-	MissedLast  *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=missed_last,proto3" json:"missed_last,omitempty"`
+	// Date of last missed occurrence.
+	// Reset to nil on success.
+	MissedLast *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=missed_last,proto3" json:"missed_last,omitempty"`
 }
 
 func (x *TaskSchedule) Reset() {
@@ -177,6 +187,7 @@ type ReadScheduleRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Task ID of schedule to read
 	TaskId string `protobuf:"bytes,2,opt,name=task_id,proto3" json:"task_id,omitempty"`
 }
 
@@ -224,6 +235,7 @@ type ReadScheduleResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Requested schedule
 	Schedule *TaskSchedule `protobuf:"bytes,1,opt,name=schedule,proto3" json:"schedule,omitempty"`
 }
 
@@ -309,6 +321,7 @@ type ListSchedulesResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// List of all schedules
 	Schedules []*TaskSchedule `protobuf:"bytes,1,rep,name=schedules,proto3" json:"schedules,omitempty"`
 }
 
@@ -356,6 +369,7 @@ type WriteScheduleRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Schedule to create or update
 	Schedule *TaskSchedule `protobuf:"bytes,1,opt,name=schedule,proto3" json:"schedule,omitempty"`
 }
 
@@ -403,6 +417,7 @@ type WriteScheduleResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// English user-friendly message (eg. "Schedule x set")
 	Msg string `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
 }
 
@@ -450,6 +465,7 @@ type DeleteScheduleRequest struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Task ID of schedule to delete
 	TaskId string `protobuf:"bytes,2,opt,name=task_id,proto3" json:"task_id,omitempty"`
 }
 
@@ -497,6 +513,7 @@ type DeleteScheduleResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// English user-friendly message (eg. "Schedule x deleted")
 	Msg string `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
 }
 
