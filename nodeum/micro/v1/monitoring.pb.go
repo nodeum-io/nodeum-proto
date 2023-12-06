@@ -109,19 +109,28 @@ func (*InfoRequest) Descriptor() ([]byte, []int) {
 	return file_nodeum_micro_v1_monitoring_proto_rawDescGZIP(), []int{0}
 }
 
+// Description of a host
 type InfoResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Uuid     string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Hostname string                 `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
-	Ip       string                 `protobuf:"bytes,3,opt,name=ip,proto3" json:"ip,omitempty"`
-	Memory   int64                  `protobuf:"varint,4,opt,name=memory,proto3" json:"memory,omitempty"`
-	Cpus     int32                  `protobuf:"varint,5,opt,name=cpus,proto3" json:"cpus,omitempty"`
-	Time     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=time,proto3" json:"time,omitempty"`
-	Timezone string                 `protobuf:"bytes,7,opt,name=timezone,proto3" json:"timezone,omitempty"`
-	Uptime   int64                  `protobuf:"varint,8,opt,name=uptime,proto3" json:"uptime,omitempty"`
+	// Server Product UUID
+	Uuid string `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	// Hostname
+	Hostname string `protobuf:"bytes,2,opt,name=hostname,proto3" json:"hostname,omitempty"`
+	// Host IP address
+	Ip string `protobuf:"bytes,3,opt,name=ip,proto3" json:"ip,omitempty"`
+	// Memory in Bytes
+	Memory int64 `protobuf:"varint,4,opt,name=memory,proto3" json:"memory,omitempty"`
+	// Number of CPUs
+	Cpus int32 `protobuf:"varint,5,opt,name=cpus,proto3" json:"cpus,omitempty"`
+	// Current time of server
+	Time *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=time,proto3" json:"time,omitempty"`
+	// Abbreviated name of timezone
+	Timezone string `protobuf:"bytes,7,opt,name=timezone,proto3" json:"timezone,omitempty"`
+	// Uptime in seconds
+	Uptime int64 `protobuf:"varint,8,opt,name=uptime,proto3" json:"uptime,omitempty"`
 }
 
 func (x *InfoResponse) Reset() {
@@ -371,14 +380,18 @@ func (x *StatsResponse) GetErrors() int64 {
 	return 0
 }
 
+// Description of a service
 type Service struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name    string          `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Version string          `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
-	Nodes   []*Service_Node `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
+	// Name of the service
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Version of the service
+	Version string `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
+	// Instance of this service running on the same version
+	Nodes []*Service_Node `protobuf:"bytes,3,rep,name=nodes,proto3" json:"nodes,omitempty"`
 }
 
 func (x *Service) Reset() {
@@ -604,15 +617,19 @@ func (x *ListHostsResponse) GetHosts() []*InfoResponse {
 	return nil
 }
 
+// A single Node running the service
 type Service_Node struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Id      string              `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Address string              `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
-	Stats   *StatsResponse      `protobuf:"bytes,3,opt,name=stats,proto3" json:"stats,omitempty"`
-	Status  Service_Node_Status `protobuf:"varint,4,opt,name=status,proto3,enum=nodeum.micro.v1.Service_Node_Status" json:"status,omitempty"`
+	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Address used to communicate with this service
+	Address string `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	// Statistics about the running service
+	Stats *StatsResponse `protobuf:"bytes,3,opt,name=stats,proto3" json:"stats,omitempty"`
+	// Current status of the service
+	Status Service_Node_Status `protobuf:"varint,4,opt,name=status,proto3,enum=nodeum.micro.v1.Service_Node_Status" json:"status,omitempty"`
 }
 
 func (x *Service_Node) Reset() {

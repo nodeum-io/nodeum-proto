@@ -27,15 +27,24 @@ type License struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Error       string                 `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	Issuer      string                 `protobuf:"bytes,2,opt,name=issuer,proto3" json:"issuer,omitempty"`
-	Subject     string                 `protobuf:"bytes,3,opt,name=subject,proto3" json:"subject,omitempty"`
-	Audience    []string               `protobuf:"bytes,4,rep,name=audience,proto3" json:"audience,omitempty"`
-	ExpiresAt   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
-	NotBefore   *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=not_before,json=notBefore,proto3" json:"not_before,omitempty"`
-	IssuedAt    *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=issued_at,json=issuedAt,proto3" json:"issued_at,omitempty"`
+	// Optional error when validating license
+	Error string `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
+	// Issuer of the license (ie. Nodeum)
+	Issuer string `protobuf:"bytes,2,opt,name=issuer,proto3" json:"issuer,omitempty"`
+	// Name of receiver of the license
+	Subject string `protobuf:"bytes,3,opt,name=subject,proto3" json:"subject,omitempty"`
+	// List of Product UUID
+	Audience []string `protobuf:"bytes,4,rep,name=audience,proto3" json:"audience,omitempty"`
+	// Expiration date
+	ExpiresAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	// Not before date
+	NotBefore *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=not_before,json=notBefore,proto3" json:"not_before,omitempty"`
+	// When the license was issued
+	IssuedAt *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=issued_at,json=issuedAt,proto3" json:"issued_at,omitempty"`
+	// Maintenance date
 	Maintenance *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=maintenance,proto3" json:"maintenance,omitempty"`
-	Semver      string                 `protobuf:"bytes,8,opt,name=semver,proto3" json:"semver,omitempty"`
+	// Version constraint, in semver format
+	Semver string `protobuf:"bytes,8,opt,name=semver,proto3" json:"semver,omitempty"`
 }
 
 func (x *License) Reset() {

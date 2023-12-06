@@ -156,6 +156,7 @@ const (
 type MonitoringServiceClient interface {
 	// ListServices returns all registered services.
 	ListServices(ctx context.Context, in *ListServicesRequest, opts ...grpc.CallOption) (*ListServicesResponse, error)
+	// ListHosts returns information about hosts running services.
 	ListHosts(ctx context.Context, in *ListHostsRequest, opts ...grpc.CallOption) (*ListHostsResponse, error)
 }
 
@@ -191,6 +192,7 @@ func (c *monitoringServiceClient) ListHosts(ctx context.Context, in *ListHostsRe
 type MonitoringServiceServer interface {
 	// ListServices returns all registered services.
 	ListServices(context.Context, *ListServicesRequest) (*ListServicesResponse, error)
+	// ListHosts returns information about hosts running services.
 	ListHosts(context.Context, *ListHostsRequest) (*ListHostsResponse, error)
 	mustEmbedUnimplementedMonitoringServiceServer()
 }

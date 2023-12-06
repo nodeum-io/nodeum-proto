@@ -25,15 +25,23 @@ service LicenseService {
 }
 
 message License {
+  // Optional error when validating license
   string error = 1;
-
+  // Issuer of the license (ie. Nodeum)
   string issuer = 2;
+  // Name of receiver of the license
   string subject = 3;
+  // List of Product UUID
   repeated string audience = 4;
+  // Expiration date
   google.protobuf.Timestamp expires_at = 5;
+  // Not before date
   google.protobuf.Timestamp not_before = 6;
+  // When the license was issued
   google.protobuf.Timestamp issued_at = 7;
+  // Maintenance date
   google.protobuf.Timestamp maintenance = 9;
+  // Version constraint, in semver format
   string semver = 8;
 }
 
