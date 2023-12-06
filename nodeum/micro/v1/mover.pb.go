@@ -21,15 +21,20 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Start a new context for receiving requests
 type MoverServiceStartRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	WorkflowId  string        `protobuf:"bytes,1,opt,name=workflow_id,proto3" json:"workflow_id,omitempty"`
-	Execution   *v1.Execution `protobuf:"bytes,4,opt,name=execution,proto3" json:"execution,omitempty"`
-	Source      *v1.Storage   `protobuf:"bytes,5,opt,name=source,proto3" json:"source,omitempty"`
-	Destination *v1.Storage   `protobuf:"bytes,6,opt,name=destination,proto3" json:"destination,omitempty"`
+	// Workflow ID, for logging
+	WorkflowId string `protobuf:"bytes,1,opt,name=workflow_id,proto3" json:"workflow_id,omitempty"`
+	// Task execution
+	Execution *v1.Execution `protobuf:"bytes,4,opt,name=execution,proto3" json:"execution,omitempty"`
+	// Optional source of requests
+	Source *v1.Storage `protobuf:"bytes,5,opt,name=source,proto3" json:"source,omitempty"`
+	// Optional destinations of requests
+	Destination *v1.Storage `protobuf:"bytes,6,opt,name=destination,proto3" json:"destination,omitempty"`
 }
 
 func (x *MoverServiceStartRequest) Reset() {
@@ -144,6 +149,7 @@ type MoverServicePauseResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// English user-friendly message (eg. "Pause requested")
 	Msg string `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
 }
 
@@ -238,6 +244,7 @@ type MoverServiceResumeResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// English user-friendly message (eg. "Resume requested")
 	Msg string `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
 }
 
@@ -332,6 +339,7 @@ type MoverServiceStopResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// English user-friendly message (eg. "Stop requested")
 	Msg string `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
 }
 
@@ -538,6 +546,7 @@ type isMoverServiceRequestsRequest_Action interface {
 }
 
 type MoverServiceRequestsRequest_Start struct {
+	// Start action, must be called before `request`
 	Start *MoverServiceStartRequest `protobuf:"bytes,1,opt,name=start,proto3,oneof"`
 }
 
