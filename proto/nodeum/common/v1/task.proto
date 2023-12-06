@@ -28,18 +28,18 @@ message Task {
       TYPE_CLOUD = 9;
       TYPE_TAPE = 10;
     }
-  
+
     Type type = 1;
     repeated string node_paths = 2 [json_name = "node_paths"];
     // repeated string node_ids = 3 [json_name = "node_ids"];
     reserved 3;
     uint64 pool_id = 4 [json_name = "pool_id"];
     uint64 storage_id = 5 [json_name = "storage_id"];
-  
+
     uint64 parent_storage_id = 16 [json_name = "parent_storage_id"];
     string storage_name = 17 [json_name = "storage_name"];
   }
-  
+
   message Callback {
     enum Type {
       TYPE_UNSPECIFIED = 0;
@@ -53,7 +53,7 @@ message Task {
       LANGUAGE_JAVASCRIPT = 1;
       LANGUAGE_PYTHON = 2;
     }
-  
+
     Type type = 1;
     Language language = 2;
     string script = 3;

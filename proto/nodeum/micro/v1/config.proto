@@ -7,19 +7,19 @@ option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 import "google/api/annotations.proto";
 
 service ConfigService {
-	// ShowConfig shows the current config
-	rpc ShowConfig(ShowConfigRequest) returns (ShowConfigResponse) {
-		option (google.api.http) = {
-			get: "/config";
-		};
-	}
+  // ShowConfig shows the current config
+  rpc ShowConfig(ShowConfigRequest) returns (ShowConfigResponse) {
+    option (google.api.http) = {
+      get: "/config";
+    };
+  }
 
   // UpdateConfig updates the current config
   rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse) {
     option (google.api.http) = {
-			put: "/config";
-			body: "*";
-		};
+      put: "/config";
+      body: "*";
+    };
   }
 }
 

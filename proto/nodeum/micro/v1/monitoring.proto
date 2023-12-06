@@ -8,8 +8,8 @@ import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
 service DebugService {
-	rpc Info(InfoRequest) returns (InfoResponse) {};
-	rpc Stats(StatsRequest) returns (StatsResponse) {};
+  rpc Info(InfoRequest) returns (InfoResponse) {};
+  rpc Stats(StatsRequest) returns (StatsResponse) {};
 }
 
 service MonitoringService {
@@ -19,23 +19,23 @@ service MonitoringService {
       get: "/services";
     };
   }
-	rpc ListHosts(ListHostsRequest) returns (ListHostsResponse) {
+  rpc ListHosts(ListHostsRequest) returns (ListHostsResponse) {
     option (google.api.http) = {
       get: "/hosts";
     };
-	}
+  }
 }
 
 message InfoRequest { }
 message InfoResponse {
-	string uuid = 1;
-	string hostname = 2;
-	string ip = 3;
-	int64 memory = 4;
-	int32 cpus = 5;
-	google.protobuf.Timestamp time = 6;
-	string timezone = 7;
-	int64 uptime = 8;
+  string uuid = 1;
+  string hostname = 2;
+  string ip = 3;
+  int64 memory = 4;
+  int32 cpus = 5;
+  google.protobuf.Timestamp time = 6;
+  string timezone = 7;
+  int64 uptime = 8;
 }
 
 message StatsRequest {
@@ -43,37 +43,37 @@ message StatsRequest {
   string service = 1;
 }
 message StatsResponse {
-	// timestamp of recording
-	int64 timestamp = 1;
-	// unix timestamp
-	int64 started = 2;
-	// in seconds
-	int64 uptime = 3;
-	// in bytes
-	int64 memory = 4;
-	// num threads
-	int64 threads = 5;
-	// total gc in nanoseconds
-	int64 gc = 6;
-	// total number of requests
-	int64 requests = 7;
-	// total number of errors
-	int64 errors = 8;
+  // timestamp of recording
+  int64 timestamp = 1;
+  // unix timestamp
+  int64 started = 2;
+  // in seconds
+  int64 uptime = 3;
+  // in bytes
+  int64 memory = 4;
+  // num threads
+  int64 threads = 5;
+  // total gc in nanoseconds
+  int64 gc = 6;
+  // total number of requests
+  int64 requests = 7;
+  // total number of errors
+  int64 errors = 8;
 }
 
 message Service {
-	message Node {
-		string id = 1;
-		string address = 2;
-		StatsResponse stats = 3;
-	
-		enum Status {
-			STATUS_UNSPECIFIED = 0;
-			STATUS_ALIVE = 1;
-			STATUS_DEAD = 2;
-		}
-		Status status = 4;
-	}
+  message Node {
+    string id = 1;
+    string address = 2;
+    StatsResponse stats = 3;
+
+    enum Status {
+      STATUS_UNSPECIFIED = 0;
+      STATUS_ALIVE = 1;
+      STATUS_DEAD = 2;
+    }
+    Status status = 4;
+  }
 
   string name = 1;
   string version = 2;
@@ -87,5 +87,5 @@ message ListServicesResponse {
 
 message ListHostsRequest {}
 message ListHostsResponse {
-	repeated InfoResponse hosts = 1;
+  repeated InfoResponse hosts = 1;
 }

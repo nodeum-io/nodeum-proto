@@ -8,43 +8,43 @@ import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 
 service LicenseService {
-	// ShowLicense shows details about the current license
-	rpc ShowLicense(ShowLicenseRequest) returns (ShowLicenseResponse) {
-		option (google.api.http) = {
-			get: "/license";
-		};
-	}
+  // ShowLicense shows details about the current license
+  rpc ShowLicense(ShowLicenseRequest) returns (ShowLicenseResponse) {
+    option (google.api.http) = {
+      get: "/license";
+    };
+  }
 
-	// UpdateLicense updates the current license
-	rpc UpdateLicense(UpdateLicenseRequest) returns (UpdateLicenseResponse) {
-		option (google.api.http) = {
-			put: "/license";
-			body: "*";
-		};
-	}
+  // UpdateLicense updates the current license
+  rpc UpdateLicense(UpdateLicenseRequest) returns (UpdateLicenseResponse) {
+    option (google.api.http) = {
+      put: "/license";
+      body: "*";
+    };
+  }
 }
 
 message License {
-	string error = 1;
+  string error = 1;
 
-	string issuer = 2;
-	string subject = 3;
-	repeated string audience = 4;
-	google.protobuf.Timestamp expires_at = 5;
-	google.protobuf.Timestamp not_before = 6;
-	google.protobuf.Timestamp issued_at = 7;
-	google.protobuf.Timestamp maintenance = 9;
-	string semver = 8;
+  string issuer = 2;
+  string subject = 3;
+  repeated string audience = 4;
+  google.protobuf.Timestamp expires_at = 5;
+  google.protobuf.Timestamp not_before = 6;
+  google.protobuf.Timestamp issued_at = 7;
+  google.protobuf.Timestamp maintenance = 9;
+  string semver = 8;
 }
 
 message ShowLicenseRequest {}
 message ShowLicenseResponse {
-	License license = 1;
+  License license = 1;
 }
 
 message UpdateLicenseRequest {
-	string license = 1;
+  string license = 1;
 }
 message UpdateLicenseResponse {
-	License license = 1;
+  License license = 1;
 }
