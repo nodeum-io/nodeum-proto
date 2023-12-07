@@ -9,6 +9,7 @@ import "nodeum/common/v1/nodeinfo.proto";
 import "nodeum/common/v1/storages.proto";
 
 message Request {
+  // Request ID (MongoDB ObjectId)
   string id = 1;
 
   oneof request {
@@ -18,6 +19,7 @@ message Request {
     CustomRequest custom = 5;
   }
 
+  // Request options
   google.protobuf.Struct options = 8;
 }
 
@@ -27,37 +29,56 @@ message CopyRequest {
     TYPE_COPY = 1;
     TYPE_MOVE = 2;
   }
+  // Copy or move
   Type type = 2;
 
+  // Storage of source file
   Storage source = 3;
+  // Path of source file
   string source_path = 4 [json_name = "source_path"];
+  // Storage of destination file
   Storage destination = 5;
+  // Path of destination file
   string destination_path = 6 [json_name = "destination_path"];
 
+  // Info about the file to be copied
   NodeInfo info = 7;
 }
 
+// Remove directory or file
 message RemoveRequest {
+  // Storage of file to remove
   Storage storage = 3;
+  // Path of file to remove
   string path = 4;
-
+  // Info about the file to be removed
   NodeInfo info = 7;
 }
 
+// Scan directory or file
 message ScanRequest {
   enum Type {
     TYPE_UNSPECIFIED = 0;
+    // Recursively read directory
     TYPE_SCAN = 1;
+    // Flat read directory
     TYPE_READDIR = 2;
   }
+  // Scan or Readdir
   Type type = 2;
 
+  // Storage to scan
   Storage storage = 3;
+  // Path in the storage to scan
   string path = 4;
 }
 
+// Custom request
 message CustomRequest {
+  // Type of custom request
   string type = 1;
+  // Related storage
   Storage storage = 3;
+  // Related path
   string path = 4;
 }

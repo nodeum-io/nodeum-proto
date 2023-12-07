@@ -78,8 +78,10 @@ type HashEntry struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Key   HashEntry_HashType `protobuf:"varint,1,opt,name=key,proto3,enum=nodeum.common.v1.HashEntry_HashType" json:"key,omitempty"`
-	Value []byte             `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	// Type of hash
+	Key HashEntry_HashType `protobuf:"varint,1,opt,name=key,proto3,enum=nodeum.common.v1.HashEntry_HashType" json:"key,omitempty"`
+	// Bytes value of hash
+	Value []byte `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
 }
 
 func (x *HashEntry) Reset() {
@@ -133,16 +135,26 @@ type NodeInfo struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Path     string                 `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
-	Mode     uint32                 `protobuf:"varint,2,opt,name=mode,proto3" json:"mode,omitempty"`
-	Uid      uint32                 `protobuf:"varint,3,opt,name=uid,proto3" json:"uid,omitempty"`
-	Gid      uint32                 `protobuf:"varint,4,opt,name=gid,proto3" json:"gid,omitempty"`
-	Size     int64                  `protobuf:"varint,5,opt,name=size,proto3" json:"size,omitempty"`
-	Atime    *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=atime,proto3" json:"atime,omitempty"`
-	Mtime    *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=mtime,proto3" json:"mtime,omitempty"`
-	Ctime    *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=ctime,proto3" json:"ctime,omitempty"`
-	Metadata map[string]string      `protobuf:"bytes,9,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
-	Hashes   []*HashEntry           `protobuf:"bytes,10,rep,name=hashes,proto3" json:"hashes,omitempty"`
+	// Full path
+	Path string `protobuf:"bytes,1,opt,name=path,proto3" json:"path,omitempty"`
+	// File mode and permission
+	Mode uint32 `protobuf:"varint,2,opt,name=mode,proto3" json:"mode,omitempty"`
+	// ID of owner
+	Uid uint32 `protobuf:"varint,3,opt,name=uid,proto3" json:"uid,omitempty"`
+	// Group ID of owner
+	Gid uint32 `protobuf:"varint,4,opt,name=gid,proto3" json:"gid,omitempty"`
+	// Size, in bytes
+	Size int64 `protobuf:"varint,5,opt,name=size,proto3" json:"size,omitempty"`
+	// Time of last access
+	Atime *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=atime,proto3" json:"atime,omitempty"`
+	// Time of last date modification
+	Mtime *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=mtime,proto3" json:"mtime,omitempty"`
+	// Time of last status change
+	Ctime *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=ctime,proto3" json:"ctime,omitempty"`
+	// File metadata
+	Metadata map[string]string `protobuf:"bytes,9,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
+	// Hashes, for checksum
+	Hashes []*HashEntry `protobuf:"bytes,10,rep,name=hashes,proto3" json:"hashes,omitempty"`
 }
 
 func (x *NodeInfo) Reset() {

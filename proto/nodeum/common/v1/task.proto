@@ -29,23 +29,43 @@ message Task {
       TYPE_TAPE = 10;
     }
 
+    // Type of source
     Type type = 1;
+    // List of file paths
     repeated string node_paths = 2 [json_name = "node_paths"];
-    // repeated string node_ids = 3 [json_name = "node_ids"];
     reserved 3;
+    // ID of pool
     uint64 pool_id = 4 [json_name = "pool_id"];
+    // Storage ID (container ID, cloud bucket ID, or NAS share id)
     uint64 storage_id = 5 [json_name = "storage_id"];
 
+    // Parent Storage ID (cloud connector ID, or NAS ID). To be paired with `storage_name`
     uint64 parent_storage_id = 16 [json_name = "parent_storage_id"];
+    // Storage name (container name, cloud bucket name, or NAS share name)
     string storage_name = 17 [json_name = "storage_name"];
   }
 
   message Callback {
     enum Type {
       TYPE_UNSPECIFIED = 0;
-      TYPE_FILTER = 1;
+      // Before a request is dispatched.
+      // Parameters:
+      // - `nodeum.common.v1.Request`, request to be dispatched, may be modified
+      // Returns: `bool`, false to cancel the dispatching
+      TYPE_BEFORE_REQUEST_DISPATCHED = 1;
+      // After a result is received
+      // Parameters:
+      // - `nodeum.common.v1.Result`, result received
+      // - `nodeum.common.v1.Execution`, 
       TYPE_AFTER_RESULT_RECEIVED = 2;
+      // Before a task is executed
+      // Parameters:
+      // - `nodeum.common.v1.Task`, task to be executed, may be modified
+      // - `google.protobuf.Struct`, metadata, may be modified
       TYPE_BEFORE_TASK_EXECUTED = 3;
+      // After a task has been executed
+      // Parameters:
+      // - `nodeum.common.v1.Execution`, task execution in its final state
       TYPE_AFTER_TASK_EXECUTED = 4;
     }
     enum Language {
@@ -54,8 +74,11 @@ message Task {
       LANGUAGE_PYTHON = 2;
     }
 
+    // Type of callback
     Type type = 1;
+    // Language of script
     Language language = 2;
+    // Script to be executed, in plain text
     string script = 3;
   }
 
@@ -73,46 +96,78 @@ message Task {
     ACTION_RESTORE = 14;
   }
 
+  // Task ID (MongoDB ObjectId)
   string id = 1;
+  // Task name
   string name = 2;
+  // Task workflow type
   Type type = 3;
+  // Task workflow action
   Action action = 4;
+  // List of task sources
   repeated Source sources = 5;
+  // List of task destinations
   repeated Source destinations = 6;
+  // Task options
   google.protobuf.Struct options = 7;
+  // Task metadata
   Metadata metadata = 8;
+  // List of task callbacks
   repeated Callback callbacks = 9;
 
+  // Last update time
   google.protobuf.Timestamp updated_at = 12 [json_name = "updated_at"];
+  // Username of creator
   string created_by = 13 [json_name = "created_by"];
+  // Username of last updater
   string updated_by = 14 [json_name = "updated_by"];
 
+  // Last or current execution
   Execution last_execution = 15 [json_name = "last_execution"];
 }
 
 message Execution {
   enum Progress {
     PROGRESS_UNSPECIFIED = 0;
+    // Initialization has started
     PROGRESS_INIT_STARTED = 1;
+    // Initialization is done
     PROGRESS_INIT_DONE = 2;
+    // File processing is started
     PROGRESS_PROCESS_STARTED = 4;
+    // File processing is done
     PROGRESS_PROCESS_DONE = 8;
+    // Finalization is started
     PROGRESS_FINAL_STARTED = 16;
+    // Finalization is done
     PROGRESS_FINAL_DONE = 32;
+    // At least one error during the execution
     PROGRESS_HAS_ERROR = 64;
+    // Execution was stopped by system
     PROGRESS_STOPPED = 128;
+    // Execution was stopped by user
     PROGRESS_STOPPED_BY_USER = 256;
+    // Execution is currently paused
     PROGRESS_PAUSED = 512;
   }
 
+  // Execution ID (MongoDB ObjectId)
   string id = 1;
+  // Snapshot of the task when execution started
   Task task = 2;
+  // Execution metadata
   Metadata metadata = 3;
 
+  // Progress bitwise flags
   uint32 progress = 4 [json_name = "progress"];
+  // Total size processed, in bytes.
   int64 size_done = 5 [json_name = "size_done"];
+  // Total size to process, in bytes. May change while initialization is still running
   int64 size_todo = 6 [json_name = "size_todo"];
+  // Number of files processed
   int32 nodes_done = 7 [json_name = "nodes_done"];
+  // Number of files to process. May change while initialization is still running
   int32 nodes_todo = 8 [json_name = "nodes_todo"];
+  // Time when execution was finished
   google.protobuf.Timestamp finished_at = 9 [json_name = "finished_at"];
 }

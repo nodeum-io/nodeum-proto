@@ -10,6 +10,7 @@ import "nodeum/common/v1/request.proto";
 import "nodeum/common/v1/storages.proto";
 
 message Result {
+  // Related request
   Request request = 1;
 
   oneof result {
@@ -23,51 +24,84 @@ message Result {
   }
 }
 
+// Request is still in progress
 message ProgressResult {
+  // Size processed, in bytes
   int64 size_done = 2 [json_name = "size_done"];
+  // Total size to process, in bytes
   int64 size_todo = 3 [json_name = "size_todo"];
+  // Current speed, in bytes/sec
   double speed = 4;
 }
 
+// File has arrived on destination
 message CheckInResult {
+  // Destination storage
   Storage storage = 2;
+  // Info about the file
   NodeInfo info = 3;
+  // When a parent folder has been created indirectly
   bool indirect = 4;
 }
+// File has been removed from source
 message CheckOutResult {
+  // Storage of source
   Storage storage = 2;
+  // Path of removed file
   string path = 3;
 }
 
+// For ScanRequest, when a file has been discovered
 message SeenResult {
+  // Storage containing file
   Storage storage = 2;
+  // Info about the file
   NodeInfo info = 3;
 }
+// When ScanRequest is done
 message OverResult {}
 
+// Error while processing the request
 message FailedResult {
+  // Storage on which the error occurred
   Storage storage = 2;
+  // Path of failed request
   string path = 3;
 
   enum ErrorType {
     ERROR_TYPE_UNSPECIFIED = 0;
+    // Unknown error
     ERROR_TYPE_UNKNOWN = 1;
+    // File doesn't exist
     ERROR_TYPE_NOT_EXIST = 2;
     ERROR_TYPE_NOT_DIR = 3;
+    // Permission denied
     ERROR_TYPE_PERMISSION = 4;
+    // Already exists
     ERROR_TYPE_EXIST = 5;
+    // Can't remove directory, because not empty
     ERROR_TYPE_NOT_EMPTY = 6;
+    // Operation has timedout
     ERROR_TYPE_TIMEOUT = 7;
+    // Unknown custom command
     ERROR_TYPE_UNKNOWN_COMMAND = 8;
+    // Checksum not what's expected
     ERROR_TYPE_BAD_CHECKSUM = 9;
   }
+  // Error type
   ErrorType error = 4;
+  // Readable error description
   string error_str = 5 [json_name = "error_str"];
 }
 
+// Custom result, for custom requests
 message CustomResult {
+  // Type of custom result
   string type = 1;
+  // Related storage
   Storage storage = 2;
+  // Related path
   string path = 3;
+  // Custom parameters
   google.protobuf.Struct params = 4;
 }

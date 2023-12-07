@@ -24,16 +24,24 @@ const (
 type FailedResult_ErrorType int32
 
 const (
-	FailedResult_ERROR_TYPE_UNSPECIFIED     FailedResult_ErrorType = 0
-	FailedResult_ERROR_TYPE_UNKNOWN         FailedResult_ErrorType = 1
-	FailedResult_ERROR_TYPE_NOT_EXIST       FailedResult_ErrorType = 2
-	FailedResult_ERROR_TYPE_NOT_DIR         FailedResult_ErrorType = 3
-	FailedResult_ERROR_TYPE_PERMISSION      FailedResult_ErrorType = 4
-	FailedResult_ERROR_TYPE_EXIST           FailedResult_ErrorType = 5
-	FailedResult_ERROR_TYPE_NOT_EMPTY       FailedResult_ErrorType = 6
-	FailedResult_ERROR_TYPE_TIMEOUT         FailedResult_ErrorType = 7
+	FailedResult_ERROR_TYPE_UNSPECIFIED FailedResult_ErrorType = 0
+	// Unknown error
+	FailedResult_ERROR_TYPE_UNKNOWN FailedResult_ErrorType = 1
+	// File doesn't exist
+	FailedResult_ERROR_TYPE_NOT_EXIST FailedResult_ErrorType = 2
+	FailedResult_ERROR_TYPE_NOT_DIR   FailedResult_ErrorType = 3
+	// Permission denied
+	FailedResult_ERROR_TYPE_PERMISSION FailedResult_ErrorType = 4
+	// Already exists
+	FailedResult_ERROR_TYPE_EXIST FailedResult_ErrorType = 5
+	// Can't remove directory, because not empty
+	FailedResult_ERROR_TYPE_NOT_EMPTY FailedResult_ErrorType = 6
+	// Operation has timedout
+	FailedResult_ERROR_TYPE_TIMEOUT FailedResult_ErrorType = 7
+	// Unknown custom command
 	FailedResult_ERROR_TYPE_UNKNOWN_COMMAND FailedResult_ErrorType = 8
-	FailedResult_ERROR_TYPE_BAD_CHECKSUM    FailedResult_ErrorType = 9
+	// Checksum not what's expected
+	FailedResult_ERROR_TYPE_BAD_CHECKSUM FailedResult_ErrorType = 9
 )
 
 // Enum value maps for FailedResult_ErrorType.
@@ -96,6 +104,7 @@ type Result struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Related request
 	Request *Request `protobuf:"bytes,1,opt,name=request,proto3" json:"request,omitempty"`
 	// Types that are assignable to Result:
 	//
@@ -250,14 +259,18 @@ func (*Result_Failed) isResult_Result() {}
 
 func (*Result_Custom) isResult_Result() {}
 
+// Request is still in progress
 type ProgressResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	SizeDone int64   `protobuf:"varint,2,opt,name=size_done,proto3" json:"size_done,omitempty"`
-	SizeTodo int64   `protobuf:"varint,3,opt,name=size_todo,proto3" json:"size_todo,omitempty"`
-	Speed    float64 `protobuf:"fixed64,4,opt,name=speed,proto3" json:"speed,omitempty"`
+	// Size processed, in bytes
+	SizeDone int64 `protobuf:"varint,2,opt,name=size_done,proto3" json:"size_done,omitempty"`
+	// Total size to process, in bytes
+	SizeTodo int64 `protobuf:"varint,3,opt,name=size_todo,proto3" json:"size_todo,omitempty"`
+	// Current speed, in bytes/sec
+	Speed float64 `protobuf:"fixed64,4,opt,name=speed,proto3" json:"speed,omitempty"`
 }
 
 func (x *ProgressResult) Reset() {
@@ -313,14 +326,18 @@ func (x *ProgressResult) GetSpeed() float64 {
 	return 0
 }
 
+// File has arrived on destination
 type CheckInResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Storage  *Storage  `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
-	Info     *NodeInfo `protobuf:"bytes,3,opt,name=info,proto3" json:"info,omitempty"`
-	Indirect bool      `protobuf:"varint,4,opt,name=indirect,proto3" json:"indirect,omitempty"`
+	// Destination storage
+	Storage *Storage `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
+	// Info about the file
+	Info *NodeInfo `protobuf:"bytes,3,opt,name=info,proto3" json:"info,omitempty"`
+	// When a parent folder has been created indirectly
+	Indirect bool `protobuf:"varint,4,opt,name=indirect,proto3" json:"indirect,omitempty"`
 }
 
 func (x *CheckInResult) Reset() {
@@ -376,13 +393,16 @@ func (x *CheckInResult) GetIndirect() bool {
 	return false
 }
 
+// File has been removed from source
 type CheckOutResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
+	// Storage of source
 	Storage *Storage `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
-	Path    string   `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
+	// Path of removed file
+	Path string `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
 }
 
 func (x *CheckOutResult) Reset() {
@@ -431,13 +451,16 @@ func (x *CheckOutResult) GetPath() string {
 	return ""
 }
 
+// For ScanRequest, when a file has been discovered
 type SeenResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Storage *Storage  `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
-	Info    *NodeInfo `protobuf:"bytes,3,opt,name=info,proto3" json:"info,omitempty"`
+	// Storage containing file
+	Storage *Storage `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
+	// Info about the file
+	Info *NodeInfo `protobuf:"bytes,3,opt,name=info,proto3" json:"info,omitempty"`
 }
 
 func (x *SeenResult) Reset() {
@@ -486,6 +509,7 @@ func (x *SeenResult) GetInfo() *NodeInfo {
 	return nil
 }
 
+// When ScanRequest is done
 type OverResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -524,15 +548,20 @@ func (*OverResult) Descriptor() ([]byte, []int) {
 	return file_nodeum_common_v1_result_proto_rawDescGZIP(), []int{5}
 }
 
+// Error while processing the request
 type FailedResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Storage  *Storage               `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
-	Path     string                 `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
-	Error    FailedResult_ErrorType `protobuf:"varint,4,opt,name=error,proto3,enum=nodeum.common.v1.FailedResult_ErrorType" json:"error,omitempty"`
-	ErrorStr string                 `protobuf:"bytes,5,opt,name=error_str,proto3" json:"error_str,omitempty"`
+	// Storage on which the error occurred
+	Storage *Storage `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
+	// Path of failed request
+	Path string `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
+	// Error type
+	Error FailedResult_ErrorType `protobuf:"varint,4,opt,name=error,proto3,enum=nodeum.common.v1.FailedResult_ErrorType" json:"error,omitempty"`
+	// Readable error description
+	ErrorStr string `protobuf:"bytes,5,opt,name=error_str,proto3" json:"error_str,omitempty"`
 }
 
 func (x *FailedResult) Reset() {
@@ -595,15 +624,20 @@ func (x *FailedResult) GetErrorStr() string {
 	return ""
 }
 
+// Custom result, for custom requests
 type CustomResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Type    string           `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
-	Storage *Storage         `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
-	Path    string           `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
-	Params  *structpb.Struct `protobuf:"bytes,4,opt,name=params,proto3" json:"params,omitempty"`
+	// Type of custom result
+	Type string `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+	// Related storage
+	Storage *Storage `protobuf:"bytes,2,opt,name=storage,proto3" json:"storage,omitempty"`
+	// Related path
+	Path string `protobuf:"bytes,3,opt,name=path,proto3" json:"path,omitempty"`
+	// Custom parameters
+	Params *structpb.Struct `protobuf:"bytes,4,opt,name=params,proto3" json:"params,omitempty"`
 }
 
 func (x *CustomResult) Reset() {

@@ -14,20 +14,32 @@ message HashEntry {
     HASH_TYPE_XXHASH64 = 3;
   }
 
+  // Type of hash
   HashType key = 1;
+  // Bytes value of hash
   bytes value = 2;
 }
 
 message NodeInfo {
+  // Full path
   string path = 1;
+  // File mode and permission
   uint32 mode = 2;
+  // ID of owner
   uint32 uid = 3;
+  // Group ID of owner
   uint32 gid = 4;
+  // Size, in bytes
   int64 size = 5;
+  // Time of last access
   google.protobuf.Timestamp atime = 6;
+  // Time of last date modification
   google.protobuf.Timestamp mtime = 7;
+  // Time of last status change
   google.protobuf.Timestamp ctime = 8;
 
+  // File metadata
   map<string, string> metadata = 9;
+  // Hashes, for checksum
   repeated HashEntry hashes = 10;
 }
