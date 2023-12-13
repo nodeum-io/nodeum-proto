@@ -5,59 +5,97 @@ package nodeum.common.v1;
 option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/common/v1;commonv1";
 
 message Bucket {
+  // Cloud bucket ID
   uint64 id = 1;
+  // Cloud bucket name
   string name = 2;
+  // Cloud connector name
   string connector_name = 3 [json_name = "connector_name"];
+  // Primary pool name, if applicable
   string primary_name = 4 [json_name = "primary_name"];
 
   enum Provider {
     PROVIDER_UNSPECIFIED = 0;
+    // Generic S3
     PROVIDER_GENERIC_S3 = 1;
+    // Amazon AWS S3 Storage
     PROVIDER_AMAZON_AWS_S3 = 2;
+    // Cloudian HyperStore
     PROVIDER_CLOUDIAN_HYPERSTORE = 3;
+    // Scality RING
     PROVIDER_SCALITY_RING = 4;
+    // Dell EMC ECS
     PROVIDER_DELL_EMC_ECS = 5;
+    // Microsoft Azure Blob Storage
     PROVIDER_AZURE = 6;
+    // Google Cloud Storage
     PROVIDER_GOOGLE_CLOUD_STORAGE = 7;
+    // OpenStack Swift
     PROVIDER_OPENSTACK_SWIFT = 8;
+    // Wasabi Hot Cloud Storage
     PROVIDER_WASABI = 9;
+    // Quantum ActiveScale
     PROVIDER_QUANTUM_ACTIVE_SCALE = 10;
   }
 
+  // Cloud endpoint
   string url = 5;
+  // Type of cloud connection
   Provider provider = 6;
+  // Bucket region, if applicable
   string region = 7;
+  // Access key
   string access_key = 8 [json_name = "access_key"];
+  // Secret key. May be encrypted
   string secret_key = 9 [json_name = "secret_key"];
+  // List of options
   repeated string options = 10;
 }
 
 message NASShare {
+  // NAS share ID
   uint64 id = 1;
+  // NAS share name
   string name = 2;
+  // NAS name
   string nas_name = 3 [json_name = "nas_name"];
+  // Primary pool name, if applicable
   string primary_name = 4 [json_name = "primary_name"];
 
   enum Protocol {
     PROTOCOL_UNSPECIFIED = 0;
+    // SMB 1.0 / CIFS
     PROTOCOL_SMB_V1 = 1;
+    // NFSv3
     PROTOCOL_NFS_V3 = 2;
-    PROTOCOL_STORE_NEXT_V5 = 3;
+    // PROTOCOL_STORE_NEXT_V5 = 3;
+    reserved 3;
+    // NFSv4
     PROTOCOL_NFS_V4 = 4;
+    // SMB 2.1
     PROTOCOL_SMB_V2_1 = 5;
+    // SMB 3.0
     PROTOCOL_SMB_V3 = 6;
   }
 
+  // Protocol of NAS
   Protocol protocol = 5;
+  // Host of NAS
   string host = 6;
+  // Path to NAS share
   string path = 7;
+  // NAS username
   string username = 8;
+  // NAS password. May be encrypted
   string password = 9;
+  // List of options
   repeated string options = 10;
 }
 
 message Container {
+  // Container ID
   uint64 id = 1;
+  // Container Name
   string name = 2;
 }
 

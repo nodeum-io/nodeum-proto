@@ -10,29 +10,47 @@ import "nodeum/common/v1/storages.proto";
 import "nodeum/common/v1/task.proto";
 
 service MoverService {
+  // Pauses an execution
   rpc Pause(MoverServicePauseRequest) returns (MoverServicePauseResponse) {}
+  // Resumes a paused execution
   rpc Resume(MoverServiceResumeRequest) returns (MoverServiceResumeResponse) {}
+  // Stops an execution
   rpc Stop(MoverServiceStopRequest) returns (MoverServiceStopResponse) {}
 
-  // Executes a single request on the mover
+  // Executes one request on the mover, receives many results
   rpc Request(MoverServiceRequestRequest) returns (stream MoverServiceRequestResponse);
+  // Executes many requests on the mover, receives many results
   rpc Requests(stream MoverServiceRequestsRequest) returns (stream MoverServiceRequestsResponse);
 }
 
+// Start a new context for receiving requests
 message MoverServiceStartRequest {
+  // Workflow ID, for logging
   string workflow_id = 1 [json_name = "workflow_id"];
 
+  // Task execution
   nodeum.common.v1.Execution execution = 4;
+  // Optional source of requests
   nodeum.common.v1.Storage source = 5;
+  // Optional destinations of requests
   nodeum.common.v1.Storage destination = 6;
 }
 
 message MoverServicePauseRequest { string id = 1; }
-message MoverServicePauseResponse { string msg = 1; }
+message MoverServicePauseResponse {
+  // English user-friendly message (eg. "Pause requested")
+  string msg = 1;
+}
 message MoverServiceResumeRequest { string id = 1; }
-message MoverServiceResumeResponse { string msg = 1; }
+message MoverServiceResumeResponse {
+  // English user-friendly message (eg. "Resume requested")
+  string msg = 1;
+}
 message MoverServiceStopRequest { string id = 1; }
-message MoverServiceStopResponse { string msg = 1; }
+message MoverServiceStopResponse {
+  // English user-friendly message (eg. "Stop requested")
+  string msg = 1;
+}
 
 message MoverServiceRequestRequest {
   nodeum.common.v1.Request request = 1;
@@ -43,6 +61,7 @@ message MoverServiceRequestResponse {
 
 message MoverServiceRequestsRequest {
   oneof action {
+    // Start action, must be called before `request`
     MoverServiceStartRequest start = 1;
     nodeum.common.v1.Request request = 5;
   }

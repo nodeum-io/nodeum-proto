@@ -37,6 +37,7 @@ type SchedulerServiceClient interface {
 	// WriteSchedule creates or update a schedule for a task.
 	// If one schedule already exists for the task, it will be overwritten.
 	WriteSchedule(ctx context.Context, in *WriteScheduleRequest, opts ...grpc.CallOption) (*WriteScheduleResponse, error)
+	// DeleteSchedule cancels and deletes a schedule for a task.
 	DeleteSchedule(ctx context.Context, in *DeleteScheduleRequest, opts ...grpc.CallOption) (*DeleteScheduleResponse, error)
 }
 
@@ -96,6 +97,7 @@ type SchedulerServiceServer interface {
 	// WriteSchedule creates or update a schedule for a task.
 	// If one schedule already exists for the task, it will be overwritten.
 	WriteSchedule(context.Context, *WriteScheduleRequest) (*WriteScheduleResponse, error)
+	// DeleteSchedule cancels and deletes a schedule for a task.
 	DeleteSchedule(context.Context, *DeleteScheduleRequest) (*DeleteScheduleResponse, error)
 	mustEmbedUnimplementedSchedulerServiceServer()
 }

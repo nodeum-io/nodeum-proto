@@ -37,7 +37,7 @@ message ReadDirRequest {
     message OutOfDateSecondary {
       repeated nodeum.common.v1.Secondary secondaries = 1;
     }
-  
+
     oneof filter {
       OutOfDateSecondary out_of_date_secondary = 1;
     }

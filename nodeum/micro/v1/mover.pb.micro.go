@@ -37,11 +37,15 @@ func NewMoverServiceEndpoints() []*api.Endpoint {
 // Client API for MoverService service
 
 type MoverService interface {
+	// Pauses an execution
 	Pause(ctx context.Context, in *MoverServicePauseRequest, opts ...client.CallOption) (*MoverServicePauseResponse, error)
+	// Resumes a paused execution
 	Resume(ctx context.Context, in *MoverServiceResumeRequest, opts ...client.CallOption) (*MoverServiceResumeResponse, error)
+	// Stops an execution
 	Stop(ctx context.Context, in *MoverServiceStopRequest, opts ...client.CallOption) (*MoverServiceStopResponse, error)
-	// Executes a single request on the mover
+	// Executes one request on the mover, receives many results
 	Request(ctx context.Context, in *MoverServiceRequestRequest, opts ...client.CallOption) (MoverService_RequestService, error)
+	// Executes many requests on the mover, receives many results
 	Requests(ctx context.Context, opts ...client.CallOption) (MoverService_RequestsService, error)
 }
 
@@ -200,11 +204,15 @@ func (x *moverServiceRequests) Recv() (*MoverServiceRequestsResponse, error) {
 // Server API for MoverService service
 
 type MoverServiceHandler interface {
+	// Pauses an execution
 	Pause(context.Context, *MoverServicePauseRequest, *MoverServicePauseResponse) error
+	// Resumes a paused execution
 	Resume(context.Context, *MoverServiceResumeRequest, *MoverServiceResumeResponse) error
+	// Stops an execution
 	Stop(context.Context, *MoverServiceStopRequest, *MoverServiceStopResponse) error
-	// Executes a single request on the mover
+	// Executes one request on the mover, receives many results
 	Request(context.Context, *MoverServiceRequestRequest, MoverService_RequestStream) error
+	// Executes many requests on the mover, receives many results
 	Requests(context.Context, MoverService_RequestsStream) error
 }
 

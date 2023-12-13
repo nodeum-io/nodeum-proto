@@ -71,6 +71,7 @@ type SchedulerService interface {
 	// WriteSchedule creates or update a schedule for a task.
 	// If one schedule already exists for the task, it will be overwritten.
 	WriteSchedule(ctx context.Context, in *WriteScheduleRequest, opts ...client.CallOption) (*WriteScheduleResponse, error)
+	// DeleteSchedule cancels and deletes a schedule for a task.
 	DeleteSchedule(ctx context.Context, in *DeleteScheduleRequest, opts ...client.CallOption) (*DeleteScheduleResponse, error)
 }
 
@@ -137,6 +138,7 @@ type SchedulerServiceHandler interface {
 	// WriteSchedule creates or update a schedule for a task.
 	// If one schedule already exists for the task, it will be overwritten.
 	WriteSchedule(context.Context, *WriteScheduleRequest, *WriteScheduleResponse) error
+	// DeleteSchedule cancels and deletes a schedule for a task.
 	DeleteSchedule(context.Context, *DeleteScheduleRequest, *DeleteScheduleResponse) error
 }
 

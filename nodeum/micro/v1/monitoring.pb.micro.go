@@ -129,6 +129,7 @@ func NewMonitoringServiceEndpoints() []*api.Endpoint {
 type MonitoringService interface {
 	// ListServices returns all registered services.
 	ListServices(ctx context.Context, in *ListServicesRequest, opts ...client.CallOption) (*ListServicesResponse, error)
+	// ListHosts returns information about hosts running services.
 	ListHosts(ctx context.Context, in *ListHostsRequest, opts ...client.CallOption) (*ListHostsResponse, error)
 }
 
@@ -169,6 +170,7 @@ func (c *monitoringService) ListHosts(ctx context.Context, in *ListHostsRequest,
 type MonitoringServiceHandler interface {
 	// ListServices returns all registered services.
 	ListServices(context.Context, *ListServicesRequest, *ListServicesResponse) error
+	// ListHosts returns information about hosts running services.
 	ListHosts(context.Context, *ListHostsRequest, *ListHostsResponse) error
 }
 

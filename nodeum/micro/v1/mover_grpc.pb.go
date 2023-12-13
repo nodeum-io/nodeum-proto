@@ -30,11 +30,15 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MoverServiceClient interface {
+	// Pauses an execution
 	Pause(ctx context.Context, in *MoverServicePauseRequest, opts ...grpc.CallOption) (*MoverServicePauseResponse, error)
+	// Resumes a paused execution
 	Resume(ctx context.Context, in *MoverServiceResumeRequest, opts ...grpc.CallOption) (*MoverServiceResumeResponse, error)
+	// Stops an execution
 	Stop(ctx context.Context, in *MoverServiceStopRequest, opts ...grpc.CallOption) (*MoverServiceStopResponse, error)
-	// Executes a single request on the mover
+	// Executes one request on the mover, receives many results
 	Request(ctx context.Context, in *MoverServiceRequestRequest, opts ...grpc.CallOption) (MoverService_RequestClient, error)
+	// Executes many requests on the mover, receives many results
 	Requests(ctx context.Context, opts ...grpc.CallOption) (MoverService_RequestsClient, error)
 }
 
@@ -140,11 +144,15 @@ func (x *moverServiceRequestsClient) Recv() (*MoverServiceRequestsResponse, erro
 // All implementations must embed UnimplementedMoverServiceServer
 // for forward compatibility
 type MoverServiceServer interface {
+	// Pauses an execution
 	Pause(context.Context, *MoverServicePauseRequest) (*MoverServicePauseResponse, error)
+	// Resumes a paused execution
 	Resume(context.Context, *MoverServiceResumeRequest) (*MoverServiceResumeResponse, error)
+	// Stops an execution
 	Stop(context.Context, *MoverServiceStopRequest) (*MoverServiceStopResponse, error)
-	// Executes a single request on the mover
+	// Executes one request on the mover, receives many results
 	Request(*MoverServiceRequestRequest, MoverService_RequestServer) error
+	// Executes many requests on the mover, receives many results
 	Requests(MoverService_RequestsServer) error
 	mustEmbedUnimplementedMoverServiceServer()
 }

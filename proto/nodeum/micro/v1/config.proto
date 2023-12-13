@@ -7,28 +7,30 @@ option go_package = "github.com/nodeum-io/nodeum-proto/nodeum/micro/v1;microv1";
 import "google/api/annotations.proto";
 
 service ConfigService {
-	// ShowConfig shows the current config
-	rpc ShowConfig(ShowConfigRequest) returns (ShowConfigResponse) {
-		option (google.api.http) = {
-			get: "/config";
-		};
-	}
+  // ShowConfig shows the current config
+  rpc ShowConfig(ShowConfigRequest) returns (ShowConfigResponse) {
+    option (google.api.http) = {
+      get: "/config";
+    };
+  }
 
   // UpdateConfig updates the current config
   rpc UpdateConfig(UpdateConfigRequest) returns (UpdateConfigResponse) {
     option (google.api.http) = {
-			put: "/config";
-			body: "*";
-		};
+      put: "/config";
+      body: "*";
+    };
   }
 }
 
 message Config {
   message Misc {
+    // License key, as a JWT
     optional string license = 1;
   }
 
   message Logger {
+    // Logger level, one-of "trace", "debug", "info", "warn", "error", "fatal"
     optional string level = 1;
   }
 
@@ -73,6 +75,7 @@ message ShowConfigResponse {
 }
 
 message UpdateConfigRequest {
+  // Configuration keys to update. Partial config can be provided, only the option set will be updated.
   Config config = 1;
 }
 message UpdateConfigResponse {
