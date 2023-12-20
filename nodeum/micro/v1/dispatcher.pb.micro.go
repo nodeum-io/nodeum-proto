@@ -76,6 +76,7 @@ type DispatcherService interface {
 	Resume(ctx context.Context, in *DispatcherServiceResumeRequest, opts ...client.CallOption) (*DispatcherServiceResumeResponse, error)
 	Stop(ctx context.Context, in *DispatcherServiceStopRequest, opts ...client.CallOption) (*DispatcherServiceStopResponse, error)
 	ReadDir(ctx context.Context, in *DispatcherServiceReadDirRequest, opts ...client.CallOption) (DispatcherService_ReadDirService, error)
+	ReadDir2(ctx context.Context, in *DispatcherServiceReadDirRequest, opts ...client.CallOption) (DispatcherService_ReadDir2Service, error)
 }
 
 type dispatcherService struct {
@@ -184,6 +185,60 @@ func (x *dispatcherServiceReadDir) Recv() (*DispatcherServiceReadDirResponse, er
 	return m, nil
 }
 
+func (c *dispatcherService) ReadDir2(ctx context.Context, in *DispatcherServiceReadDirRequest, opts ...client.CallOption) (DispatcherService_ReadDir2Service, error) {
+	req := c.c.NewRequest(c.name, "DispatcherService.ReadDir2", &DispatcherServiceReadDirRequest{})
+	stream, err := c.c.Stream(ctx, req, opts...)
+	if err != nil {
+		return nil, err
+	}
+	if err := stream.Send(in); err != nil {
+		return nil, err
+	}
+	return &dispatcherServiceReadDir2{stream}, nil
+}
+
+type DispatcherService_ReadDir2Service interface {
+	Context() context.Context
+	SendMsg(interface{}) error
+	RecvMsg(interface{}) error
+	CloseSend() error
+	Close() error
+	Recv() (*DispatcherServiceReadDirResponse, error)
+}
+
+type dispatcherServiceReadDir2 struct {
+	stream client.Stream
+}
+
+func (x *dispatcherServiceReadDir2) CloseSend() error {
+	return x.stream.CloseSend()
+}
+
+func (x *dispatcherServiceReadDir2) Close() error {
+	return x.stream.Close()
+}
+
+func (x *dispatcherServiceReadDir2) Context() context.Context {
+	return x.stream.Context()
+}
+
+func (x *dispatcherServiceReadDir2) SendMsg(m interface{}) error {
+	return x.stream.Send(m)
+}
+
+func (x *dispatcherServiceReadDir2) RecvMsg(m interface{}) error {
+	return x.stream.Recv(m)
+}
+
+func (x *dispatcherServiceReadDir2) Recv() (*DispatcherServiceReadDirResponse, error) {
+	m := new(DispatcherServiceReadDirResponse)
+	err := x.stream.Recv(m)
+	if err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // Server API for DispatcherService service
 
 type DispatcherServiceHandler interface {
@@ -192,6 +247,7 @@ type DispatcherServiceHandler interface {
 	Resume(context.Context, *DispatcherServiceResumeRequest, *DispatcherServiceResumeResponse) error
 	Stop(context.Context, *DispatcherServiceStopRequest, *DispatcherServiceStopResponse) error
 	ReadDir(context.Context, *DispatcherServiceReadDirRequest, DispatcherService_ReadDirStream) error
+	ReadDir2(context.Context, *DispatcherServiceReadDirRequest, DispatcherService_ReadDir2Stream) error
 }
 
 func RegisterDispatcherServiceHandler(s server.Server, hdlr DispatcherServiceHandler, opts ...server.HandlerOption) error {
@@ -201,6 +257,7 @@ func RegisterDispatcherServiceHandler(s server.Server, hdlr DispatcherServiceHan
 		Resume(ctx context.Context, in *DispatcherServiceResumeRequest, out *DispatcherServiceResumeResponse) error
 		Stop(ctx context.Context, in *DispatcherServiceStopRequest, out *DispatcherServiceStopResponse) error
 		ReadDir(ctx context.Context, stream server.Stream) error
+		ReadDir2(ctx context.Context, stream server.Stream) error
 	}
 	type DispatcherService struct {
 		dispatcherService
@@ -297,5 +354,45 @@ func (x *dispatcherServiceReadDirStream) RecvMsg(m interface{}) error {
 }
 
 func (x *dispatcherServiceReadDirStream) Send(m *DispatcherServiceReadDirResponse) error {
+	return x.stream.Send(m)
+}
+
+func (h *dispatcherServiceHandler) ReadDir2(ctx context.Context, stream server.Stream) error {
+	m := new(DispatcherServiceReadDirRequest)
+	if err := stream.Recv(m); err != nil {
+		return err
+	}
+	return h.DispatcherServiceHandler.ReadDir2(ctx, m, &dispatcherServiceReadDir2Stream{stream})
+}
+
+type DispatcherService_ReadDir2Stream interface {
+	Context() context.Context
+	SendMsg(interface{}) error
+	RecvMsg(interface{}) error
+	Close() error
+	Send(*DispatcherServiceReadDirResponse) error
+}
+
+type dispatcherServiceReadDir2Stream struct {
+	stream server.Stream
+}
+
+func (x *dispatcherServiceReadDir2Stream) Close() error {
+	return x.stream.Close()
+}
+
+func (x *dispatcherServiceReadDir2Stream) Context() context.Context {
+	return x.stream.Context()
+}
+
+func (x *dispatcherServiceReadDir2Stream) SendMsg(m interface{}) error {
+	return x.stream.Send(m)
+}
+
+func (x *dispatcherServiceReadDir2Stream) RecvMsg(m interface{}) error {
+	return x.stream.Recv(m)
+}
+
+func (x *dispatcherServiceReadDir2Stream) Send(m *DispatcherServiceReadDirResponse) error {
 	return x.stream.Send(m)
 }

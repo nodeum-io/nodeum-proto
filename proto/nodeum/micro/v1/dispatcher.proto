@@ -37,6 +37,8 @@ service DispatcherService {
       get: "/dispatcher/readdir";
     };
   }
+
+  rpc ReadDir2(DispatcherServiceReadDirRequest) returns (stream DispatcherServiceReadDirResponse) {}
 }
 
 message DispatcherServiceStartRequest {
