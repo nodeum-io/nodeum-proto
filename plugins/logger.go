@@ -1,6 +1,7 @@
 package plugins
 
 import (
+	"context"
 	"os"
 
 	"github.com/hashicorp/go-hclog"
@@ -22,4 +23,17 @@ func NewLogger(exec *commonv1.Execution) hclog.Logger {
 	}
 
 	return logger
+}
+
+type loggerKey struct{}
+
+func ExtractLogger(ctx context.Context) hclog.Logger {
+	if logger, ok := ctx.Value(loggerKey{}).(hclog.Logger); ok {
+		return logger
+	}
+	return NewLogger(nil)
+}
+
+func InjectLogger(ctx context.Context, logger hclog.Logger) context.Context {
+	return context.WithValue(ctx, loggerKey{}, logger)
 }
